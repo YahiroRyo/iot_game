@@ -35,12 +35,17 @@ class Scene:
 class Scenes:
     scenes: list = []
     current_scene = 0
+    _win_title: str = ""
+
+    def __init__(self, window_title: str = "GAME") -> None:
+        self._win_title = window_title
 
     def set_scene(self, scene: Scene):
         self.scenes.append(scene)
 
     def start(self):
         pygame.init()
+        pygame.display.set_caption(self._win_title)
         screen = pygame.display.set_mode(SCR_RECT.size)
         player = Player(load_img("imgs/man.png"))
         Map.imgs[0] = load_img("imgs/grass.png")
@@ -52,6 +57,7 @@ class Scenes:
         Map.imgs[11] = load_img("imgs/cave.png")
 
         while True:
+            pygame.Surface.fill(screen, (0, 0, 0))
             player.event(self.scenes[self.current_scene].map)
             player.proc(self.scenes[self.current_scene].map, self.scenes[self.current_scene], self)
             self.scenes[self.current_scene].map.draw(screen)
