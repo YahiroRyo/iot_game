@@ -19,7 +19,7 @@ class Player:
         screen.blit(self.img, (self.x, self.y))
 
     def is_wall(self, idx: int):
-        walls = [2]
+        walls = [2,4]
         is_wall = False
         for wall in walls:
             if wall == idx:
@@ -34,15 +34,15 @@ class Player:
             self.y -= self.speed
             if is_wall or self.y < 0:
                 self.y += self.speed + 1
-        if keys[K_DOWN]:
+        elif keys[K_DOWN]:
             self.y += self.speed
             if is_wall or self.y > map.row * map.msize - 31:
                 self.y -= self.speed + 1
-        if keys[K_LEFT]:
+        elif keys[K_LEFT]:
             self.x -= self.speed
             if is_wall or self.x < 0:
                 self.x += self.speed + 1
-        if keys[K_RIGHT]:
+        elif keys[K_RIGHT]:
             self.x += self.speed
             if is_wall or self.x > map.col* map.msize - 31:
                 self.x -= self.speed + 1
