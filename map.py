@@ -1,3 +1,5 @@
+import scene
+
 class Map:
     # マップデータ
     map = []

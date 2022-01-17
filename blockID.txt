@@ -1,5 +1,5 @@
 草原:grass.png:0
-海:water.png:1
+    海:water.png:1
     壁:wall.png:2
 洞窟内:rock.png:3
     空白(黒):black.png:4

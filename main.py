@@ -10,11 +10,11 @@ if __name__ == "__main__":
 
     # 遷移先 マップの名称, プレイヤーX, プレイヤーY
     scenes.set_scene(scene.Scene(mapdata.map_1, "平原", {
-        10: ["例", 0, 0],
+        10: ["例", 32, 32],
         11: ["洞窟", 64, 416]
     }))
     scenes.set_scene(scene.Scene(mapdata.map_2, "例", {
-        10: ["平原", 0, 0]
+        10: ["平原", 32, 32]
     }))
     scenes.set_scene(scene.Scene(mapdata.map_3, "洞窟", {
         11: ["平原", 352, 32]
