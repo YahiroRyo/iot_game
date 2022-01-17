@@ -2,4 +2,4 @@
 海:water.png:1
 壁:wall.png:2
 
-壁(遷移):wall.png:10
+ワープ(遷移):warp.png:10

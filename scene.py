@@ -44,7 +44,7 @@ class Scenes:
         Map.imgs[0] = load_img("imgs/grass.png")
         Map.imgs[1] = load_img("imgs/water.png")
         Map.imgs[2] = load_img("imgs/wall.png")
-        Map.imgs[10] = load_img("imgs/wall.png")
+        Map.imgs[10] = load_img("imgs/warp.png")
 
         while True:
             player.event(self.scenes[self.current_scene].map)
