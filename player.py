@@ -19,33 +19,38 @@ class Player:
         screen.blit(self.img, (self.x, self.y))
 
     def is_wall(self, idx: int):
-        walls = [2,4]
+        walls = [2, 4]
         is_wall = False
         for wall in walls:
             if wall == idx:
                 is_wall = True
         return is_wall
 
+    def key_is_wall(self, key: int, map: Map):
+        x = 0
+        y = 0
+
+        if key == K_UP:
+            y = -self.speed
+        if key == K_DOWN:
+            y = self.speed
+        if key == K_LEFT:
+            x = -self.speed
+        if key == K_RIGHT:
+            x = self.speed
+        id = map.map[math.floor((self.y + y) / map.msize)][math.floor((self.x + x) / map.msize)]
+        return self.is_wall(id)
+
     def event(self, map: Map):
         keys = pygame.key.get_pressed()
-        (idx, wx, wy) = self.get_block(map)
-        is_wall = self.is_wall(idx)
         if keys[K_UP]:
-            self.y -= self.speed
-            if is_wall or self.y < 0:
-                self.y += self.speed + 1
-        elif keys[K_DOWN]:
-            self.y += self.speed
-            if is_wall or self.y > map.row * map.msize - 31:
-                self.y -= self.speed + 1
-        elif keys[K_LEFT]:
-            self.x -= self.speed
-            if is_wall or self.x < 0:
-                self.x += self.speed + 1
-        elif keys[K_RIGHT]:
-            self.x += self.speed
-            if is_wall or self.x > map.col* map.msize - 31:
-                self.x -= self.speed + 1
+            if not self.key_is_wall(K_UP, map) and self.y > 0: self.y -= self.speed
+        if keys[K_DOWN]:
+            if not self.key_is_wall(K_DOWN, map) and self.y < map.row * map.msize - 31: self.y += self.speed
+        if keys[K_LEFT]:
+            if not self.key_is_wall(K_LEFT, map) and self.x > 0: self.x -= self.speed
+        if keys[K_RIGHT]:
+            if not self.key_is_wall(K_RIGHT, map) and self.x < map.col * map.msize - 31: self.x += self.speed
 
     def get_block(self, map: Map):
         return (map.map[math.floor(self.y / map.msize)][math.floor(self.x / map.msize)], math.floor(self.x / map.msize) * map.msize, math.floor(self.y / map.msize) * map.msize)
