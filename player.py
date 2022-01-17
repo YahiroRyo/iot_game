@@ -61,6 +61,8 @@ class Player:
         for k in scene.conf:
             if idx == k:
                 for i, v in enumerate(scenes.scenes):
-                    if v.name == scene.conf[k]:
+                    if v.name == scene.conf[k][0]:
                         scenes.current_scene = i
+                        self.x = scene.conf[k][1]
+                        self.y = scene.conf[k][2]
                         return
