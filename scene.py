@@ -6,7 +6,6 @@ from player import Player
 from map import Map
 import sys
 
-print(len(sys.argv))
 SW = 640 if len(sys.argv) == 1 else int(sys.argv[1])
 SH = 480 if len(sys.argv) == 1 else int(sys.argv[2])
 SCR_RECT = Rect(0, 0, SW, SH)  # 画面サイズ
