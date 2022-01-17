@@ -17,8 +17,6 @@ class Map:
     def draw(self, screen):
         x_set=scene.SW/2-self.col*self.msize/2
         y_set=scene.SH/2-self.row*self.msize/2
-        print(x_set)
-        print(y_set)
         for i in range(self.row):
             for j in range(self.col):
                 screen.blit(self.imgs[self.map[i][j]],
