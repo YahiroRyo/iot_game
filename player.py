@@ -8,8 +8,8 @@ import math
 # プレイヤー
 class Player:
     img = None
-    x = 10
-    y = 10
+    x = 32
+    y = 32
     speed = .05
 
     def __init__(self, img) -> None:
@@ -19,7 +19,7 @@ class Player:
         screen.blit(self.img, (self.x, self.y))
 
     def is_wall(self, idx: int):
-        walls = [2, 4]
+        walls = [1, 2, 4]
         is_wall = False
         for wall in walls:
             if wall == idx:
