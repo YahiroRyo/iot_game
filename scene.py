@@ -6,7 +6,9 @@ from player import Player
 from map import Map
 import sys
 
+# 画面サイズ WIDTH
 SW = 640 if len(sys.argv) == 1 else int(sys.argv[1])
+# 画面サイズ HEIGHT
 SH = 480 if len(sys.argv) == 1 else int(sys.argv[2])
 SCR_RECT = Rect(0, 0, SW, SH)  # 画面サイズ
 
@@ -53,7 +55,7 @@ class Scenes:
             player.event(self.scenes[self.current_scene].map)
             player.proc(self.scenes[self.current_scene].map, self.scenes[self.current_scene], self)
             self.scenes[self.current_scene].map.draw(screen)
-            player.draw(screen)
+            player.draw(self.scenes[self.current_scene].map, screen)
             pygame.display.update()
             for event in pygame.event.get():
                 # 終了用のイベント処理

@@ -15,8 +15,8 @@ class Player:
     def __init__(self, img) -> None:
         self.img = img
 
-    def draw(self, screen: Surface) -> None:
-        screen.blit(self.img, (self.x, self.y))
+    def draw(self, map: Map, screen: Surface) -> None:
+        screen.blit(self.img, (self.x + map.x, self.y + map.y))
 
     def is_wall(self, idx: int):
         walls = [1, 2, 4]
@@ -29,7 +29,6 @@ class Player:
     def key_is_wall(self, key: int, map: Map):
         x = 0
         y = 0
-
         if key == K_UP:
             y = -self.speed
         if key == K_DOWN:
