@@ -64,5 +64,5 @@ class Scenes:
                         pygame.quit()
                         sys.exit()
                     if event.key == K_m:
-                        message = Message("HELLO WORLD")
+                        message = Message("HELLO WORLD 日本語対応")
                         self._messages.append(message)
