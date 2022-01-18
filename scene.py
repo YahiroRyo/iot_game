@@ -21,7 +21,6 @@ def load_img(filename, colorkey=None):
         img.set_colorkey(colorkey, RLEACCEL)
     return img
 
-
 class Scene:
     map: Map
     name: str = ""
@@ -47,7 +46,7 @@ class Scenes:
         pygame.init()
         pygame.display.set_caption(self._win_title)
         screen = pygame.display.set_mode(SCR_RECT.size)
-        player = Player(load_img("imgs/man.png"))
+        player = Player(load_img("imgs/man.png", -1))
         Map.imgs[0] = load_img("imgs/grass.png")
         Map.imgs[1] = load_img("imgs/water.png")
         Map.imgs[2] = load_img("imgs/wall.png")
