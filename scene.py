@@ -5,21 +5,13 @@ from pygame.locals import *
 from player import Player
 from map import Map
 import sys
+import mapimgdata
 
 # 画面サイズ WIDTH
 SW = 640 if len(sys.argv) == 1 else int(sys.argv[1])
 # 画面サイズ HEIGHT
 SH = 480 if len(sys.argv) == 1 else int(sys.argv[2])
 SCR_RECT = Rect(0, 0, SW, SH)  # 画面サイズ
-
-def load_img(filename, colorkey=None):
-    img = pygame.image.load(filename)
-    img = img.convert()
-    if colorkey is not None:
-        if colorkey == -1:
-            colorkey = img.get_at((0, 0))
-        img.set_colorkey(colorkey, RLEACCEL)
-    return img
 
 class Scene:
     map: Map
@@ -46,14 +38,8 @@ class Scenes:
         pygame.init()
         pygame.display.set_caption(self._win_title)
         screen = pygame.display.set_mode(SCR_RECT.size)
-        player = Player(load_img("imgs/man.png", -1))
-        Map.imgs[0] = load_img("imgs/grass.png")
-        Map.imgs[1] = load_img("imgs/water.png")
-        Map.imgs[2] = load_img("imgs/wall.png")
-        Map.imgs[3] = load_img("imgs/rock.png")
-        Map.imgs[4] = load_img("imgs/black.png")
-        Map.imgs[10] = load_img("imgs/warp.png")
-        Map.imgs[11] = load_img("imgs/cave.png")
+        player = Player(mapimgdata.load_img("imgs/man.png", -1))
+        mapimgdata.loaded_imgs()
 
         while True:
             pygame.Surface.fill(screen, (0, 0, 0))
