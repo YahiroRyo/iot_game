@@ -6,6 +6,7 @@ from player import Player
 from map import Map
 import sys
 import mapimgdata
+from message import Message
 
 # 画面サイズ WIDTH
 SW = 640 if len(sys.argv) == 1 else int(sys.argv[1])
@@ -27,6 +28,7 @@ class Scenes:
     scenes: list = []
     current_scene = 0
     _win_title: str = ""
+    _messages: list = []
 
     def __init__(self, window_title: str = "GAME") -> None:
         self._win_title = window_title
@@ -47,7 +49,11 @@ class Scenes:
             player.proc(self.scenes[self.current_scene].map, self.scenes[self.current_scene], self)
             self.scenes[self.current_scene].map.draw(screen)
             player.draw(self.scenes[self.current_scene].map, screen)
+            for msg in self._messages:
+                msg.draw(screen)
+                msg.event()
             pygame.display.update()
+
             for event in pygame.event.get():
                 # 終了用のイベント処理
                 if event.type == QUIT:          # 閉じるボタンが押されたとき
@@ -57,3 +63,6 @@ class Scenes:
                     if event.key == K_ESCAPE:   # Escキーが押されたとき
                         pygame.quit()
                         sys.exit()
+                    if event.key == K_m:
+                        message = Message("HELLO WORLD")
+                        self._messages.append(message)
