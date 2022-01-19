@@ -1,9 +1,11 @@
 from distutils import command
 
-commandmsg_1=["はい","いいえ"]
-command_1=["1","0"]
-command_1msgwordcount=[0,3]
-
-def command_select(A):
-    if A == 1:
-        return commandmsg_1,command_1,command_1msgwordcount
+def command_select(num: int):
+    if num == 1:
+        command_msgs=["はい", "いいえ"]
+        command_term_cnt = [0]
+        sum = 0
+        for i in range(1, len(command_msgs)):
+            sum += len(command_msgs[i - 1]) + 1
+            command_term_cnt.append(sum)
+        return command_msgs, command_term_cnt
