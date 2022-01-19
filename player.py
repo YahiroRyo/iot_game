@@ -12,7 +12,7 @@ class Player:
     x = 32
     y = 32
     size = 30
-    speed = .05
+    speed = 1
 
     def __init__(self, img) -> None:
         self.img = img
