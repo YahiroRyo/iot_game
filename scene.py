@@ -29,6 +29,7 @@ class Scenes:
     current_scene = 0
     _win_title: str = ""
     _messages: list = []
+    FPS = 120
 
     def __init__(self, window_title: str = "GAME") -> None:
         self._win_title = window_title
@@ -67,7 +68,7 @@ class Scenes:
                 msg.draw(screen)
                 if not msg.event():
                     is_operate = False
-            clock.tick(60)
+            clock.tick(self.FPS)
             pygame.display.flip()
             if not is_operate:
                 continue
