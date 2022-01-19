@@ -16,7 +16,7 @@ class Window:
         self._x = x
         self._y = y
 
-    def _draw_str(self, screen: Surface, string: str, color = color.ORANGE, font_size: int = 32):
-        font = pygame.font.SysFont("meiryo", font_size)
+    def _draw_str(self, screen: Surface, string: str, color = color.ORANGE, font_size: int = 24):
+        font = pygame.font.Font("fonts/PixelMplus10-Regular.ttf", font_size)
         text = font.render(string, True, color)
         screen.blit(text, (self._x + 10, self._y + 10))

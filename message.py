@@ -4,10 +4,12 @@ import scene
 
 class Message(Window):
     msg = ""
+    is_operate = False
 
-    def __init__(self, msg: str) -> None:
+    def __init__(self, msg: str, is_operate: bool) -> None:
         super().__init__()
         self.msg = msg
+        self.is_operate = is_operate
 
     def draw(self, screen: Surface):
         self._draw(
@@ -20,4 +22,4 @@ class Message(Window):
         self._draw_str(screen, self.msg)
     
     def event(self):
-        pass
+        return self.is_operate
