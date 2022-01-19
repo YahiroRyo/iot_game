@@ -1,6 +1,7 @@
 from pygame.surface import Surface
 import pygame
 import color
+import command
 
 class Window:
     _w = 0
@@ -21,3 +22,9 @@ class Window:
     def _draw_str(self, screen: Surface, string: str, color = color.ORANGE):
         text = self.font.render(string, True, color)
         screen.blit(text, (self._x + 10, self._y + 10))
+
+    def command_select(self, screen: Surface, color = color.ORANGE, selected: int=0):
+        select_x=command.command_1msgwordcount[selected]*24
+        select_y=0
+        text = self.font.render("→", True, color)
+        screen.blit(text, (self._x + 10+ select_x, self._y + 10 + select_y))

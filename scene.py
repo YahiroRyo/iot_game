@@ -7,6 +7,7 @@ from map import Map
 import sys
 import mapimgdata
 from message import Message
+import commandmsg
 
 # 画面サイズ WIDTH
 SW = 640 if len(sys.argv) == 1 else int(sys.argv[1])
@@ -58,6 +59,11 @@ class Scenes:
                     if event.key == K_m:
                         message = Message("HELLO WORLD 日本語対応", True)
                         self._messages.append(message)
+                    if event.key == K_n:
+                        message = commandmsg.CommandWindow(1)
+                        self._messages.append(message)
+
+
 
             pygame.Surface.fill(screen, (0, 0, 0))
             player.proc(self.scenes[self.current_scene].map, self.scenes[self.current_scene], self)
