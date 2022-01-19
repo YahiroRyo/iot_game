@@ -7,6 +7,7 @@ from map import Map
 import sys
 import mapimgdata
 from message import Message
+import commandmsg
 
 # 画面サイズ WIDTH
 SW = 640 if len(sys.argv) == 1 else int(sys.argv[1])
@@ -29,6 +30,7 @@ class Scenes:
     current_scene = 0
     _win_title: str = ""
     _messages: list = []
+    FPS = 120
 
     def __init__(self, window_title: str = "GAME") -> None:
         self._win_title = window_title
@@ -42,18 +44,9 @@ class Scenes:
         screen = pygame.display.set_mode(SCR_RECT.size)
         player = Player(mapimgdata.load_img("imgs/man.png", -1))
         mapimgdata.loaded_imgs()
+        clock = pygame.time.Clock()
 
         while True:
-            pygame.Surface.fill(screen, (0, 0, 0))
-            player.event(self.scenes[self.current_scene].map)
-            player.proc(self.scenes[self.current_scene].map, self.scenes[self.current_scene], self)
-            self.scenes[self.current_scene].map.draw(screen)
-            player.draw(self.scenes[self.current_scene].map, screen)
-            for msg in self._messages:
-                msg.draw(screen)
-                msg.event()
-            pygame.display.update()
-
             for event in pygame.event.get():
                 # 終了用のイベント処理
                 if event.type == QUIT:          # 閉じるボタンが押されたとき
@@ -64,5 +57,31 @@ class Scenes:
                         pygame.quit()
                         sys.exit()
                     if event.key == K_m:
-                        message = Message("HELLO WORLD")
+                        message = Message("HELLO WORLD 日本語対応", True)
                         self._messages.append(message)
+                    if event.key == K_n:
+                        message = commandmsg.CommandWindow(1)
+                        self._messages.append(message)
+
+            pygame.Surface.fill(screen, (0, 0, 0))
+            player.proc(self.scenes[self.current_scene].map, self.scenes[self.current_scene], self)
+            self.scenes[self.current_scene].map.draw(screen)
+            player.draw(self.scenes[self.current_scene].map, screen)
+            is_operate = True
+            for msg in self._messages:
+                msg.draw(screen)
+                (is_operate, is_close, data) = msg.event()
+                if not is_operate:
+                    is_operate = False
+                if is_close:
+                    self._messages.remove(msg)
+                    if "msg" in data:
+                        if data["msg"] == "はい":
+                            print("はいを選んでくれてありがとう!")
+            clock.tick(self.FPS)
+            pygame.display.flip()
+            if not is_operate:
+                continue
+
+            player.event(self.scenes[self.current_scene].map)
+            

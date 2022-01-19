@@ -1,6 +1,5 @@
 import time
 import pygame
-from pygame.event import Event
 from pygame.surface import Surface
 from pygame.locals import *
 from map import Map
@@ -12,7 +11,7 @@ class Player:
     x = 32
     y = 32
     size = 30
-    speed = .05
+    speed = 1
 
     def __init__(self, img) -> None:
         self.img = img
