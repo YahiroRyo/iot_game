@@ -1,5 +1,8 @@
+import pygame
 from pygame.surface import Surface
 from window import Window
+from pygame.locals import *
+from typing import Tuple
 import scene
 
 class Message(Window):
@@ -20,6 +23,12 @@ class Message(Window):
             scene.SH - scene.SH / 3 - 25
         )
         self._draw_str(screen, self.msg)
-    
-    def event(self):
-        return self.is_operate
+
+    def event(self) -> Tuple[bool, bool, dict]:
+        if self.cool_time <= 0:
+            keys = pygame.key.get_pressed()
+            if keys[K_RETURN]:
+                return (self.is_operate, True, {})
+        else:
+            self.cool_time -= 1
+        return (self.is_operate, False, {})

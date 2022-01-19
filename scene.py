@@ -63,8 +63,6 @@ class Scenes:
                         message = commandmsg.CommandWindow(1)
                         self._messages.append(message)
 
-
-
             pygame.Surface.fill(screen, (0, 0, 0))
             player.proc(self.scenes[self.current_scene].map, self.scenes[self.current_scene], self)
             self.scenes[self.current_scene].map.draw(screen)
@@ -72,8 +70,14 @@ class Scenes:
             is_operate = True
             for msg in self._messages:
                 msg.draw(screen)
-                if not msg.event():
+                (is_operate, is_close, data) = msg.event()
+                if not is_operate:
                     is_operate = False
+                if is_close:
+                    self._messages.remove(msg)
+                    if "msg" in data:
+                        if data["msg"] == "はい":
+                            print("はいを選んでくれてありがとう!")
             clock.tick(self.FPS)
             pygame.display.flip()
             if not is_operate:

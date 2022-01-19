@@ -1,6 +1,5 @@
 import time
 import pygame
-from pygame.event import Event
 from pygame.surface import Surface
 from pygame.locals import *
 from map import Map
