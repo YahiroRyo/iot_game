@@ -42,6 +42,7 @@ class Scenes:
         screen = pygame.display.set_mode(SCR_RECT.size)
         player = Player(mapimgdata.load_img("imgs/man.png", -1))
         mapimgdata.loaded_imgs()
+        clock = pygame.time.Clock()
 
         while True:
             for event in pygame.event.get():
@@ -66,6 +67,7 @@ class Scenes:
                 msg.draw(screen)
                 if not msg.event():
                     is_operate = False
+            clock.tick(60)
             pygame.display.flip()
             if not is_operate:
                 continue
