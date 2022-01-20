@@ -8,6 +8,9 @@ import sys
 import mapimgdata
 from message import Message
 import commandmsg
+from monster import Monster
+import monsterdata
+import random
 
 # 画面サイズ WIDTH
 SW = 640 if len(sys.argv) == 1 else int(sys.argv[1])
@@ -18,7 +21,7 @@ SCR_RECT = Rect(0, 0, SW, SH)  # 画面サイズ
 
 class BattleScene:
     is_battle = True
-    def __init__(self) -> None:
+    def __init__(self, monsters: list) -> None:
         pass
 
     def event(self, scenes, clock: pygame.time.Clock):
@@ -56,7 +59,13 @@ class Scene:
                     message = commandmsg.CommandWindow(1)
                     scenes._messages.append(message)
                 if event.key == K_b:
-                    scene = BattleScene()
+                    monsters_num=random.randint(self.conf["monster_info"]["min"],self.conf["monster_info"]["max"])
+                    monsters=[]
+                    for _ in range(monsters_num):
+                        monster_num=random.randint(0,len(self.conf["monster_info"]["kinds"])-1)
+                        monsters.append(Monster(self.conf["monster_info"]["kinds"][monster_num]))
+                    #for _ in range(monsters_num):
+                    scene = BattleScene(monsters)
                     scenes.scenes.append(scene)
                     scenes.current_scene = len(scenes.scenes) - 1
                     return
