@@ -40,7 +40,7 @@ class BattleScene:
                     scenes.scenes.remove(self)
                     scenes.current_scene = self.current_scene
                     return
-        
+
         clock.tick(scenes.FPS)
         pygame.display.flip()
         
