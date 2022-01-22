@@ -13,9 +13,9 @@ import monsterdata
 import random
 
 # 画面サイズ WIDTH
-SW = 640 if len(sys.argv) == 1 else int(sys.argv[1])
+SW = 1280 if len(sys.argv) == 1 else int(sys.argv[1])
 # 画面サイズ HEIGHT
-SH = 480 if len(sys.argv) == 1 else int(sys.argv[2])
+SH = 720 if len(sys.argv) == 1 else int(sys.argv[2])
 SCR_RECT = Rect(0, 0, SW, SH)  # 画面サイズ
 
 
