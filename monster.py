@@ -35,11 +35,11 @@ class Monster:
         self.power=self.random(data[4])
         self.m_power=self.random(data[5])
         self.defense=self.random(data[6])
-        self.m1_defense=self.random(data[7])
+        self.m_defense=self.random(data[7])
         self.agility=self.random(data[8])
         self.luck=self.random(data[9])
         self.attack_times=self.random(data[10])
         self.debug()
-    
+
     def debug(self):
         print(f"{self.img}, {self.monster_name}, {self.hp}, {self.mp}, {self.power}, {self.m_power}, {self.defense}, {self.m_defense}, {self.agility}, {self.luck}, {self.attack_times}")
