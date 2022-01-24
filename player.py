@@ -2,11 +2,12 @@ import time
 import pygame
 from pygame.surface import Surface
 from pygame.locals import *
+from monster import Params
 from map import Map
 import math
 
 # プレイヤー
-class Player:
+class Player(Params):
     img = None
     x = 32
     y = 32

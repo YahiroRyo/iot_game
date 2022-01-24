@@ -1,9 +1,8 @@
 import math
 import random
 
-class Monster:
-    img=""              #モンスター画像
-    monster_name=""     #モンスターの名前
+class Params:
+    name=""             #名前
     hp=0
     mp=0
     power=0             #物理攻撃
@@ -14,6 +13,8 @@ class Monster:
     luck=0              #会心率
     attack_times=1      #行動回数
 
+class Monster(Params):
+    img=""              #モンスター画像
     def random(self, base:int)->int:#+-10%の乱数を生成
         tmp=math.floor(base/10)
         rand_value=random.randint(0,tmp)
@@ -29,7 +30,7 @@ class Monster:
 
     def __init__(self, data:list) -> None:
         self.img=data[0]
-        self.monster_name=data[1]
+        self.name=data[1]
         self.hp=self.random(data[2])
         self.mp=self.random(data[3])
         self.power=self.random(data[4])
@@ -42,4 +43,4 @@ class Monster:
         self.debug()
 
     def debug(self):
-        print(f"{self.img}, {self.monster_name}, {self.hp}, {self.mp}, {self.power}, {self.m_power}, {self.defense}, {self.m_defense}, {self.agility}, {self.luck}, {self.attack_times}")
+        print(f"{self.img}, {self.name}, {self.hp}, {self.mp}, {self.power}, {self.m_power}, {self.defense}, {self.m_defense}, {self.agility}, {self.luck}, {self.attack_times}")
