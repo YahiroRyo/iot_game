@@ -111,5 +111,6 @@ class Player(Params):
                             self.y = scene.conf[k][2]
                             scenes.scenes[i].map.x = (iscene.SW - (scene.conf[k][1] * 2)) / 2
                             scenes.scenes[i].map.y = (iscene.SH - (scene.conf[k][2] * 2)) / 2
-                            time.sleep(1)
+                            for _ in pygame.key.get_pressed():
+                                pass
                             return
