@@ -13,8 +13,9 @@ class Map:
         self.map = map
         self.row = len(map)
         self.col = len(map[0])
-        self.x = scene.SW / 2 - self.col * self.msize / 2
-        self.y = scene.SH / 2 - self.row * self.msize / 2
+        self.x = scene.SW / 2 - 32
+        self.y = scene.SH / 2 - 32
+
 
     # マップの描画
     def draw(self, screen):

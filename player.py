@@ -4,6 +4,7 @@ from pygame.surface import Surface
 from pygame.locals import *
 from monster import Params
 from map import Map
+import scene as iscene
 import math
 
 # プレイヤー
@@ -68,13 +69,21 @@ class Player(Params):
     def event(self, map: Map):
         keys = pygame.key.get_pressed()
         if keys[K_UP]:
-            if not self.key_is_wall(K_UP, map) and self.y > 0: self.y -= self.speed
+            if not self.key_is_wall(K_UP, map) and self.y > 0:
+                self.y -= self.speed
+                map.y += self.speed
         if keys[K_DOWN]:
-            if not self.key_is_wall(K_DOWN, map) and self.y < map.row * map.msize - self.size: self.y += self.speed
+            if not self.key_is_wall(K_DOWN, map) and self.y < map.row * map.msize - self.size:
+                self.y += self.speed
+                map.y -= self.speed
         if keys[K_LEFT]:
-            if not self.key_is_wall(K_LEFT, map) and self.x > 0: self.x -= self.speed
+            if not self.key_is_wall(K_LEFT, map) and self.x > 0:
+                self.x -= self.speed
+                map.x += self.speed
         if keys[K_RIGHT]:
-            if not self.key_is_wall(K_RIGHT, map) and self.x < map.col * map.msize - self.size: self.x += self.speed
+            if not self.key_is_wall(K_RIGHT, map) and self.x < map.col * map.msize - self.size:
+                self.x += self.speed
+                map.x -= self.speed
 
     def get_block(self, map: Map, x: int = -1, y: int = -1):
         tmp_x = self.x if x == -1 else x
@@ -100,5 +109,7 @@ class Player(Params):
                             scenes.current_scene = i
                             self.x = scene.conf[k][1]
                             self.y = scene.conf[k][2]
+                            scenes.scenes[i].map.x = (iscene.SW - (scene.conf[k][1] * 2)) / 2
+                            scenes.scenes[i].map.y = (iscene.SH - (scene.conf[k][2] * 2)) / 2
                             time.sleep(1)
                             return
