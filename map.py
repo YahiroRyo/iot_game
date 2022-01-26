@@ -21,7 +21,8 @@ class Map:
     def draw(self, screen):
         for i in range(self.row):
             for j in range(self.col):
-                screen.blit(
-                    self.imgs[self.map[i][j]],
-                    (j * self.msize + self.x, i * self.msize + self.y)
-                )
+                if self.map[i][j] != 0:
+                    screen.blit(
+                        self.imgs[self.map[i][j]],
+                        (j * self.msize + self.x, i * self.msize + self.y)
+                    )
