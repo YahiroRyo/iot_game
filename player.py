@@ -22,7 +22,7 @@ class Player(Params):
         screen.blit(self.img, (self.x + map.x, self.y + map.y))
 
     def is_wall(self, idx: int):
-        walls = [1, 2, 4]
+        walls = [0, 1, 2]
         is_wall = False
         for wall in walls:
             if wall == idx:

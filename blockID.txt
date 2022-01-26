@@ -1,8 +1,9 @@
-草原:grass.png:0
+空白:0
     海:water.png:1
     壁:wall.png:2
 洞窟内:rock.png:3
-    空白(黒):black.png:4
+草原:grass.png:4
+空白(黒):black.png:未使用
 
 ワープ(遷移):warp.png:10
 洞窟(遷移):cave.png:11
