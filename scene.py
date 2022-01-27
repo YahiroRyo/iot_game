@@ -1,3 +1,4 @@
+from turtle import title
 import pygame
 from pygame.surface import Surface
 from pygame.locals import *
@@ -82,11 +83,14 @@ class Scenes:
     scenes: list = []
     current_scene = 0
     _win_title: str = ""
+    titleicon=""
     _messages: list = []
     FPS = 120
 
-    def __init__(self, window_title: str = "GAME") -> None:
+    def __init__(self, window_title: str = "GAME", titleicon:str = None) -> None:
         self._win_title = window_title
+        self.titleicon=pygame.image.load(titleicon)
+        pygame.display.set_icon(self.titleicon)
 
     def set_scene(self, scene: Scene):
         self.scenes.append(scene)

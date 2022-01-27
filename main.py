@@ -7,7 +7,7 @@ import mapdata
 import monsterdata
 
 if __name__ == "__main__":
-    scenes = scene.Scenes("RPG GAME")
+    scenes = scene.Scenes("RPG GAME","imgs/titleicon.png")
 
     # 遷移先 マップの名称, プレイヤーX, プレイヤーY
     scenes.set_scene(scene.Scene(mapdata.map_1, "平原", {
