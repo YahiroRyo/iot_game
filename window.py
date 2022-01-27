@@ -20,7 +20,7 @@ class Window:
         self._y = y
         self.font = pygame.font.Font("fonts/PixelMplus10-Regular.ttf", 24)
 
-    def _draw_str(self, screen: Surface, string: str, color = color.ORANGE):
+    def _draw_str(self, screen: Surface, string: str, color = color.WHITE):
         strings = string.split("\n")
         for idx, s in enumerate(strings):
             text = self.font.render(s, True, color)
