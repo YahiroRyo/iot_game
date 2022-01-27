@@ -3,11 +3,11 @@ from pygame.surface import Surface
 from message import Message
 from pygame.locals import *
 from battle_window import BattleStatusWindow
+import color
 import pygame
 import scene
 import sys
 import mapimgdata
-import monster
 
 class BattleScene:
     is_battle = True
@@ -17,16 +17,17 @@ class BattleScene:
     monster_imgs: list = []
     message: Message
     battle_status_windows: list = []
-
+    font = None
 
     def __init__(self, players: list, monsters: list, current_scene: int) -> None:
         self.current_scene = current_scene
         self.players = players
         self.monsters = monsters
         self.message = Message("", True)
-        self.command_win = CommandWindow(2, scene.SW - 25, 48, 12.5, scene.SH - scene.SH / 3 - 36.5)
+        self.command_win = CommandWindow(2, scene.SW - 25, 48, 12.5, scene.SH / 6)
         self.battle_status_windows = [BattleStatusWindow() for _ in players]
         self.monster_imgs = [mapimgdata.load_img(f"imgs/monsters/{monster.img}", -1) for monster in monsters]
+        self.font = pygame.font.Font("fonts/PixelMplus10-Regular.ttf", 24)
 
     def remove_monster(self, remove_index):
         self.monsters.remove(self.monsters[remove_index])
@@ -35,8 +36,6 @@ class BattleScene:
     def back_to_current_scene(self, scenes):
         scenes.scenes.remove(self)
         scenes.current_scene = self.current_scene
-
-
 
     def event(self, scenes, clock: pygame.time.Clock):
         for event in pygame.event.get():
@@ -56,7 +55,7 @@ class BattleScene:
         if "index" in cmd:
             if cmd["unique"] == "battle_select":
                 if cmd["index"]==0:
-                    self.command_win.set_commands("to_monster", [monster.name for monster in self.monsters])
+                    self.command_win.set_commands(0, "to_monster", [monster.name for monster in self.monsters])
                     #self.attack(self.players[0], self.monsters[0])
                     pass
                 elif cmd["index"]==1:
@@ -71,24 +70,8 @@ class BattleScene:
                     self.back_to_current_scene(scenes)
                     return
             elif cmd["unique"] == "to_monster":
-                if cmd["index"]==0:
-                    self.attack(self.players[0], self.monsters[0])
-                elif cmd["index"]==1:
-                     self.attack(self.players[1], self.monsters[1])
-                elif cmd["index"]==2:
-                     self.attack(self.players[2], self.monsters[2])
-                elif cmd["index"]==3:
-                     self.attack(self.players[3], self.monsters[3])
-                elif cmd["index"]==4:
-                     self.attack(self.players[4], self.monsters[4])
-                elif cmd["index"]==5:
-                     self.attack(self.players[5], self.monsters[5])
-                elif cmd["index"]==6:
-                     self.attack(self.players[6], self.monsters[6])
-                elif cmd["index"]==7:
-                     self.attack(self.players[7], self.monsters[7])
-
-
+                self.attack(self.players[cmd["index"]], self.monsters[cmd["index"]])
+                self.command_win.set_commands(2)
 
         clock.tick(scenes.FPS)
         pygame.display.flip()
@@ -101,9 +84,14 @@ class BattleScene:
             battle_status_window.draw(screen, idx * scene.SW / 4, self.players[idx].name, self.players[idx].hp, self.players[idx].mp)
         x = scene.SW / 2 - (len(self.monsters) * 140) / 2
         for idx, monster_img in enumerate(self.monster_imgs):
+            text = self.font.render(self.monsters[idx].name, True, color.WHITE)
             screen.blit(
                 monster_img,
-                (x + (idx * 140), scene.SH / 3)
+                (x + idx * 140, scene.SH / 3)
+            )
+            screen.blit(
+                text,
+                (x + idx * 140, scene.SH / 3 + 140)
             )
 
     def attack(self, _from, _to):

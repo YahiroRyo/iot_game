@@ -30,15 +30,18 @@ class CommandWindow(window.Window):
         self.y = y if y != 0 else scene.SH - scene.SH / 3 - 25
 
     # コマンドをセットできる selectedは0に初期化される
-    def set_commands(self, unique_name: str, command_msgs: list):
+    def set_commands(self, msgnum: int = 0, unique_name: str = "", command_msgs: list = []):
         self.selected = 0
-        self.msgs = command_msgs
-        self.unique_name = unique_name
-        self.msgwordcount = [0]
-        sum = 0
-        for i in range(1, len(command_msgs)):
-            sum += len(command_msgs[i - 1]) + 1
-            self.msgwordcount.append(sum)
+        if msgnum == 0:
+            self.msgs = command_msgs
+            self.unique_name = unique_name
+            self.msgwordcount = [0]
+            sum = 0
+            for i in range(1, len(command_msgs)):
+                sum += len(command_msgs[i - 1]) + 1
+                self.msgwordcount.append(sum)
+        else:
+            (self.unique_name, self.msgs, self.msgwordcount) = command.command_select(msgnum)
 
     def draw(self, screen: Surface):
         self._draw(
