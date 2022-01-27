@@ -95,12 +95,12 @@ class Scenes:
         pygame.init()
         pygame.display.set_caption(self._win_title)
         screen = pygame.display.set_mode(SCR_RECT.size)
-        player = Player(mapimgdata.load_img("imgs/man.png", -1), "戦士", 100, 50)
+        player = Player(mapimgdata.load_img("imgs/man.png", -1), "戦士", 100, 50, 10, 10, 10, 10, 10, 0)
         players: list = [
             player,
-            Player(mapimgdata.load_img("imgs/man.png", -1), "モブ1", 5, 3),
-            Player(mapimgdata.load_img("imgs/man.png", -1), "モブ2", 5, 3),
-            Player(mapimgdata.load_img("imgs/man.png", -1), "モブ3", 5, 3),
+            Player(mapimgdata.load_img("imgs/man.png", -1), "モブ1", 5, 3, 10, 10, 10, 10, 10, 0),
+            Player(mapimgdata.load_img("imgs/man.png", -1), "モブ2", 5, 3, 10, 10, 10, 10, 10, 0),
+            Player(mapimgdata.load_img("imgs/man.png", -1), "モブ3", 5, 3, 10, 10, 10, 10, 10, 0),
         ]
         mapimgdata.loaded_imgs()
         clock = pygame.time.Clock()

@@ -12,6 +12,7 @@ class Params:
     agility=0           #素早さ
     luck=0              #会心率
     attack_times=1      #行動回数
+    exp=0               #経験値
 
 class Monster(Params):
     img=""              #モンスター画像
@@ -40,7 +41,8 @@ class Monster(Params):
         self.agility=self.random(data[8])
         self.luck=self.random(data[9])
         self.attack_times=self.random(data[10])
+        self.exp=data[11]
         self.debug()
 
     def debug(self):
-        print(f"{self.img}, {self.name}, {self.hp}, {self.mp}, {self.power}, {self.m_power}, {self.defense}, {self.m_defense}, {self.agility}, {self.luck}, {self.attack_times}")
+        print(f"{self.img}, {self.name}, {self.hp}, {self.mp}, {self.power}, {self.m_power}, {self.defense}, {self.m_defense}, {self.agility}, {self.luck}, {self.attack_times}, {self.exp}")

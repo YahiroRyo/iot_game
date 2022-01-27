@@ -19,11 +19,18 @@ class Player(Params):
     size = 30
     speed = 1
 
-    def __init__(self, img: str, name: str, hp: int, mp: int) -> None:
+    def __init__(self, img: str, name: str, hp: int, mp: int, power:int, m_power:int, defense:int, m_defense:int, agility:int, luck:int) -> None:
         self.img = img
         self.name = name
         self.hp = hp
         self.mp = mp
+        self.power = power
+        self.m_power = m_power
+        self.defense = defense
+        self.m_defense = m_defense
+        self.agility = agility
+        self.luck = luck
+
 
     def draw(self, map: Map, screen: Surface) -> None:
         screen.blit(self.img, (self.x + map.x, self.y + map.y))
