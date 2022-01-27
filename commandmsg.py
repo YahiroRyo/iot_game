@@ -6,6 +6,7 @@ import command
 from pygame.locals import *
 from typing import Tuple
 
+COOL_TIME = 20
 
 class CommandWindow(window.Window):
     commandactive = True
@@ -59,13 +60,15 @@ class CommandWindow(window.Window):
 
     def event(self) -> Tuple[bool, bool, dict]:
         if self.cool_time <= 0:
-            self.cool_time = 10
             keys = pygame.key.get_pressed()
             if keys[K_RIGHT] and self.selected < len(self.msgs)-1:
+                self.cool_time = COOL_TIME
                 self.selected += 1
             elif keys[K_LEFT] and self.selected > 0:
+                self.cool_time = COOL_TIME
                 self.selected -= 1
             elif keys[K_RETURN]:
+                self.cool_time = COOL_TIME
                 return (self.is_operate, True, {
                     "unique": self.unique_name,
                     "index": self.selected

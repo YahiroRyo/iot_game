@@ -21,8 +21,9 @@ class BattleScene:
     font = None
     get_exp=0
     scenes=None
+    screen=None
 
-    def __init__(self, players: list, monsters: list, current_scene: int, scenes) -> None:
+    def __init__(self, players: list, monsters: list, current_scene: int, scenes, screen: Surface) -> None:
         self.current_scene = current_scene
         self.players = players
         self.monsters = monsters
@@ -32,6 +33,7 @@ class BattleScene:
         self.monster_imgs = [mapimgdata.load_img(f"imgs/monsters/{monster.img}", -1) for monster in monsters]
         self.font = pygame.font.Font("fonts/PixelMplus10-Regular.ttf", 24)
         self.scenes=scenes
+        self.screen = screen
 
     def remove_monster(self, remove_index):
         self.monsters.remove(self.monsters[remove_index])
@@ -75,7 +77,7 @@ class BattleScene:
                     self.back_to_current_scene(scenes)
                     return
             elif cmd["unique"] == "to_monster":
-                self.attack(self.players[cmd["index"]], self.monsters[cmd["index"]])
+                self.attack(self.players[0], self.monsters[cmd["index"]])
                 self.command_win.set_commands(2)
 
         clock.tick(scenes.FPS)
@@ -129,7 +131,8 @@ class BattleScene:
             self.hp_check()
         if len(self.monsters) == 0:
             print(f"{self.get_exp}ポイントの経験値を手に入れた")
-            self.message.msg=str(self.get_exp)+"ポイントの経験値とお金を手に入れた"
+            self.message.msg = str(self.get_exp)+"ポイントの経験値とお金を手に入れた"
+            self.message.draw_until_press_key(self.screen)
             self.players[0].money+=self.get_exp
             for player in self.players:
                 player.exp+=self.get_exp
