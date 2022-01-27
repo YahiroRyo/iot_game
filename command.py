@@ -8,7 +8,7 @@ def command_select(num: int):
         for i in range(1, len(command_msgs)):
             sum += len(command_msgs[i - 1]) + 1
             command_term_cnt.append(sum)
-        return command_msgs, command_term_cnt
+        return "yes_or_no", command_msgs, command_term_cnt
     elif num == 2:
         command_msgs=["攻撃", "魔法", "特技", "道具", "防御", "逃げる"]
         command_term_cnt = [0]
@@ -16,4 +16,4 @@ def command_select(num: int):
         for i in range(1, len(command_msgs)):
             sum += len(command_msgs[i - 1]) + 1
             command_term_cnt.append(sum)
-        return command_msgs, command_term_cnt
+        return "battle_select",command_msgs, command_term_cnt
