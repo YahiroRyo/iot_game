@@ -51,7 +51,7 @@ class Scene:
                     for _ in range(monsters_num):
                         monster_num=random.randint(0,len(self.conf["monster_info"]["kinds"])-1)
                         monsters.append(Monster(self.conf["monster_info"]["kinds"][monster_num]))
-                    scene = BattleScene(players, monsters, scenes.current_scene,scenes)
+                    scene = BattleScene(players, monsters, scenes.current_scene, scenes, screen)
                     scenes.scenes.append(scene)
                     scenes.current_scene = len(scenes.scenes) - 1
                     return
