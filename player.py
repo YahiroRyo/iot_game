@@ -9,14 +9,21 @@ import math
 
 # プレイヤー
 class Player(Params):
+    # バトル関係
+    items: list = []
+    exp: int = 0
+    
     img = None
     x = 32
     y = 32
     size = 30
     speed = 1
 
-    def __init__(self, img) -> None:
+    def __init__(self, img: str, name: str, hp: int, mp: int) -> None:
         self.img = img
+        self.name = name
+        self.hp = hp
+        self.mp = mp
 
     def draw(self, map: Map, screen: Surface) -> None:
         screen.blit(self.img, (self.x + map.x, self.y + map.y))
