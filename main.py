@@ -12,7 +12,7 @@ if __name__ == "__main__":
     # 遷移先 マップの名称, プレイヤーX, プレイヤーY
     scenes.set_scene(scene.Scene(mapdata.map_1, "平原", {
         10: ["例", 128, 416],
-        11: ["洞窟", 64, 416],
+        11: ["洞窟", 96, 416],
         "monster_info": {
             "kinds": [monsterdata.suraimu,monsterdata.goburin],
             "min": 1,
@@ -23,6 +23,6 @@ if __name__ == "__main__":
         10: ["平原", 160, 64]
     }))
     scenes.set_scene(scene.Scene(mapdata.map_3, "洞窟", {
-        11: ["平原", 352, 32]
+        11: ["平原", 351, 32]
     }))
     scenes.start()

@@ -22,7 +22,7 @@ class Player(Params):
         screen.blit(self.img, (self.x + map.x, self.y + map.y))
 
     def is_wall(self, idx: int):
-        walls = [1, 2, 4]
+        walls = [0, 1, 2]
         is_wall = False
         for wall in walls:
             if wall == idx:
@@ -111,5 +111,6 @@ class Player(Params):
                             self.y = scene.conf[k][2]
                             scenes.scenes[i].map.x = (iscene.SW - (scene.conf[k][1] * 2)) / 2
                             scenes.scenes[i].map.y = (iscene.SH - (scene.conf[k][2] * 2)) / 2
-                            time.sleep(1)
+                            for _ in pygame.key.get_pressed():
+                                pass
                             return
