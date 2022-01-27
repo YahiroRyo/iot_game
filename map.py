@@ -13,14 +13,16 @@ class Map:
         self.map = map
         self.row = len(map)
         self.col = len(map[0])
-        self.x = scene.SW / 2 - self.col * self.msize / 2
-        self.y = scene.SH / 2 - self.row * self.msize / 2
+        self.x = scene.SW / 2 - 32
+        self.y = scene.SH / 2 - 32
+
 
     # マップの描画
     def draw(self, screen):
         for i in range(self.row):
             for j in range(self.col):
-                screen.blit(
-                    self.imgs[self.map[i][j]],
-                    (j * self.msize + self.x, i * self.msize + self.y)
-                )
+                if self.map[i][j] != 0:
+                    screen.blit(
+                        self.imgs[self.map[i][j]],
+                        (j * self.msize + self.x, i * self.msize + self.y)
+                    )

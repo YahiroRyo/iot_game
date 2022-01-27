@@ -2,25 +2,34 @@ import time
 import pygame
 from pygame.surface import Surface
 from pygame.locals import *
+from monster import Params
 from map import Map
+import scene as iscene
 import math
 
 # プレイヤー
-class Player:
+class Player(Params):
+    # バトル関係
+    items: list = []
+    exp: int = 0
+    
     img = None
     x = 32
     y = 32
     size = 30
     speed = 1
 
-    def __init__(self, img) -> None:
+    def __init__(self, img: str, name: str, hp: int, mp: int) -> None:
         self.img = img
+        self.name = name
+        self.hp = hp
+        self.mp = mp
 
     def draw(self, map: Map, screen: Surface) -> None:
         screen.blit(self.img, (self.x + map.x, self.y + map.y))
 
     def is_wall(self, idx: int):
-        walls = [1, 2, 4]
+        walls = [0, 1, 2]
         is_wall = False
         for wall in walls:
             if wall == idx:
@@ -67,13 +76,21 @@ class Player:
     def event(self, map: Map):
         keys = pygame.key.get_pressed()
         if keys[K_UP]:
-            if not self.key_is_wall(K_UP, map) and self.y > 0: self.y -= self.speed
+            if not self.key_is_wall(K_UP, map) and self.y > 0:
+                self.y -= self.speed
+                map.y += self.speed
         if keys[K_DOWN]:
-            if not self.key_is_wall(K_DOWN, map) and self.y < map.row * map.msize - self.size: self.y += self.speed
+            if not self.key_is_wall(K_DOWN, map) and self.y < map.row * map.msize - self.size:
+                self.y += self.speed
+                map.y -= self.speed
         if keys[K_LEFT]:
-            if not self.key_is_wall(K_LEFT, map) and self.x > 0: self.x -= self.speed
+            if not self.key_is_wall(K_LEFT, map) and self.x > 0:
+                self.x -= self.speed
+                map.x += self.speed
         if keys[K_RIGHT]:
-            if not self.key_is_wall(K_RIGHT, map) and self.x < map.col * map.msize - self.size: self.x += self.speed
+            if not self.key_is_wall(K_RIGHT, map) and self.x < map.col * map.msize - self.size:
+                self.x += self.speed
+                map.x -= self.speed
 
     def get_block(self, map: Map, x: int = -1, y: int = -1):
         tmp_x = self.x if x == -1 else x
@@ -99,5 +116,8 @@ class Player:
                             scenes.current_scene = i
                             self.x = scene.conf[k][1]
                             self.y = scene.conf[k][2]
-                            time.sleep(1)
+                            scenes.scenes[i].map.x = (iscene.SW - (scene.conf[k][1] * 2)) / 2
+                            scenes.scenes[i].map.y = (iscene.SH - (scene.conf[k][2] * 2)) / 2
+                            for _ in pygame.key.get_pressed():
+                                pass
                             return
