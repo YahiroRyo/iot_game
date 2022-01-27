@@ -20,8 +20,9 @@ class BattleScene:
     battle_status_windows: list = []
     font = None
     get_exp=0
+    scenes=None
 
-    def __init__(self, players: list, monsters: list, current_scene: int) -> None:
+    def __init__(self, players: list, monsters: list, current_scene: int, scenes) -> None:
         self.current_scene = current_scene
         self.players = players
         self.monsters = monsters
@@ -30,6 +31,7 @@ class BattleScene:
         self.battle_status_windows = [BattleStatusWindow() for _ in players]
         self.monster_imgs = [mapimgdata.load_img(f"imgs/monsters/{monster.img}", -1) for monster in monsters]
         self.font = pygame.font.Font("fonts/PixelMplus10-Regular.ttf", 24)
+        self.scenes=scenes
 
     def remove_monster(self, remove_index):
         self.monsters.remove(self.monsters[remove_index])
@@ -52,16 +54,6 @@ class BattleScene:
                 #if event.key == K_RETURN:
                 #    self.back_to_current_scene()
                 #    return
-        if len(self.monsters) == 0:
-            print(f"{self.get_exp}ポイントの経験値を手に入れた")
-            self.message.msg=str(self.get_exp)+"ポイントの経験値とお金を手に入れた"
-            self.players[0].money+=self.get_exp
-            self.players[0].exp+=self.get_exp
-            self.players[1].exp+=self.get_exp
-            self.players[2].exp+=self.get_exp
-            self.players[3].exp+=self.get_exp
-            print(f"{self.players[0].money},{self.players[0].exp}")
-            self.back_to_current_scene(scenes)
 
         self.message.event()
         (is_operate, is_close, cmd) = self.command_win.event()
@@ -135,4 +127,12 @@ class BattleScene:
         else:
             self.remove_monster(index)
             self.hp_check()
+        if len(self.monsters) == 0:
+            print(f"{self.get_exp}ポイントの経験値を手に入れた")
+            self.message.msg=str(self.get_exp)+"ポイントの経験値とお金を手に入れた"
+            self.players[0].money+=self.get_exp
+            for player in self.players:
+                player.exp+=self.get_exp
+            print(f"{self.players[0].money},{self.players[0].exp}")
+            self.back_to_current_scene(self.scenes)
         return
