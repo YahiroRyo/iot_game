@@ -1,3 +1,4 @@
+from turtle import title
 import pygame
 from pygame.surface import Surface
 from pygame.locals import *
@@ -50,7 +51,7 @@ class Scene:
                     for _ in range(monsters_num):
                         monster_num=random.randint(0,len(self.conf["monster_info"]["kinds"])-1)
                         monsters.append(Monster(self.conf["monster_info"]["kinds"][monster_num]))
-                    scene = BattleScene(players, monsters, scenes.current_scene)
+                    scene = BattleScene(players, monsters, scenes.current_scene,scenes)
                     scenes.scenes.append(scene)
                     scenes.current_scene = len(scenes.scenes) - 1
                     return
@@ -82,11 +83,14 @@ class Scenes:
     scenes: list = []
     current_scene = 0
     _win_title: str = ""
+    titleicon=""
     _messages: list = []
     FPS = 120
 
-    def __init__(self, window_title: str = "GAME") -> None:
+    def __init__(self, window_title: str = "GAME", titleicon:str = None) -> None:
         self._win_title = window_title
+        self.titleicon=pygame.image.load(titleicon)
+        pygame.display.set_icon(self.titleicon)
 
     def set_scene(self, scene: Scene):
         self.scenes.append(scene)

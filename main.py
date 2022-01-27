@@ -7,7 +7,7 @@ import mapdata
 import monsterdata
 
 if __name__ == "__main__":
-    scenes = scene.Scenes("RPG GAME")
+    scenes = scene.Scenes("RPG GAME","imgs/titleicon.png")
 
     # 遷移先 マップの名称, プレイヤーX, プレイヤーY
     scenes.set_scene(scene.Scene(mapdata.map_1, "平原", {
@@ -20,9 +20,19 @@ if __name__ == "__main__":
         }
     }))
     scenes.set_scene(scene.Scene(mapdata.map_2, "例", {
-        10: ["平原", 160, 64]
+        10: ["平原", 160, 64],
+        "monster_info": {
+            "kinds": [monsterdata.suraimu,monsterdata.goburin],
+            "min": 4,
+            "max": 8,
+        }
     }))
     scenes.set_scene(scene.Scene(mapdata.map_3, "洞窟", {
-        11: ["平原", 351, 32]
+        11: ["平原", 351, 32],
+        "monster_info": {
+            "kinds": [monsterdata.suraimu,monsterdata.goburin],
+            "min": 3,
+            "max": 6,
+        }
     }))
     scenes.start()

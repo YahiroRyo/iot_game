@@ -12,7 +12,7 @@ class Player(Params):
     # バトル関係
     items: list = []
     exp: int = 0
-    
+    money=0
     img = None
     x = 32
     y = 32
