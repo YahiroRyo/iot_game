@@ -12,6 +12,7 @@ class CommandWindow(window.Window):
     msgwordcount = []
     msgs = []
     is_operate = False
+    unique_name = ""
     selected = 0
 
     x = 0
@@ -21,7 +22,7 @@ class CommandWindow(window.Window):
 
     def __init__(self, msgnum: int, w = 0, h = 0, x = 0, y = 0) -> None:
         super().__init__()
-        (self.msgs, self.msgwordcount) = command.command_select(msgnum)
+        (self.unique_name, self.msgs, self.msgwordcount) = command.command_select(msgnum)
         self.is_operate = False
         self.width = w if w != 0 else scene.SW - 50
         self.height = h if h != 0 else scene.SH / 3
@@ -29,9 +30,10 @@ class CommandWindow(window.Window):
         self.y = y if y != 0 else scene.SH - scene.SH / 3 - 25
 
     # コマンドをセットできる selectedは0に初期化される
-    def set_commands(self, command_msgs: list):
+    def set_commands(self, unique_name: str, command_msgs: list):
         self.selected = 0
         self.msgs = command_msgs
+        self.unique_name = unique_name
         self.msgwordcount = [0]
         sum = 0
         for i in range(1, len(command_msgs)):
@@ -62,6 +64,7 @@ class CommandWindow(window.Window):
                 self.selected -= 1
             elif keys[K_RETURN]:
                 return (self.is_operate, True, {
+                    "unique": self.unique_name,
                     "index": self.selected
                 })
         else:
