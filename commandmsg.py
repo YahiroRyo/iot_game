@@ -44,6 +44,7 @@ class CommandWindow(window.Window):
 
     def event(self) -> Tuple[bool, bool, dict]:
         if self.cool_time <= 0:
+            self.cool_time = 10
             keys = pygame.key.get_pressed()
             if keys[K_RIGHT] and self.selected < len(self.msgs)-1:
                 self.selected += 1
