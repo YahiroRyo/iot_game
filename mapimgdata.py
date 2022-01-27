@@ -13,7 +13,7 @@ def load_img(filename, colorkey=None):
     return img
 
 def loaded_imgs():    
-    Map.imgs[0] = load_img("imgs/black.png")#代替
+    Map.imgs[0] = None
     Map.imgs[1] = load_img("imgs/water.png")
     Map.imgs[2] = load_img("imgs/wall.png")
     Map.imgs[3] = load_img("imgs/rock.png")
