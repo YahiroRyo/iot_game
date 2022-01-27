@@ -1,3 +1,4 @@
+import time
 from commandmsg import CommandWindow
 from pygame.surface import Surface
 from message import Message
@@ -18,6 +19,7 @@ class BattleScene:
     message: Message
     battle_status_windows: list = []
     font = None
+    get_exp=0
 
     def __init__(self, players: list, monsters: list, current_scene: int) -> None:
         self.current_scene = current_scene
@@ -50,6 +52,17 @@ class BattleScene:
                 #if event.key == K_RETURN:
                 #    self.back_to_current_scene()
                 #    return
+        if len(self.monsters) == 0:
+            print(f"{self.get_exp}ポイントの経験値を手に入れた")
+            self.message.msg=str(self.get_exp)+"ポイントの経験値とお金を手に入れた"
+            self.players[0].money+=self.get_exp
+            self.players[0].exp+=self.get_exp
+            self.players[1].exp+=self.get_exp
+            self.players[2].exp+=self.get_exp
+            self.players[3].exp+=self.get_exp
+            print(f"{self.players[0].money},{self.players[0].exp}")
+            self.back_to_current_scene(scenes)
+
         self.message.event()
         (is_operate, is_close, cmd) = self.command_win.event()
         if "index" in cmd:
@@ -96,9 +109,10 @@ class BattleScene:
 
     def attack(self, _from, _to):
         dmg=_from.power    #monster.Monster.random(_from.power)
-        _to.hp -= dmg*1000
+        _to.hp -= dmg
         if _to.hp<0:
             _to.hp=0
+        self.message.msg=_from.name+"は"+_to.name+"に"+str(dmg)+"ダメージ与えた"
         self.hp_check()
         return
 
@@ -109,15 +123,16 @@ class BattleScene:
                 self.dead(index ,player)
         for index, monster in enumerate(self.monsters):
             if monster.hp<=0:
+                self.get_exp += monster.exp
                 self.dead(index, monster)
         return
 
 
     def dead(self, index, obj):
-        self.message.msg=obj.name+"は死んでしまった。嗚呼、死んでしまうとは情けない…"#死亡メッセージ
+        self.message.msg=self.message.msg+"\n"+obj.name+"は死んでしまった。嗚呼、死んでしまうとは情けない…"#死亡メッセージ
         if obj.__class__ == "Player":
             print("player")
         else:
             self.remove_monster(index)
-            print("monster")
+            self.hp_check()
         return
