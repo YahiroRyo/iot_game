@@ -14,18 +14,27 @@ class CommandWindow(window.Window):
     is_operate = False
     selected = 0
 
-    def __init__(self, msgnum: int) -> None:
+    x = 0
+    y = 0
+    width = 0
+    height = 0
+
+    def __init__(self, msgnum: int, w = 0, h = 0, x = 0, y = 0) -> None:
         super().__init__()
         (self.msgs, self.msgwordcount) = command.command_select(msgnum)
         self.is_operate = False
+        self.width = w if w != 0 else scene.SW - 50
+        self.height = h if h != 0 else scene.SH / 3
+        self.x = x if x != 0 else 25
+        self.y = y if y != 0 else scene.SH - scene.SH / 3 - 25
 
     def draw(self, screen: Surface):
         self._draw(
             screen,
-            scene.SW - 50,
-            scene.SH / 3,
-            25,
-            scene.SH - scene.SH / 3 - 25
+            self.width,
+            self.height,
+            self.x,
+            self.y,
         )
         msg = "  "
         for lenmsg in self.msgs:

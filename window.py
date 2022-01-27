@@ -21,8 +21,10 @@ class Window:
         self.font = pygame.font.Font("fonts/PixelMplus10-Regular.ttf", 24)
 
     def _draw_str(self, screen: Surface, string: str, color = color.ORANGE):
-        text = self.font.render(string, True, color)
-        screen.blit(text, (self._x + 10, self._y + 10))
+        strings = string.split("\n")
+        for idx, s in enumerate(strings):
+            text = self.font.render(s, True, color)
+            screen.blit(text, (self._x + 10, self._y + 10 + (idx * 24)))
     
     # 返り値
     # 1: 操作権限
