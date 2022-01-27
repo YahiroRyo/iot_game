@@ -62,7 +62,7 @@ class CommandWindow(window.Window):
                 self.selected -= 1
             elif keys[K_RETURN]:
                 return (self.is_operate, True, {
-                    "msg": self.msgs[self.selected]
+                    "index": self.selected
                 })
         else:
             self.cool_time -= 1
