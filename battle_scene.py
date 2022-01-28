@@ -1,5 +1,6 @@
 import time
-from commandmsg import CommandWindow
+from command import Command
+from command_window import CommandWindow
 from pygame.surface import Surface
 from message import Message
 from pygame.locals import *
@@ -32,7 +33,7 @@ class BattleScene:
         self.players = players
         self.monsters = monsters
         self.message = Message("", True)
-        self.command_win = CommandWindow(2, scene.SW - 25, 48, 12.5, scene.SH / 6)
+        self.command_win = CommandWindow(Command.BATTLE_SELECT, scene.SW - 25, 48, 12.5, scene.SH / 6)
         self.battle_status_windows = [BattleStatusWindow() for _ in players]
         self.monster_imgs = [mapimgdata.load_img(f"imgs/monsters/{monster.img}", -1) for monster in monsters]
         self.font = pygame.font.Font("fonts/PixelMplus10-Regular.ttf", 24)
@@ -78,10 +79,11 @@ class BattleScene:
         if "index" in cmd:
             if cmd["unique"] == "battle_select":
                 if cmd["index"] == 0:
-                    self.command_win.set_commands(0, "to_monster", [monster.name for monster in self.monsters])#攻撃
+                    self.command_win.set_commands(Command.NONE, "to_monster", [monster.name for monster in self.monsters])#攻撃
                     self.flg=0
-                elif cmd["index"] == 1 : self.command_win.set_commands(0, "magic_1", ["ボラギ","ボラギノ","ボラギノル","ボラギノール"])#魔法
+                elif cmd["index"] == 1 : self.command_win.set_commands(Command.NONE, "magic_1", ["ボラギ","ボラギノ","ボラギノル","ボラギノール"])#魔法
                 elif cmd["index"]==2:#特技
+
                     pass
                 elif cmd["index"]==3:#道具
                     pass
@@ -96,31 +98,30 @@ class BattleScene:
                     self.attack(self.players[0], self.monsters[cmd["index"]])
                 elif self.flg == 1:
                     self.magic_attack(self.players[0], self.monsters[cmd["index"]], self.attack_lv)
-                self.command_win.set_commands(2)
+                self.command_win.set_commands(Command.BATTLE_SELECT)
             elif cmd["unique"] == "magic_1":
                 self.message.msg=""
                 if cmd["index"] == 0:
                     self.attack_lv=1
                     self.flg=1
                     self.message.msg="ボラギ"
-                    self.command_win.set_commands(0, "to_monster", [monster.name for monster in self.monsters])
+                    self.command_win.set_commands(Command.NONE, "to_monster", [monster.name for monster in self.monsters])
                 elif cmd["index"] == 1:
                     self.attack_lv=1.4
                     self.flg=1
                     self.message.msg="ボラギノ"
-                    self.command_win.set_commands(0, "to_monster", [monster.name for monster in self.monsters])
+                    self.command_win.set_commands(Command.NONE, "to_monster", [monster.name for monster in self.monsters])
                 elif cmd["index"] == 2:
                     self.attack_lv=1.8
                     self.flg=1
                     self.message.msg="ボラギノル"
-                    self.command_win.set_commands(0, "to_monster", [monster.name for monster in self.monsters])
+                    self.command_win.set_commands(Command.NONE, "to_monster", [monster.name for monster in self.monsters])
                 elif cmd["index"] == 3:
                     self.attack_lv=2.5
                     self.flg=1
                     self.message.msg="ボラギノール"
-                    self.command_win.set_commands(0, "to_monster", [monster.name for monster in self.monsters])
+                    self.command_win.set_commands(Command.NONE, "to_monster", [monster.name for monster in self.monsters])
                     pass
-
 
         clock.tick(scenes.FPS)
         pygame.display.flip()

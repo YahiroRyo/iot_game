@@ -32,9 +32,3 @@ class Window:
     # 3: その他のデータ
     def event(self) -> Tuple[bool, bool, dict]:
         pass
-
-    def command_select(self, screen: Surface, color = color.ORANGE, msgs_cnt: list = [], selected: int=0):
-        select_x = msgs_cnt[selected]*24
-        select_y = 0
-        text = self.font.render("→", True, color)
-        screen.blit(text, (self._x + 10+ select_x, self._y + 10 + select_y))
