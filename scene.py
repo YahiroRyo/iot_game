@@ -1,7 +1,7 @@
-from turtle import title
 import pygame
 from pygame.surface import Surface
 from pygame.locals import *
+from command import Command
 from player import Player
 from map import Map
 import sys
@@ -9,7 +9,7 @@ import mapimgdata
 from message import Message
 from monster import Monster
 from battle_scene import BattleScene
-import commandmsg
+import command_window
 import random
 
 # 画面サイズ WIDTH
@@ -43,7 +43,7 @@ class Scene:
                     message = Message("HELLO WORLD 日本語対応", True)
                     scenes._messages.append(message)
                 if event.key == K_n:
-                    message = commandmsg.CommandWindow(1)
+                    message = command_window.CommandWindow(Command.NONE)
                     scenes._messages.append(message)
                 if event.key == K_b:
                     monsters_num=random.randint(self.conf["monster_info"]["min"],self.conf["monster_info"]["max"])

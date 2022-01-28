@@ -26,14 +26,7 @@ class Message(Window):
 
     def draw_until_press_key(self, screen: Surface):
         while True:
-            self._draw(
-                screen,
-                scene.SW - 50,
-                scene.SH / 3,
-                25,
-                scene.SH - scene.SH / 3 - 25
-            )
-            self._draw_str(screen, self.msg)
+            self.draw(screen)
             pygame.display.update()
             for event in pygame.event.get():
                 if event.type == KEYDOWN:

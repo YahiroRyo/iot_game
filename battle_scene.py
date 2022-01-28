@@ -1,5 +1,6 @@
 import time
-from commandmsg import CommandWindow
+from command import Command
+from command_window import CommandWindow
 from pygame.surface import Surface
 from message import Message
 from pygame.locals import *
@@ -28,7 +29,7 @@ class BattleScene:
         self.players = players
         self.monsters = monsters
         self.message = Message("", True)
-        self.command_win = CommandWindow(2, scene.SW - 25, 48, 12.5, scene.SH / 6)
+        self.command_win = CommandWindow(Command.BATTLE_SELECT, scene.SW - 25, 48, 12.5, scene.SH / 6)
         self.battle_status_windows = [BattleStatusWindow() for _ in players]
         self.monster_imgs = [mapimgdata.load_img(f"imgs/monsters/{monster.img}", -1) for monster in monsters]
         self.font = pygame.font.Font("fonts/PixelMplus10-Regular.ttf", 24)
@@ -62,7 +63,7 @@ class BattleScene:
         if "index" in cmd:
             if cmd["unique"] == "battle_select":
                 if cmd["index"]==0:
-                    self.command_win.set_commands(0, "to_monster", [monster.name for monster in self.monsters])
+                    self.command_win.set_commands(Command.NONE, "to_monster", [monster.name for monster in self.monsters])
                     #self.attack(self.players[0], self.monsters[0])
                     pass
                 elif cmd["index"]==1:
@@ -78,7 +79,7 @@ class BattleScene:
                     return
             elif cmd["unique"] == "to_monster":
                 self.attack(self.players[0], self.monsters[cmd["index"]])
-                self.command_win.set_commands(2)
+                self.command_win.set_commands(Command.BATTLE_SELECT)
 
         clock.tick(scenes.FPS)
         pygame.display.flip()
