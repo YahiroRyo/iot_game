@@ -7,6 +7,9 @@ from map import Map
 import scene as iscene
 import math
 
+
+WALLS = [0, 1, 2]
+
 # プレイヤー
 class Player(Params):
     # バトル関係
@@ -31,17 +34,9 @@ class Player(Params):
         self.agility = agility
         self.luck = luck
 
-
+    # プレイヤーの描画
     def draw(self, map: Map, screen: Surface) -> None:
         screen.blit(self.img, (self.x + map.x, self.y + map.y))
-
-    def is_wall(self, idx: int):
-        walls = [0, 1, 2]
-        is_wall = False
-        for wall in walls:
-            if wall == idx:
-                is_wall = True
-        return is_wall
 
     def get_positions(self, key: int):
         x = 0
@@ -78,7 +73,7 @@ class Player(Params):
     
     def key_is_wall(self, key: int, map: Map):
         (x, y, tmp_x, tmp_y) = self.get_positions(key)
-        return  self.is_wall(self.get_block(map, self.x + x, self.y + y)) or self.is_wall(self.get_block(map, self.x + tmp_x + x, self.y + tmp_y + y))
+        return self.get_block(map, self.x + x, self.y + y) in WALLS or self.get_block(map, self.x + tmp_x + x, self.y + tmp_y + y) in WALLS
 
     def event(self, map: Map):
         keys = pygame.key.get_pressed()

@@ -1,19 +1,22 @@
-from distutils import command
+from enum import Enum
 
-def command_select(num: int):
-    if num == 1:
-        command_msgs=["はい", "いいえ"]
-        command_term_cnt = [0]
-        sum = 0
-        for i in range(1, len(command_msgs)):
-            sum += len(command_msgs[i - 1]) + 1
-            command_term_cnt.append(sum)
-        return "yes_or_no", command_msgs, command_term_cnt
-    elif num == 2:
-        command_msgs=["攻撃", "魔法", "特技", "道具", "防御", "逃げる"]
-        command_term_cnt = [0]
-        sum = 0
-        for i in range(1, len(command_msgs)):
-            sum += len(command_msgs[i - 1]) + 1
-            command_term_cnt.append(sum)
-        return "battle_select",command_msgs, command_term_cnt
+class Command(Enum):
+    NONE = 0
+    YES_OR_NO = 1
+    BATTLE_SELECT = 2
+
+def command_select(num: Command):
+    command_term_cnt = [0]
+    unique_name = ""
+    commands = []
+    if num == Command.YES_OR_NO:
+        commands = ["はい", "いいえ"]
+        unique_name = "yes_or_no"
+    elif num == Command.BATTLE_SELECT:
+        commands=["攻撃", "魔法", "特技", "道具", "防御", "逃げる"]
+        unique_name = "battle_select"
+    sum = 0
+    for i in range(1, len(commands)):
+        sum += len(commands[i - 1]) + 1
+        command_term_cnt.append(sum)
+    return unique_name, commands, command_term_cnt
