@@ -9,6 +9,7 @@ import mapimgdata
 from message import Message
 from monster import Monster
 from battle_scene import BattleScene
+from layer import Layer
 import command_window
 import random
 
@@ -19,13 +20,13 @@ SH = 720 if len(sys.argv) == 1 else int(sys.argv[2])
 SCR_RECT = Rect(0, 0, SW, SH)  # 画面サイズ
 
 class Scene:
-    map: Map
+    map: Layer
     name: str = ""
     conf: dict = {}
     is_battle = False
 
-    def __init__(self, map: Map, name: str, conf: dict = {}) -> None:
-        self.map = map
+    def __init__(self, layer: Layer, name: str, conf: dict = {}) -> None:
+        self.layer = layer
         self.name = name
         self.conf = conf
     
@@ -56,7 +57,7 @@ class Scene:
                     scenes.current_scene = len(scenes.scenes) - 1
                     return
 
-        player.proc(scenes.scenes[scenes.current_scene].map, scenes.scenes[scenes.current_scene], scenes)
+        player.proc(scenes.scenes[scenes.current_scene].layer.map, scenes.scenes[scenes.current_scene], scenes)
         is_operate = True
         for msg in scenes._messages:
             msg.draw(screen)
@@ -72,12 +73,12 @@ class Scene:
         pygame.display.flip()
         if not is_operate:
             return
-        player.event(scenes.scenes[scenes.current_scene].map)
+        player.event(scenes.scenes[scenes.current_scene].layer)
 
     def draw(self, scenes, player: Player, screen: Surface):
         pygame.Surface.fill(screen, (0, 0, 0))
-        scenes.scenes[scenes.current_scene].map.draw(screen)
-        player.draw(scenes.scenes[scenes.current_scene].map, screen)
+        scenes.scenes[scenes.current_scene].layer.draw(screen)
+        player.draw(scenes.scenes[scenes.current_scene].layer.map, screen)
 
 class Scenes:
     scenes: list = []
