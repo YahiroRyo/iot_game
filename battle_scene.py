@@ -10,6 +10,8 @@ import pygame
 import scene
 import sys
 import mapimgdata
+import math
+import random
 
 class BattleScene:
     is_battle = True
@@ -23,6 +25,8 @@ class BattleScene:
     get_exp=0
     scenes=None
     screen=None
+    flg=0
+    attack_lv=1
 
     def __init__(self, players: list, monsters: list, current_scene: int, scenes, screen: Surface) -> None:
         self.current_scene = current_scene
@@ -44,6 +48,18 @@ class BattleScene:
         scenes.scenes.remove(self)
         scenes.current_scene = self.current_scene
 
+    def random(self, base:int)->int:#+-10%の乱数を生成
+        tmp=math.floor(base/10)
+        rand_value=random.randint(0,tmp)
+        plus_minus=random.randint(1,2)
+        if plus_minus==1:#1でbaseにプラス 2でマイナス
+            base=base+rand_value
+        else:
+            base=base-rand_value
+            if base<0:
+                base=0
+        return base
+
     def event(self, scenes, clock: pygame.time.Clock):
         for event in pygame.event.get():
             # 終了用のイベント処理
@@ -62,24 +78,50 @@ class BattleScene:
         (is_operate, is_close, cmd) = self.command_win.event()
         if "index" in cmd:
             if cmd["unique"] == "battle_select":
-                if cmd["index"]==0:
-                    self.command_win.set_commands(Command.NONE, "to_monster", [monster.name for monster in self.monsters])
-                    #self.attack(self.players[0], self.monsters[0])
+                if cmd["index"] == 0:
+                    self.command_win.set_commands(Command.NONE, "to_monster", [monster.name for monster in self.monsters])#攻撃
+                    self.flg=0
+                elif cmd["index"] == 1 : self.command_win.set_commands(Command.NONE, "magic_1", ["ボラギ","ボラギノ","ボラギノル","ボラギノール"])#魔法
+                elif cmd["index"]==2:#特技
+
                     pass
-                elif cmd["index"]==1:
+                elif cmd["index"]==3:#道具
                     pass
-                elif cmd["index"]==2:
+                elif cmd["index"]==4:#防御
                     pass
-                elif cmd["index"]==3:
-                    pass
-                elif cmd["index"]==4:
-                    pass
-                elif cmd["index"]==5:
+                elif cmd["index"]==5:#逃げる
                     self.back_to_current_scene(scenes)
                     return
             elif cmd["unique"] == "to_monster":
-                self.attack(self.players[0], self.monsters[cmd["index"]])
+                if self.flg == 0:
+                    self.message.msg=""
+                    self.attack(self.players[0], self.monsters[cmd["index"]])
+                elif self.flg == 1:
+                    self.magic_attack(self.players[0], self.monsters[cmd["index"]], self.attack_lv)
                 self.command_win.set_commands(Command.BATTLE_SELECT)
+            elif cmd["unique"] == "magic_1":
+                self.message.msg=""
+                if cmd["index"] == 0:
+                    self.attack_lv=1
+                    self.flg=1
+                    self.message.msg="ボラギ"
+                    self.command_win.set_commands(Command.NONE, "to_monster", [monster.name for monster in self.monsters])
+                elif cmd["index"] == 1:
+                    self.attack_lv=1.4
+                    self.flg=1
+                    self.message.msg="ボラギノ"
+                    self.command_win.set_commands(Command.NONE, "to_monster", [monster.name for monster in self.monsters])
+                elif cmd["index"] == 2:
+                    self.attack_lv=1.8
+                    self.flg=1
+                    self.message.msg="ボラギノル"
+                    self.command_win.set_commands(Command.NONE, "to_monster", [monster.name for monster in self.monsters])
+                elif cmd["index"] == 3:
+                    self.attack_lv=2.5
+                    self.flg=1
+                    self.message.msg="ボラギノール"
+                    self.command_win.set_commands(Command.NONE, "to_monster", [monster.name for monster in self.monsters])
+                    pass
 
         clock.tick(scenes.FPS)
         pygame.display.flip()
@@ -102,15 +144,25 @@ class BattleScene:
                 (x + idx * 140, scene.SH / 3 + 140)
             )
 
-    def attack(self, _from, _to):
-        dmg=_from.power    #monster.Monster.random(_from.power)
+    def attack(self, _from, _to, attack_lv:int = 1):
+        dmg=math.floor(self.random(_from.power*attack_lv))
         _to.hp -= dmg
         if _to.hp<0:
             _to.hp=0
-        self.message.msg=_from.name+"は"+_to.name+"に"+str(dmg)+"ダメージ与えた"
+        self.message.msg += _from.name+"は"+_to.name+"に"+str(dmg)+"ダメージ与えた\n"
         self.hp_check()
         return
 
+    def magic_attack(self, _from, _to, attack_lv:int = 1):
+        dmg=math.floor(self.random(_from.m_power*attack_lv))
+        _to.hp -= dmg
+        if _to.hp<0:
+            _to.hp=0
+        print(self.message.msg)
+        temp = self.message.msg
+        self.message.msg = _from.name+"は"+temp+"を使った\n"+_to.name+"に"+str(dmg)+"ダメージ与えた\n"
+        self.hp_check()
+        return
 
     def hp_check(self):
         for index, player in enumerate(self.players):
@@ -133,6 +185,7 @@ class BattleScene:
         if len(self.monsters) == 0:
             print(f"{self.get_exp}ポイントの経験値を手に入れた")
             self.message.msg = str(self.get_exp)+"ポイントの経験値とお金を手に入れた"
+            self.draw(self.scenes, self.screen)
             self.message.draw_until_press_key(self.screen)
             self.players[0].money+=self.get_exp
             for player in self.players:
