@@ -12,19 +12,21 @@ class Params:
     agility=0           #素早さ
     luck=0              #会心率
     attack_times=1      #行動回数
+    exp=0               #経験値
 
 class Monster(Params):
-    img=""              #モンスター画像
-    def random(self, base:int)->int:#+-10%の乱数を生成
-        tmp=math.floor(base/10)
-        rand_value=random.randint(0,tmp)
-        plus_minus=random.randint(1,2)
-        if plus_minus==1:#1でbaseにプラス 2でマイナス
-            base=base+rand_value
-        else:
-            base=base-rand_value
-            if base<0:
-                base=0
+    img = ""              #モンスター画像
+    def random(self, base: int) -> int:#+-10%の乱数を生成
+        tmp = math.floor(base / 10)
+        rand_value = random.randint(0, tmp)
+        plus_minus = random.randint(1, 2)
+        base = base + rand_value if plus_minus == 1 else 0 if base < 0 else base - rand_value
+        # if plus_minus == 1: #1でbaseにプラス 2でマイナス
+        #     base += rand_value
+        # else:
+        #     base -= rand_value
+        #     if base < 0:
+        #         base = 0
         return base
 
 
@@ -40,7 +42,8 @@ class Monster(Params):
         self.agility=self.random(data[8])
         self.luck=self.random(data[9])
         self.attack_times=self.random(data[10])
+        self.exp=data[11]
         self.debug()
 
     def debug(self):
-        print(f"{self.img}, {self.name}, {self.hp}, {self.mp}, {self.power}, {self.m_power}, {self.defense}, {self.m_defense}, {self.agility}, {self.luck}, {self.attack_times}")
+        print(f"{self.img}, {self.name}, {self.hp}, {self.mp}, {self.power}, {self.m_power}, {self.defense}, {self.m_defense}, {self.agility}, {self.luck}, {self.attack_times}, {self.exp}")

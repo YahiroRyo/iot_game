@@ -24,6 +24,15 @@ class Message(Window):
         )
         self._draw_str(screen, self.msg)
 
+    def draw_until_press_key(self, screen: Surface):
+        while True:
+            self.draw(screen)
+            pygame.display.update()
+            for event in pygame.event.get():
+                if event.type == KEYDOWN:
+                    if event.key == K_RETURN:
+                        return
+
     def event(self) -> Tuple[bool, bool, dict]:
         if self.cool_time <= 0:
             keys = pygame.key.get_pressed()
