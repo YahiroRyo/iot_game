@@ -44,7 +44,7 @@ class Scene:
                     message = Message("HELLO WORLD 日本語対応", True)
                     scenes._messages.append(message)
                 if event.key == K_n:
-                    message = command_window.CommandWindow(Command.NONE)
+                    message = command_window.CommandWindow(Command.YES_OR_NO)
                     scenes._messages.append(message)
                 if event.key == K_b:
                     monsters_num=random.randint(self.conf["monster_info"]["min"],self.conf["monster_info"]["max"])
