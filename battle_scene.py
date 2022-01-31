@@ -78,18 +78,19 @@ class BattleScene:
         (is_operate, is_close, cmd) = self.command_win.event()
         if "index" in cmd:
             if cmd["unique"] == "battle_select":
-                if cmd["index"] == 0:
-                    self.command_win.set_commands(Command.NONE, "to_monster", [monster.name for monster in self.monsters])#攻撃
-                    self.flg=0
-                elif cmd["index"] == 1 : self.command_win.set_commands(Command.NONE, "magic_1", ["ボラギ","ボラギノ","ボラギノル","ボラギノール"])#魔法
-                elif cmd["index"]==2:#特技
+                self.flg = 0
+                if cmd["index"] == 0: #攻撃
+                    self.command_win.set_commands(Command.NONE, "to_monster", [monster.name for monster in self.monsters])
+                elif cmd["index"] == 1: #魔法
+                    self.command_win.set_commands(Command.NONE, "magic", ["ボラギ","ボラギノ","ボラギノル","ボラギノール", "ボラギ","ボラギノ","ボラギノル","ボラギノール", "ボラギ","ボラギノ","ボラギノル","ボラギノール"])
+                elif cmd["index"]==2: #特技
 
                     pass
-                elif cmd["index"]==3:#道具
+                elif cmd["index"]==3: #道具
                     pass
-                elif cmd["index"]==4:#防御
+                elif cmd["index"]==4: #防御
                     pass
-                elif cmd["index"]==5:#逃げる
+                elif cmd["index"]==5: #逃げる
                     self.back_to_current_scene(scenes)
                     return
             elif cmd["unique"] == "to_monster":
@@ -99,29 +100,22 @@ class BattleScene:
                 elif self.flg == 1:
                     self.magic_attack(self.players[0], self.monsters[cmd["index"]], self.attack_lv)
                 self.command_win.set_commands(Command.BATTLE_SELECT)
-            elif cmd["unique"] == "magic_1":
+            elif cmd["unique"] == "magic":
                 self.message.msg=""
+                self.flg = 1
                 if cmd["index"] == 0:
-                    self.attack_lv=1
-                    self.flg=1
-                    self.message.msg="ボラギ"
-                    self.command_win.set_commands(Command.NONE, "to_monster", [monster.name for monster in self.monsters])
+                    self.attack_lv = 1
+                    self.message.msg = "ボラギ"
                 elif cmd["index"] == 1:
-                    self.attack_lv=1.4
-                    self.flg=1
+                    self.attack_lv = 1.4
                     self.message.msg="ボラギノ"
-                    self.command_win.set_commands(Command.NONE, "to_monster", [monster.name for monster in self.monsters])
                 elif cmd["index"] == 2:
-                    self.attack_lv=1.8
-                    self.flg=1
+                    self.attack_lv = 1.8
                     self.message.msg="ボラギノル"
-                    self.command_win.set_commands(Command.NONE, "to_monster", [monster.name for monster in self.monsters])
                 elif cmd["index"] == 3:
-                    self.attack_lv=2.5
-                    self.flg=1
+                    self.attack_lv = 2.5
                     self.message.msg="ボラギノール"
-                    self.command_win.set_commands(Command.NONE, "to_monster", [monster.name for monster in self.monsters])
-                    pass
+                self.command_win.set_commands(Command.NONE, "to_monster", [monster.name for monster in self.monsters])
 
         clock.tick(scenes.FPS)
         pygame.display.flip()
@@ -158,7 +152,6 @@ class BattleScene:
         _to.hp -= dmg
         if _to.hp<0:
             _to.hp=0
-        print(self.message.msg)
         temp = self.message.msg
         self.message.msg = _from.name+"は"+temp+"を使った\n"+_to.name+"に"+str(dmg)+"ダメージ与えた\n"
         self.hp_check()
