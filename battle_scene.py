@@ -22,11 +22,12 @@ class BattleScene:
     message: Message
     battle_status_windows: list = []
     font = None
-    get_exp=0
-    scenes=None
-    screen=None
-    flg=0
-    attack_lv=1
+    get_exp = 0
+    scenes = None
+    screen = None
+    flg = 0
+    attack_lv = 1
+    flgs = [0, 0, 0, 0, 0, 0, 0]#防御(コマンド)攻撃、魔法、防御(ステータス)、魔防、素早、会心
 
     def __init__(self, players: list, monsters: list, current_scene: int, scenes, screen: Surface) -> None:
         self.current_scene = current_scene
@@ -39,6 +40,14 @@ class BattleScene:
         self.font = pygame.font.Font("fonts/PixelMplus10-Regular.ttf", 24)
         self.scenes=scenes
         self.screen = screen
+        
+        i = 0
+        j = 0
+        for _ in self.players:
+            for _ in self.players[i].flgs:
+                self.flgs[i] = 0
+                j += 1
+            i += 1
 
     def remove_monster(self, remove_index):
         self.monsters.remove(self.monsters[remove_index])
@@ -76,19 +85,24 @@ class BattleScene:
 
         self.message.event()
         (is_operate, is_close, cmd) = self.command_win.event()
+        if self.players[0].flgs[0] == 1:
+            self.players[0].flgs[0] = 0
+            self.message.msg += self.players[0].name+"は防御を解いた"
         if "index" in cmd:
             if cmd["unique"] == "battle_select":
                 self.flg = 0
                 if cmd["index"] == 0: #攻撃
                     self.command_win.set_commands(Command.NONE, "to_monster", [monster.name for monster in self.monsters])
                 elif cmd["index"] == 1: #魔法
-                    self.command_win.set_commands(Command.NONE, "magic", ["ボラギ","ボラギノ","ボラギノル","ボラギノール", "ボラギ","ボラギノ","ボラギノル","ボラギノール", "ボラギ","ボラギノ","ボラギノル","ボラギノール"])
+                    self.command_win.set_commands(Command.NONE, "magic", ["ボラギ","ボラギノ","ボラギノル"])
                 elif cmd["index"]==2: #特技
 
                     pass
                 elif cmd["index"]==3: #道具
                     pass
                 elif cmd["index"]==4: #防御
+                    self.players[0].flgs[0] = 1
+                    self.message.msg = self.players[0].name+"は防御している\n"
                     pass
                 elif cmd["index"]==5: #逃げる
                     self.back_to_current_scene(scenes)
