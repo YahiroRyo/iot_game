@@ -21,7 +21,7 @@ def command_select(num: Command):
     command_term_cnt = [0]
     tmp_command = []
     sum = 0
-    print(tmp_commands)
+    #print(tmp_commands)
     for tmp_cmd in tmp_commands:
         if sum * 24 + (len(tmp_cmd) - 1) * 24 >= scene.SW:
             sum = 0
