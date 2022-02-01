@@ -23,17 +23,26 @@ class Player(Params):
     size = 30
     speed = 1
 
-    def __init__(self, img: str, name: str, hp: int, mp: int, power:int, m_power:int, defense:int, m_defense:int, agility:int, luck:int) -> None:
-        self.img = img
-        self.name = name
-        self.hp = hp
-        self.mp = mp
-        self.power = power
-        self.m_power = m_power
-        self.defense = defense
-        self.m_defense = m_defense
-        self.agility = agility
-        self.luck = luck
+    def __init__(self, *args):#img: str, name: str, hp: int, mp: int, power:int, m_power:int, defense:int, m_defense:int, agility:int, luck:int, lv:int, exp:int, money:int, x:int, y:int, items:list) -> None:
+        self.img = args[0]
+        self.name = args[1]
+        self.hp = args[2]
+        self.mp = args[3]
+        self.power = args[4]
+        self.m_power = args[5]
+        self.defense = args[6]
+        self.m_defense = args[7]
+        self.agility = args[8]
+        self.luck = args[9]
+        self.lv = args[10]
+        self.exp = args[11]
+        self.money = args[12]
+        self.items = args[13]
+        self.flgs = args[14]
+        if len(args) >=16:
+            self.x = args[15]
+            self.y = args[16]
+        
 
     # プレイヤーの描画
     def draw(self, map: Map, screen: Surface) -> None:

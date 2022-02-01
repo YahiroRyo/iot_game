@@ -4,6 +4,7 @@ from window import Window
 from pygame.locals import *
 from typing import Tuple
 import scene
+import sys
 
 class Message(Window):
     msg = ""
@@ -26,10 +27,17 @@ class Message(Window):
 
     def draw_until_press_key(self, screen: Surface):
         while True:
+            # 終了用のイベント処理
             self.draw(screen)
             pygame.display.update()
             for event in pygame.event.get():
+                if event.type == QUIT:          # 閉じるボタンが押されたとき
+                    pygame.quit()
+                    sys.exit()
                 if event.type == KEYDOWN:
+                    if event.key == K_ESCAPE:   # Escキーが押されたとき
+                        pygame.quit()
+                        sys.exit()
                     if event.key == K_RETURN:
                         return
 
