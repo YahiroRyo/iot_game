@@ -107,24 +107,26 @@ class BattleScene:
         self.message.event()
         if True in [player.name == self.order[self.active].name for player in self.players]:
             (is_operate, is_close, cmd) = self.command_win.event()
-            if self.players[self.active].flgs[0] == 1:
-                self.players[self.active].flgs[0] = 0
-                self.message.msg += self.players[self.active].name+"は防御を解いた"
+            if self.order[self.active].flgs[0] == 1:
+                self.order[self.active].flgs[0] = 0
+                self.message.msg += self.order[self.active].name+"は防御を解いた\n"
+            if not self.message.msg.endswith(("ターン")):
+                self.message.msg += "\n" + self.order[self.active].name + "のターン"
             if "index" in cmd:
                 if cmd["unique"] == "battle_select":
                     self.flg = 0
                     if cmd["index"] == 0: #攻撃
                         self.command_win.set_commands(Command.NONE, "to_monster", [monster.name for monster in self.monsters])
                     elif cmd["index"] == 1: #魔法
-                        self.command_win.set_commands(Command.NONE, "magic", ["ボラギ","ボラギノ","ボラギノル"])
+                        self.command_win.set_commands(Command.NONE, "magic", ["ボラギ","ボラギノ","ボラギノル","ボラギノール"])
                     elif cmd["index"]==2: #特技
 
                         pass
                     elif cmd["index"]==3: #道具
                         pass
                     elif cmd["index"]==4: #防御
-                        self.players[self.active].flgs[0] = 1
-                        self.message.msg = self.players[self.active].name+"は防御している\n"
+                        self.order[self.active].flgs[0] = 1
+                        self.message.msg = self.order[self.active].name+"は防御している\n"
                         self.next()
                     elif cmd["index"]==5: #逃げる
                         self.back_to_current_scene(scenes)
@@ -132,9 +134,9 @@ class BattleScene:
                 elif cmd["unique"] == "to_monster":
                     if self.flg == 0:
                         self.message.msg=""
-                        self.attack(self.players[self.active], self.monsters[cmd["index"]])
+                        self.attack(self.order[self.active], self.monsters[cmd["index"]])
                     elif self.flg == 1:
-                        self.magic_attack(self.players[self.active], self.monsters[cmd["index"]], self.attack_lv)
+                        self.magic_attack(self.order[self.active], self.monsters[cmd["index"]], self.attack_lv)
                     print(self.order[self.active].name)
                     self.next()
                     self.command_win.set_commands(Command.BATTLE_SELECT)
@@ -156,6 +158,13 @@ class BattleScene:
                     self.command_win.set_commands(Command.NONE, "to_monster", [monster.name for monster in self.monsters])
         else:
             print(self.order[self.active].name)
+            random.seed()
+            tonum = random.randint(1, len(self.players)-1)
+            cmdnum = random.randint(1,1000)
+            if cmdnum <= 800:
+                self.attack(self.order[self.active], self.players[tonum])
+            elif cmdnum <= 1000:
+                self.message.msg += "  " + self.order[self.active].name + "はボーッとしている\n"
             self.next()
             pass
 
@@ -185,7 +194,10 @@ class BattleScene:
         _to.hp -= dmg
         if _to.hp<0:
             _to.hp=0
-        self.message.msg += _from.name+"は"+_to.name+"に"+str(dmg)+"ダメージ与えた\n"
+        if True in [player.name == self.order[self.active].name for player in self.players]:
+            self.message.msg += _from.name+"は" + _to.name+"に" + str(dmg) + "ダメージ与えた\n"
+        else:
+            self.message.msg += "  " + _from.name + "は" + _to.name + "に" + str(dmg) + "ダメージ与えた\n"
         self.hp_check()
         return
 
