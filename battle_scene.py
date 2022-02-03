@@ -159,7 +159,7 @@ class BattleScene:
         else:
             print(self.order[self.active].name)
             random.seed()
-            tonum = random.randint(1, len(self.players)-1)
+            tonum = random.randint(0, len(self.players)-1)
             cmdnum = random.randint(1,1000)
             if cmdnum <= 800:
                 self.attack(self.order[self.active], self.players[tonum])
@@ -176,7 +176,7 @@ class BattleScene:
         self.message.draw(screen)
         self.command_win.draw(screen)
         for idx, battle_status_window in enumerate(self.battle_status_windows):
-            battle_status_window.draw(screen, idx * scene.SW / 4, self.players[idx].name, self.players[idx].hp, self.players[idx].mp)
+            battle_status_window.draw(screen, idx * scene.SW / 4, self.players[idx].name, self.players[idx].hp, self.players[idx].mp, self.players[idx].maxhp, self.players[idx].maxmp)
         x = scene.SW / 2 - (len(self.monsters) * 140) / 2
         for idx, monster_img in enumerate(self.monster_imgs):
             text = self.font.render(self.monsters[idx].name, True, color.WHITE)
