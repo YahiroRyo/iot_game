@@ -39,9 +39,11 @@ class Player(Params):
         self.money = args[12]
         self.items = args[13]
         self.flgs = args[14]
-        if len(args) >=16:
-            self.x = args[15]
-            self.y = args[16]
+        self.maxhp= args[15]
+        self.maxmp = args[16]
+        if len(args) >=18:
+            self.x = args[17]
+            self.y = args[18]
         
 
     # プレイヤーの描画

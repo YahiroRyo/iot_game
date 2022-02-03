@@ -100,12 +100,12 @@ class Scenes:
         pygame.init()
         pygame.display.set_caption(self._win_title)
         screen = pygame.display.set_mode(SCR_RECT.size)
-        player = Player(mapimgdata.load_img("imgs/man.png", -1), "戦士", 1000, 50, 10, 10, 10, 10, 10, 0, 0 ,0, 0, [0], [0 for _ in range(7)], 32, 32)
+        player = Player(mapimgdata.load_img("imgs/man.png", -1), "戦士", 1000, 50, 10, 10, 10, 10, 10, 0, 0 ,0, 0, [0], [0 for _ in range(7)], 1000, 50, 32, 32)
         players: list = [
             player,
-            Player(mapimgdata.load_img("imgs/man.png", -1), "魔法使い", 500, 3, 10, 10, 10, 10, 10, 8, 0, 0, 0, [0], [0 for _ in range(7)]),
-            Player(mapimgdata.load_img("imgs/man.png", -1), "僧侶", 500, 3, 10, 10, 10, 10, 10, 0, 15, 0, 0, [0], [0 for _ in range(7)]),
-            Player(mapimgdata.load_img("imgs/man.png", -1), "武闘家", 500, 3, 10, 10, 10, 10, 10, 20, 0, 0, 0, [0], [0 for _ in range(7)]),
+            Player(mapimgdata.load_img("imgs/man.png", -1), "魔法使い", 500, 3, 10, 10, 10, 10, 10, 8, 0, 0, 0, [0], [0 for _ in range(7)], 500, 3),
+            Player(mapimgdata.load_img("imgs/man.png", -1), "僧侶", 500, 3, 10, 10, 10, 10, 10, 0, 15, 0, 0, [0], [0 for _ in range(7)], 500, 3),
+            Player(mapimgdata.load_img("imgs/man.png", -1), "武闘家", 500, 3, 10, 10, 10, 10, 10, 20, 0, 0, 0, [0], [0 for _ in range(7)], 500, 3),
         ]
         mapimgdata.loaded_imgs()
         clock = pygame.time.Clock()
