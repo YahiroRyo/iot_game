@@ -5,6 +5,7 @@ class Command(Enum):
     NONE = 0
     YES_OR_NO = 1
     BATTLE_SELECT = 2
+    MAIN_MENU = 3
 
 def command_select(num: Command):
     command_term_cnts = []
@@ -17,6 +18,9 @@ def command_select(num: Command):
     elif num == Command.BATTLE_SELECT:
         tmp_commands = ["攻撃", "魔法", "特技", "道具", "防御", "逃げる"]
         unique_name = "battle_select"
+    elif num == Command.MAIN_MENU:
+        tmp_commands = ["ステータス", "魔法", "道具", "経験値", "設定"]
+        unique_name = "main_menu"
 
     command_term_cnt = [0]
     tmp_command = []
