@@ -10,6 +10,9 @@ from message import Message
 from monster import Monster
 from battle_scene import BattleScene
 from layer import Layer
+from items.itemdata import items
+from items.item import Item
+from context import Context
 import command_window
 import random
 
@@ -56,6 +59,13 @@ class Scene:
                     scenes.scenes.append(scene)
                     scenes.current_scene = len(scenes.scenes) - 1
                     return
+                if event.key == K_i:
+                    context = Context(players)
+                    for item in items:
+                        if item.id == 0:
+                            item.callback(context)
+                            message = Message(f"{item.name}を使用した", True)
+                            scenes._messages.append(message)
 
         player.proc(scenes.scenes[scenes.current_scene].layer.map, scenes.scenes[scenes.current_scene], scenes)
         is_operate = True
