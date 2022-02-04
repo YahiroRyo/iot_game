@@ -90,10 +90,10 @@ class CommandWindow(window.Window):
             elif keys[K_LEFT]:
                 self.cool_time = COOL_TIME
                 if self.selected == 0:
-                    # なんか変だぞお????
+                    # なんか変だぞお????!!!!!!!
                     if self.page_cnt == 0:
                         self.page_cnt = len(self.command_term_cnts) - 1
-                        self.selected = len(self.command_term_cnts[len(self.command_term_cnts) - 1]) - 1
+                        self.selected = len(self.command_term_cnts[len(self.command_term_cnts) - 1]) - 2
                     else:
                         self.page_cnt -= 1
                         self.selected = len(self.command_term_cnts[self.page_cnt]) - 2
