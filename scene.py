@@ -1,21 +1,20 @@
+import json
 import pygame
 from pygame.surface import Surface
 from pygame.locals import *
 from command import Command
 from player import Player
-from map import Map
 import sys
 import mapimgdata
-from message import Message
 from monster import Monster
 from battle_window import BattleStatusWindow
 from battle_scene import BattleScene
 from layer import Layer
 from items.itemdata import items
-from items.item import Item
 from context import Context
 import command_window
 import random
+import os
 
 # 画面サイズ WIDTH
 SW = 1280 if len(sys.argv) == 1 else int(sys.argv[1])
@@ -87,7 +86,25 @@ class Scene:
                         pass
                     elif data["index"] == 4: # 設定
                         pass
-                    elif data["index"] == 5: # 閉じる
+                    elif data["index"] == 5: # セーブ
+                        self.main_menu_win = None
+                        save_data = {
+                            "map": {
+                                "current_scene": scenes.current_scene,
+                                "x": self.layer.map.x,
+                                "y": self.layer.map.y,
+                            },
+                            "pos": {
+                                "x": player.x,
+                                "y": player.y,
+                            }, 
+                            "players": [player.to_dict() for player in players]
+                        }
+                        with open("save_data.json", mode="wt", encoding="utf-8") as f:
+                            json.dump(save_data, f, ensure_ascii=False, indent=2)
+                        
+                        self.main_menu_win = None
+                    elif data["index"] == 6: # 閉じる
                         self.main_menu_win = None
                         pass
                 elif data["unique"] == "player_items":
@@ -134,13 +151,38 @@ class Scenes:
         pygame.init()
         pygame.display.set_caption(self._win_title)
         screen = pygame.display.set_mode(SCR_RECT.size)
-        player = Player(mapimgdata.load_img("imgs/man.png", -1), "戦士", 1000, 50, 10, 10, 10, 10, 10, 0, 0 ,0, 0, [0], [0 for _ in range(7)], 1000, 50, 32, 32)
-        players: list = [
-            player,
-            Player(mapimgdata.load_img("imgs/man.png", -1), "魔法使い", 500, 3, 10, 10, 10, 10, 10, 8, 0, 0, 0, [0], [0 for _ in range(7)], 500, 3),
-            Player(mapimgdata.load_img("imgs/man.png", -1), "僧侶", 500, 3, 10, 10, 10, 10, 10, 0, 15, 0, 0, [0], [0 for _ in range(7)], 500, 3),
-            Player(mapimgdata.load_img("imgs/man.png", -1), "武闘家", 500, 3, 10, 10, 10, 10, 10, 20, 0, 0, 0, [0], [0 for _ in range(7)], 500, 3),
-        ]
+        is_exist_file = os.path.isfile("save_data.json")
+        player = None
+        players = []
+        if is_exist_file:
+            with open("save_data.json", "r") as f:
+                json_data = json.load(f)
+                self.current_scene = json_data["map"]["current_scene"];
+                self.scenes[self.current_scene].layer.set_pos(json_data["map"]["x"], json_data["map"]["y"]);
+                x = json_data["pos"]["x"];
+                y = json_data["pos"]["y"];
+                player_infos = json_data["players"][0];
+                player = Player(
+                    mapimgdata.load_img("imgs/man.png", -1),
+                    *[player_info for player_info in player_infos],
+                    x,
+                    y
+                )
+                players = [
+                    player,
+                    *[Player(
+                        mapimgdata.load_img("imgs/man.png", -1),
+                        *[p for p in json_data["players"][idx]]) for idx in range(1, len(json_data["players"]))
+                    ]
+                ]
+        else:
+            player = Player(mapimgdata.load_img("imgs/man.png", -1), "戦士", 1000, 50, 10, 10, 10, 10, 10, 0, 0 ,0, 0, [0], [0 for _ in range(7)], 1000, 50, 32, 32) 
+            players: list = [
+                player,
+                Player(mapimgdata.load_img("imgs/man.png", -1), "魔法使い", 500, 3, 10, 10, 10, 10, 10, 8, 0, 0, 0, [0], [0 for _ in range(7)], 500, 3),
+                Player(mapimgdata.load_img("imgs/man.png", -1), "僧侶", 500, 3, 10, 10, 10, 10, 10, 0, 15, 0, 0, [0], [0 for _ in range(7)], 500, 3),
+                Player(mapimgdata.load_img("imgs/man.png", -1), "武闘家", 500, 3, 10, 10, 10, 10, 10, 20, 0, 0, 0, [0], [0 for _ in range(7)], 500, 3),
+            ]
         mapimgdata.loaded_imgs()
         clock = pygame.time.Clock()
 
