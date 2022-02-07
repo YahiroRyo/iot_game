@@ -8,6 +8,7 @@ import sys
 import mapimgdata
 from message import Message
 from monster import Monster
+from battle_window import BattleStatusWindow
 from battle_scene import BattleScene
 from layer import Layer
 from items.itemdata import items
@@ -27,6 +28,8 @@ class Scene:
     name: str = ""
     conf: dict = {}
     is_battle = False
+    main_menu_win = None
+    player_statuses_win = []
 
     def __init__(self, layer: Layer, name: str, conf: dict = {}) -> None:
         self.layer = layer
@@ -44,11 +47,9 @@ class Scene:
                     pygame.quit()
                     sys.exit()
                 if event.key == K_m:
-                    message = Message("HELLO WORLD 日本語対応", True)
-                    scenes._messages.append(message)
-                if event.key == K_n:
-                    message = command_window.CommandWindow(Command.YES_OR_NO)
-                    scenes._messages.append(message)
+                    MARGIN = 50
+                    self.main_menu_win = command_window.CommandWindow(Command.MAIN_MENU)
+                    pass
                 if event.key == K_b:
                     monsters_num=random.randint(self.conf["monster_info"]["min"],self.conf["monster_info"]["max"])
                     monsters=[]
@@ -59,43 +60,61 @@ class Scene:
                     scenes.scenes.append(scene)
                     scenes.current_scene = len(scenes.scenes) - 1
                     return
-                if event.key == K_i:
-                    context = Context(players)
-                    for item in items:
-                        if item.id == 0:
-                            item.callback(context)
-                            message = Message(f"{item.name}を使用した", True)
-                            scenes._messages.append(message)
 
         player.proc(scenes.scenes[scenes.current_scene].layer.map, scenes.scenes[scenes.current_scene], scenes)
         is_operate = True
-        for msg in scenes._messages:
-            msg.draw(screen)
-            (is_operate, is_close, data) = msg.event()
-            if not is_operate:
-                is_operate = False
-            if is_close:
-                scenes._messages.remove(msg)
-                if "msg" in data:
-                    if data["msg"] == "はい":
-                        print("はいを選んでくれてありがとう!")
         clock.tick(scenes.FPS)
         pygame.display.flip()
         if not is_operate:
             return
+        if self.main_menu_win != None:
+            (is_operate, is_close, data) = self.main_menu_win.event()
+            if "index" in data:
+                # メニューの名前によって処理を変えてね
+                if data["unique"] == "main_menu":
+                    if data["index"] == 0: # ステータス
+                        self.main_menu_win.set_commands(Command.NONE, "status", ["戻る"])
+                        self.player_statuses_win = [BattleStatusWindow() for _ in players]
+                        pass
+                    elif data["index"] == 1: # 魔法
+                        pass
+                    elif data["index"] == 2: # 道具
+                        if len(player.items) != 0:
+                            self.main_menu_win.set_commands(Command.NONE, "player_items", [items[id].name for id in player.items])
+                        else:
+                            pass
+                        pass
+                    elif data["index"] == 3: # 経験値
+                        pass
+                    elif data["index"] == 4: # 設定
+                        pass
+                elif data["unique"] == "player_items":
+                    # アイテム使用時
+                    context = Context(players, None)
+                    items[data["index"]].callback(context)
+                    player.items.remove(data["index"])
+                    self.main_menu_win = None
+                elif data["unique"] == "status":
+                    self.main_menu_win.set_commands(Command.MAIN_MENU)
+                    self.player_statuses_win = []
+            return
         player.event(scenes.scenes[scenes.current_scene].layer)
 
-    def draw(self, scenes, player: Player, screen: Surface):
+    def draw(self, scenes, players: list, player: Player, screen: Surface):
         pygame.Surface.fill(screen, (0, 0, 0))
         scenes.scenes[scenes.current_scene].layer.draw(screen)
         player.draw(scenes.scenes[scenes.current_scene].layer.map, screen)
+        if self.main_menu_win != None:
+            self.main_menu_win.draw(screen)
+            if len(self.player_statuses_win) != 0:
+                for (idx, player_status_win) in enumerate(self.player_statuses_win):
+                    player_status_win.draw(screen, idx * SW / 4, players[idx].name, players[idx].hp, players[idx].mp, players[idx].maxhp, players[idx].maxmp)
 
 class Scenes:
     scenes: list = []
     current_scene = 0
     _win_title: str = ""
     titleicon=""
-    _messages: list = []
     FPS = 120
 
     def __init__(self, window_title: str = "GAME", titleicon:str = None) -> None:
@@ -125,5 +144,5 @@ class Scenes:
                 self.scenes[self.current_scene].draw(self, screen)
                 self.scenes[self.current_scene].event(self, clock)
             else:
-                self.scenes[self.current_scene].draw(self, player, screen)
+                self.scenes[self.current_scene].draw(self, players, player, screen)
                 self.scenes[self.current_scene].event(self, players, player, screen, clock)

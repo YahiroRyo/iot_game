@@ -5,7 +5,6 @@ import scene
 
 MARGIN = 10
 class BattleStatusWindow(Window):
-
     def event(self) -> Tuple[bool, bool, dict]:
         return super().event()
 
