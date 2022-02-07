@@ -190,7 +190,12 @@ class BattleScene:
             )
 
     def attack(self, _from, _to, attack_lv:int = 1):
-        dmg=math.floor(self.random(_from.power*attack_lv))
+        dmg = math.floor(self.random(_from.power*attack_lv))
+        if True in [player.name == self.order[self.active].name for player in self.players]:
+            pass
+        else:
+            if _to.flgs[0] == 1:
+                dmg = math.floor(dmg / 2)
         _to.hp -= dmg
         if _to.hp<0:
             _to.hp=0
