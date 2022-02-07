@@ -45,6 +45,25 @@ class Player(Params):
             self.x = args[17]
             self.y = args[18]
         
+    def to_dict(self):
+        return [
+            self.name,
+            self.hp,
+            self.mp,
+            self.power,
+            self.m_power,
+            self.defense,
+            self.m_defense,
+            self.agility,
+            self.luck,
+            self.lv,
+            self.exp,
+            self.money,
+            self.items,
+            self.flgs,
+            self.maxhp,
+            self.maxmp,
+        ]
 
     # プレイヤーの描画
     def draw(self, map: Map, screen: Surface) -> None:
