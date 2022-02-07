@@ -49,7 +49,7 @@ class Scene:
                 if event.key == K_m:
                     MARGIN = 50
                     self.main_menu_win = command_window.CommandWindow(Command.MAIN_MENU)
-                    pass
+                    self.player_statuses_win = [BattleStatusWindow() for _ in players]
                 if event.key == K_b:
                     monsters_num=random.randint(self.conf["monster_info"]["min"],self.conf["monster_info"]["max"])
                     monsters=[]
@@ -74,7 +74,6 @@ class Scene:
                 if data["unique"] == "main_menu":
                     if data["index"] == 0: # ステータス
                         self.main_menu_win.set_commands(Command.NONE, "status", ["戻る"])
-                        self.player_statuses_win = [BattleStatusWindow() for _ in players]
                         pass
                     elif data["index"] == 1: # 魔法
                         pass
@@ -88,6 +87,9 @@ class Scene:
                         pass
                     elif data["index"] == 4: # 設定
                         pass
+                    elif data["index"] == 5: # 閉じる
+                        self.main_menu_win = None
+                        pass
                 elif data["unique"] == "player_items":
                     # アイテム使用時
                     context = Context(players, None)
@@ -96,7 +98,7 @@ class Scene:
                     self.main_menu_win = None
                 elif data["unique"] == "status":
                     self.main_menu_win.set_commands(Command.MAIN_MENU)
-                    self.player_statuses_win = []
+                    self.player_statuses_win = [BattleStatusWindow() for _ in players]
             return
         player.event(scenes.scenes[scenes.current_scene].layer)
 
@@ -108,7 +110,10 @@ class Scene:
             self.main_menu_win.draw(screen)
             if len(self.player_statuses_win) != 0:
                 for (idx, player_status_win) in enumerate(self.player_statuses_win):
-                    player_status_win.draw(screen, idx * SW / 4, players[idx].name, players[idx].hp, players[idx].mp, players[idx].maxhp, players[idx].maxmp)
+                    if self.main_menu_win.unique_name == "status":
+                        player_status_win.draw_status(screen, players[idx], idx * SW / 4)
+                    else:
+                        player_status_win.draw(screen, idx * SW / 4, players[idx].name, players[idx].hp, players[idx].mp, players[idx].maxhp, players[idx].maxmp)
 
 class Scenes:
     scenes: list = []
