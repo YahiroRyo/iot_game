@@ -15,8 +15,8 @@ if __name__ == "__main__":
         Layer(mapdata.map_1, None, None),
         "平原",
         {
-            10: ["例", 128, 416],
-            11: ["洞窟", 96, 416],
+            100: ["例", 128, 416],
+            101: ["洞窟", 96, 416],
             "monster_info": {
                 "kinds": [monsterdata.suraimu,monsterdata.goburin],
                 "min": 1,
@@ -28,7 +28,7 @@ if __name__ == "__main__":
         Layer(mapdata.map_2, None, None),
         "例",
         {
-            10: ["平原", 160, 64],
+            100: ["平原", 160, 64],
             "monster_info": {
                 "kinds": [monsterdata.suraimu,monsterdata.goburin],
                 "min": 4,
@@ -40,7 +40,7 @@ if __name__ == "__main__":
         Layer(mapdata.map_3, None, None),
         "洞窟",
         {
-            11: ["平原", 351, 32],
+            101: ["平原", 351, 32],
             "monster_info": {
                 "kinds": [monsterdata.suraimu,monsterdata.goburin],
                 "min": 3,

@@ -3,7 +3,10 @@
     壁:wall.png:2
 洞窟内:rock.png:3
 草原:grass.png:4
-空白(黒):black.png:未使用
+土の道:offroad.png:5
+レンガの道:blockroad.png:6
+砂:sand.png:7
 
-ワープ(遷移):warp.png:10
-洞窟(遷移):cave.png:11
+ワープ(遷移):warp.png:100
+洞窟(遷移):cave.png:101
+村(遷移):village.png:102
