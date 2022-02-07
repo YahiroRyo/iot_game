@@ -78,6 +78,7 @@ class CommandWindow(window.Window):
         if self.cool_time <= 0:
             keys = pygame.key.get_pressed()
             if keys[K_RIGHT]:
+                self.se_set("pointer.wav")
                 self.cool_time = COOL_TIME
                 if self.selected >= len(self.commands[self.page_cnt]) - 1:
                     if len(self.commands) - 1 < self.page_cnt + 1:
@@ -88,6 +89,7 @@ class CommandWindow(window.Window):
                 else:
                     self.selected += 1
             elif keys[K_LEFT]:
+                self.se_set("pointer.wav")
                 self.cool_time = COOL_TIME
                 if self.selected == 0:
                     # なんか変だぞお????!!!!!!!
@@ -100,6 +102,7 @@ class CommandWindow(window.Window):
                 else:
                     self.selected -= 1
             elif keys[K_RETURN]:
+                self.se_set("enter.wav")
                 self.cool_time = COOL_TIME
                 return (self.is_operate, True, {
                     "unique": self.unique_name,
@@ -119,3 +122,7 @@ class CommandWindow(window.Window):
         else:
             # 選ぶものなかった場合
             pass
+    def se_set(self, filename: str):
+        filename = "se/" + filename
+        se=pygame.mixer.Sound(filename)
+        se.play()

@@ -155,7 +155,7 @@ class Scenes:
         player = None
         players = []
         if is_exist_file:
-            with open("save_data.json", "r") as f:
+            with open("save_data.json", "r", encoding="utf-8") as f:
                 json_data = json.load(f)
                 self.current_scene = json_data["map"]["current_scene"]
                 self.scenes[self.current_scene].layer.set_pos(json_data["map"]["x"], json_data["map"]["y"])
