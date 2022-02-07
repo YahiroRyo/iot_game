@@ -157,11 +157,11 @@ class Scenes:
         if is_exist_file:
             with open("save_data.json", "r") as f:
                 json_data = json.load(f)
-                self.current_scene = json_data["map"]["current_scene"];
-                self.scenes[self.current_scene].layer.set_pos(json_data["map"]["x"], json_data["map"]["y"]);
-                x = json_data["pos"]["x"];
-                y = json_data["pos"]["y"];
-                player_infos = json_data["players"][0];
+                self.current_scene = json_data["map"]["current_scene"]
+                self.scenes[self.current_scene].layer.set_pos(json_data["map"]["x"], json_data["map"]["y"])
+                x = json_data["pos"]["x"]
+                y = json_data["pos"]["y"]
+                player_infos = json_data["players"][0]
                 player = Player(
                     mapimgdata.load_img("imgs/man.png", -1),
                     *[player_info for player_info in player_infos],
