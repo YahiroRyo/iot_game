@@ -111,7 +111,11 @@ class CommandWindow(window.Window):
 
     # コマンドの矢印を動かす
     def command_select(self, screen: Surface, color = color.ORANGE, command_term_cnts: list = [], selected: int = 0):
-        select_x = command_term_cnts[selected] * 24
-        select_y = 0
-        text = self.font.render("→", True, color)
-        screen.blit(text, (self._x + 10+ select_x, self._y + 10 + select_y))
+        if len(command_term_cnts) != 0:
+            select_x = command_term_cnts[selected] * 24
+            select_y = 0
+            text = self.font.render("→", True, color)
+            screen.blit(text, (self._x + 10+ select_x, self._y + 10 + select_y))
+        else:
+            # 選ぶものなかった場合
+            pass

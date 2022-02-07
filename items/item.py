@@ -1,3 +1,4 @@
+from context import Context
 from traceback import print_exception
 from items.genre import Genre
 
@@ -8,11 +9,14 @@ class Item:
     img = ""
     instructions = ""
     price = 0
-    callback = None
-    def __init__(self, id: str, name: str, instructions, price : int,callback, img: str = "") -> None:
+    hook = None
+    def __init__(self, id: str, name: str, instructions, price : int, callback, img: str = "") -> None:
         self.id = id
         self.name = name
         self.img = img
         self.instructions = instructions
         self.price = price
-        self.callback = callback
+        self.hook = callback
+    
+    def callback(self, context: Context):
+        self.hook(context)
