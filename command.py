@@ -19,7 +19,7 @@ def command_select(num: Command):
         tmp_commands = ["攻撃", "魔法", "特技", "道具", "防御", "逃げる"]
         unique_name = "battle_select"
     elif num == Command.MAIN_MENU:
-        tmp_commands = ["ステータス", "魔法", "道具", "経験値", "設定", "閉じる"]
+        tmp_commands = ["ステータス", "魔法", "道具", "経験値", "設定", "セーブ", "閉じる"]
         unique_name = "main_menu"
 
     command_term_cnt = [0]
