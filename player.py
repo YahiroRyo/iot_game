@@ -23,7 +23,7 @@ class Player(Params):
     size = 30
     speed = 1
 
-    def __init__(self, *args):#img: str, name: str, hp: int, mp: int, power:int, m_power:int, defense:int, m_defense:int, agility:int, luck:int, lv:int, exp:int, money:int, x:int, y:int, items:list) -> None:
+    def __init__(self, *args):
         self.img = args[0]
         self.name = args[1]
         self.hp = args[2]
