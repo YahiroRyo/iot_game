@@ -15,6 +15,7 @@ from context import Context
 import command_window
 import random
 import os
+from message import Message
 
 # 画面サイズ WIDTH
 SW = 1280 if len(sys.argv) == 1 else int(sys.argv[1])
@@ -29,6 +30,7 @@ class Scene:
     is_battle = False
     main_menu_win = None
     player_statuses_win = []
+    currentplayer = 0
 
     def __init__(self, layer: Layer, name: str, conf: dict = {}) -> None:
         self.layer = layer
@@ -83,6 +85,7 @@ class Scene:
                             pass
                         pass
                     elif data["index"] == 3: # 経験値
+                        self.main_menu_win.set_commands(Command.NONE, "character_select", [player.name for player in players])
                         pass
                     elif data["index"] == 4: # 設定
                         pass
@@ -102,20 +105,31 @@ class Scene:
                         }
                         with open("save_data.json", mode="wt", encoding="utf-8") as f:
                             json.dump(save_data, f, ensure_ascii=False, indent=2)
-                        
-                        self.main_menu_win = None
+                        msg = Message("セーブが完了しました",False)
+                        msg.draw_until_press_key(screen)
                     elif data["index"] == 6: # 閉じる
                         self.main_menu_win = None
                         pass
-                elif data["unique"] == "player_items":
-                    # アイテム使用時
+                elif data["unique"] == "status":# ステータス
+                    self.main_menu_win.set_commands(Command.MAIN_MENU)
+                    self.player_statuses_win = [BattleStatusWindow() for _ in players]
+                elif data["unique"] == "player_items":# アイテム使用時
                     context = Context(players, None)
                     items[data["index"]].callback(context)
                     player.items.remove(data["index"])
                     self.main_menu_win = None
-                elif data["unique"] == "status":
-                    self.main_menu_win.set_commands(Command.MAIN_MENU)
-                    self.player_statuses_win = [BattleStatusWindow() for _ in players]
+                elif data["unique" ] == "character_select":
+                    self.currentplayer = data["index"]
+                    self.player_statuses_win = [BattleStatusWindow()]
+                    self.main_menu_win.set_commands(Command.NONE, "status_panel", ["ＨＰ", "ＭＰ", "攻撃力", "防御力", "魔法攻撃力", "魔法防御力", "素早さ", "会心", "閉じる"])
+                elif data["unique"] == "status_panel":# ステータス振り分け
+                    if data["index"] == 8:
+                        self.main_menu_win = None
+                        pass
+                    else:
+                        self.status_up(players[self.currentplayer], data["index"])
+                        pass
+                    pass
             return
         player.event(scenes.scenes[scenes.current_scene].layer)
 
@@ -129,8 +143,31 @@ class Scene:
                 for (idx, player_status_win) in enumerate(self.player_statuses_win):
                     if self.main_menu_win.unique_name == "status":
                         player_status_win.draw_status(screen, players[idx], idx * SW / 4)
+                    elif self.main_menu_win.unique_name == "status_panel":
+                        player_status_win.draw_status(screen, players[self.currentplayer], self.currentplayer * SW / 4)
                     else:
                         player_status_win.draw(screen, idx * SW / 4, players[idx].name, players[idx].hp, players[idx].mp, players[idx].maxhp, players[idx].maxmp)
+    
+    def status_up(self, currentplayer, currentstatus):
+        if currentplayer.exp >= 10:
+            if currentstatus == 0:
+                currentplayer.maxhp += 1
+            elif currentstatus == 1:
+                currentplayer.maxmp += 1
+            elif currentstatus == 2:
+                currentplayer.power += 1
+            elif currentstatus == 3:
+                currentplayer.defense += 1
+            elif currentstatus == 4:
+                currentplayer.m_power += 1
+            elif currentstatus == 5:
+                currentplayer.m_defense += 1
+            elif currentstatus == 6:
+                currentplayer.agility += 1
+            elif currentstatus == 7:
+                currentplayer.luck += 1
+            currentplayer.lv += 1
+            currentplayer.exp -= 10
 
 class Scenes:
     scenes: list = []
@@ -176,7 +213,7 @@ class Scenes:
                     ]
                 ]
         else:
-            player = Player(mapimgdata.load_img("imgs/man.png", -1), "戦士", 1000, 50, 10, 10, 10, 10, 10, 0, 0 ,0, 0, [0], [0 for _ in range(7)], 1000, 50, 32, 32) 
+            player = Player(mapimgdata.load_img("imgs/man.png", -1), "戦士", 1000, 50, 10, 10, 10, 10, 10, 0, 1000 ,1000, 0, [0], [0 for _ in range(7)], 1000, 50, 32, 32) 
             players: list = [
                 player,
                 Player(mapimgdata.load_img("imgs/man.png", -1), "魔法使い", 500, 3, 10, 10, 10, 10, 10, 8, 0, 0, 0, [0], [0 for _ in range(7)], 500, 3),
