@@ -5,10 +5,14 @@ subprocess.run(f"cd {os.getcwd()} && pip install -r requirements.txt", shell=Tru
 import scene
 import mapdata
 import monsterdata
+import config
+import json
+import map
 from layer import Layer
 
 if __name__ == "__main__":
     scenes = scene.Scenes("RPG GAME","imgs/titleicon.png")
+    maps = config.MAPS
 
     # 遷移先 マップの名称, プレイヤーX, プレイヤーY
     scenes.set_scene(scene.Scene(
@@ -29,6 +33,7 @@ if __name__ == "__main__":
         "例",
         {
             100: ["平原", 160, 64],
+            101: ["テスト", 0, 0],
             "monster_info": {
                 "kinds": [monsterdata.suraimu,monsterdata.goburin],
                 "min": 4,
@@ -48,4 +53,13 @@ if __name__ == "__main__":
             }
         }
     ))
+    
+    for map_ary in maps:
+        with open(f"maps/{map_ary}.json", "r", encoding="utf-8") as f:
+            json_data = json.load(f)
+            scenes.set_scene(scene.Scene(
+                Layer(map.Map(json_data["map"]), None, None),
+                json_data["name"],
+                json_data["conf"]
+            ))
     scenes.start()
