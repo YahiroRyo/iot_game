@@ -143,7 +143,7 @@ class Player(Params):
                 # 水
                 pass
             for k in scene.conf:
-                if self_pos == k or will_pos == k:
+                if k != "monster_info" and (self_pos == int(k) or will_pos == int(k)):
                     for i, v in enumerate(scenes.scenes):
                         if v.name == scene.conf[k][0]:
                             scenes.current_scene = i
