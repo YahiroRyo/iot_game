@@ -21,7 +21,7 @@ class Map(KeyEvent):
     def __init__(self, context: Context):
         super().__init__(context)
         if config.MAP_IS_LOAD:
-            with open(f"../maps/{config.MAP_NAME}.json", "r") as f:
+            with open(f"../maps/{config.MAP_NAME}.json", "r", encoding="utf-8") as f:
                 data = json.load(f)
                 self.blocks = data["map"]
                 for (idx_y, block_h) in enumerate(self.blocks):
