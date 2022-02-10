@@ -11,7 +11,7 @@ BLOCKS = [
     Block("ワープ", "warp", 100),
     Block("洞窟", "cave", 101),
     Block("村", "village", 102),
-];
+]
 
 def get_block_index_from_id(id: int):
     for (idx, block) in enumerate(BLOCKS):

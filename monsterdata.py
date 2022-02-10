@@ -12,5 +12,7 @@
 
 
 #          img          名前       hp   mp 攻 魔 防 ﾏ防 早 会 行動回数 経験値
-suraimu=["suraimu.png", "スライム", 20, 0, 3, 0, 1, 1, 5, 0, 1, 1]
-goburin=["goburin.png", "ゴブリン", 30, 0, 5, 0, 2, 1, 2, 1, 1, 2]
+monster_data = {
+    "suraimu": ["suraimu.png", "スライム", 20, 0, 3, 0, 1, 1, 5, 0, 1, 1],
+    "goburin": ["goburin.png", "ゴブリン", 30, 0, 5, 0, 2, 1, 2, 1, 1, 2],
+}
