@@ -1,11 +1,9 @@
 import config
-import pygame_gui
 from pygame import Surface
 
 class Context:
     _storage: dict = {}
     screen: Surface = None
-    manager: pygame_gui.UIManager = None
     map = None
     current_block = -1
 

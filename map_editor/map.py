@@ -60,13 +60,13 @@ class Map(KeyEvent):
                     json.dump(save_data, f, ensure_ascii=False, indent=2)
 
         super().event(e)         
-    def mouse_down_middle(self, context: Context):
+    def mouse_down_right(self, context: Context):
         (x, y) = pygame.mouse.get_pos()
         self.is_scroll = True
         self.prev_x = self.x + x
         self.prev_y = self.y + y
 
-    def mouse_up_middle(self, context: Context):
+    def mouse_up_right(self, context: Context):
         self.is_scroll = False
 
     def mouse_down_left(self, context: Context):
