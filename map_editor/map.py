@@ -1,4 +1,3 @@
-from curses import KEY_DOWN
 import pygame
 import copy
 import json
