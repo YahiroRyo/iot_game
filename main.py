@@ -4,7 +4,6 @@ subprocess.run(f"cd {os.getcwd()} && pip install -r requirements.txt", shell=Tru
 
 import scene
 import mapdata
-import monsterdata
 import config
 import json
 import map
@@ -22,7 +21,7 @@ if __name__ == "__main__":
             100: ["例", 128, 416],
             101: ["洞窟", 96, 416],
             "monster_info": {
-                "kinds": [monsterdata.suraimu,monsterdata.goburin],
+                "kinds": ["suraimu", "goburin"],
                 "min": 1,
                 "max": 4,
             }
@@ -35,7 +34,7 @@ if __name__ == "__main__":
             100: ["平原", 160, 64],
             101: ["テスト", 0, 0],
             "monster_info": {
-                "kinds": [monsterdata.suraimu,monsterdata.goburin],
+                "kinds": ["suraimu", "goburin"],
                 "min": 4,
                 "max": 8,
             }
@@ -47,7 +46,7 @@ if __name__ == "__main__":
         {
             101: ["平原", 351, 32],
             "monster_info": {
-                "kinds": [monsterdata.suraimu,monsterdata.goburin],
+                "kinds": ["suraimu", "goburin"],
                 "min": 3,
                 "max": 6,
             }
