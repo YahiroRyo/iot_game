@@ -7,6 +7,7 @@
 レンガの道:blockroad.png:6
 砂:sand.png:7
 濃い草原:deep_grass.png:8
+海:water.png:9
 
 ワープ(遷移):warp.png:100
 洞窟(遷移):cave.png:101
@@ -14,3 +15,4 @@
 町・城(遷移):castle.png:103
 階段上り(遷移):stairs_up.png:104
 階段下り(遷移):stairs_down.png:105
+塔:tower.png:106

@@ -9,12 +9,14 @@ BLOCKS = [
     Block("レンガ", "blockroad", 6),
     Block("砂", "sand", 7),
     Block("濃い草", "deep_grass", 8),
+    Block("水", "water_none", 9),
     Block("ワープ", "warp", 100),
     Block("洞窟", "cave", 101),
     Block("村", "village", 102),
     Block("町", "castle", 103),
     Block("階段上り", "stairs_up", 104),
     Block("階段下り", "stairs_down", 105),
+    Block("塔", "tower", 106),
 ]
 
 def get_block_index_from_id(id: int):
