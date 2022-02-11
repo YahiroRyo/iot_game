@@ -21,6 +21,7 @@ def loaded_imgs():
     Map.imgs[5] = load_img("imgs/offroad.png")
     Map.imgs[6] = load_img("imgs/blockroad.png")
     Map.imgs[7] = load_img("imgs/sand.png")
+    Map.imgs[8] = load_img("imgs/deep_grass.png")
     Map.imgs[100] = load_img("imgs/warp.png")
     Map.imgs[101] = load_img("imgs/cave.png")
     Map.imgs[102] = load_img("imgs/village.png")
