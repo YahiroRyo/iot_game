@@ -8,6 +8,7 @@ BLOCKS = [
     Block("土道", "offroad", 5),
     Block("レンガ", "blockroad", 6),
     Block("砂", "sand", 7),
+    Block("濃い草", "deep_grass", 8),
     Block("ワープ", "warp", 100),
     Block("洞窟", "cave", 101),
     Block("村", "village", 102),

@@ -6,6 +6,7 @@
 土の道:offroad.png:5
 レンガの道:blockroad.png:6
 砂:sand.png:7
+濃い草原:deep_grass.png:8
 
 ワープ(遷移):warp.png:100
 洞窟(遷移):cave.png:101
