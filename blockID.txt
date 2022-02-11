@@ -10,3 +10,6 @@
 ワープ(遷移):warp.png:100
 洞窟(遷移):cave.png:101
 村(遷移):village.png:102
+町・城(遷移):castle.png:103
+階段上り(遷移):stairs_up.png:104
+階段下り(遷移):stairs_down.png:105

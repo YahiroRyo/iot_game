@@ -11,6 +11,9 @@ BLOCKS = [
     Block("ワープ", "warp", 100),
     Block("洞窟", "cave", 101),
     Block("村", "village", 102),
+    Block("町", "castle", 103),
+    Block("階段上り", "stairs_up", 104),
+    Block("階段下り", "stairs_down", 105),
 ]
 
 def get_block_index_from_id(id: int):

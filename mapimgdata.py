@@ -24,3 +24,6 @@ def loaded_imgs():
     Map.imgs[100] = load_img("imgs/warp.png")
     Map.imgs[101] = load_img("imgs/cave.png")
     Map.imgs[102] = load_img("imgs/village.png")
+    Map.imgs[103] = load_img("imgs/castle.png")
+    Map.imgs[104] = load_img("imgs/stairs_up.png")
+    Map.imgs[105] = load_img("imgs/stairs_down.png")
