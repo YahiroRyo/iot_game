@@ -15,4 +15,4 @@
 町・城(遷移):castle.png:103
 階段上り(遷移):stairs_up.png:104
 階段下り(遷移):stairs_down.png:105
-塔:tower.png:106
+塔(遷移):tower.png:106
