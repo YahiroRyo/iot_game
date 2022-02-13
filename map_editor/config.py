@@ -15,16 +15,14 @@ FPS=60
 #
 # ////////////////////////////////////////////////
 MAP_IS_LOAD=True
-MAP_NAME="初期の島"
-MAP_WIDTH=32
-MAP_HEIGHT=32
+MAP_NAME="モノル_F1"
+MAP_WIDTH=0
+MAP_HEIGHT=0
 MAP_MSIZE = 32
 # -1だと0埋めされる
-MAP_BG_ID = 1
+MAP_BG_ID = 6
 MAP_CONF = {
-    100: ["南の島", 160, 64],
-    101: ["洞窟_01", 0, 0],
-    103: ["モノル", 0, 0],
+    105: ["モノル_F1", 0, 0],
     "monster_info": {
         "kinds": ["goburin", "suraimu"],
         "min": 4,
