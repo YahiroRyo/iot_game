@@ -3,8 +3,10 @@ import pygame
 from pygame.locals import *
 
 
-def load_img(filename, colorkey=None):
+def load_img(filename, colorkey=None, resize=True):
     img = pygame.image.load(filename)
+    if resize:
+        img = pygame.transform.scale(img, (32, 32))
     img = img.convert()
     if colorkey is not None:
         if colorkey == -1:
