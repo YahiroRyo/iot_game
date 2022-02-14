@@ -95,8 +95,8 @@ class CommandWindow(window.Window):
                         self.page_cnt = 0
                     else:
                         self.page_cnt += 1
-                        self.sum_selected += 1
                     self.selected = 0
+                    self.sum_selected = 0
                 else:
                     self.selected += 1
                     self.sum_selected += 1
