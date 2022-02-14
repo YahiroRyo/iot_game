@@ -54,15 +54,16 @@ class Scene:
                     self.main_menu_win = command_window.CommandWindow(Command.MAIN_MENU)
                     self.player_statuses_win = [BattleStatusWindow() for _ in players]
                 if event.key == K_b:
-                    monsters_num=random.randint(self.conf["monster_info"]["min"],self.conf["monster_info"]["max"])
-                    monsters=[]
-                    for _ in range(monsters_num):
-                        monster_num=random.randint(0,len(self.conf["monster_info"]["kinds"])-1)
-                        monsters.append(Monster(monster_data[self.conf["monster_info"]["kinds"][monster_num]]))
-                    scene = BattleScene(players, monsters, scenes.current_scene, scenes, screen)
-                    scenes.scenes.append(scene)
-                    scenes.current_scene = len(scenes.scenes) - 1
-                    return
+                    if self.conf["monster_info"]["min"] != 0 and self.conf["monster_info"]["max"] != 0:
+                        monsters_num=random.randint(self.conf["monster_info"]["min"],self.conf["monster_info"]["max"])
+                        monsters=[]
+                        for _ in range(monsters_num):
+                            monster_num=random.randint(0,len(self.conf["monster_info"]["kinds"])-1)
+                            monsters.append(Monster(monster_data[self.conf["monster_info"]["kinds"][monster_num]]))
+                        scene = BattleScene(players, monsters, scenes.current_scene, scenes, screen)
+                        scenes.scenes.append(scene)
+                        scenes.current_scene = len(scenes.scenes) - 1
+                        return
 
         player.proc(scenes.scenes[scenes.current_scene].layer.map, scenes.scenes[scenes.current_scene], scenes)
         is_operate = True
