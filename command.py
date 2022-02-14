@@ -19,13 +19,12 @@ def command_select(num: Command):
         tmp_commands = ["攻撃", "魔法", "特技", "道具", "防御", "逃げる"]
         unique_name = "battle_select"
     elif num == Command.MAIN_MENU:
-        tmp_commands = ["ステータス", "魔法", "道具", "経験値", "設定", "セーブ", "閉じる"]
+        tmp_commands = ["ステータス", "魔法", "道具", "経験値", "設定", "セーブ", "閉じる", "マップ遷移"]
         unique_name = "main_menu"
 
     command_term_cnt = [0]
     tmp_command = []
     sum = 0
-    #print(tmp_commands)
     for tmp_cmd in tmp_commands:
         if sum * 24 + (len(tmp_cmd) - 1) * 24 >= scene.SW:
             sum = 0
@@ -35,7 +34,8 @@ def command_select(num: Command):
             tmp_command = []
         sum += len(tmp_cmd) + 1
         tmp_command.append(tmp_cmd)
-        command_term_cnt.append(sum)
+        command_term_cnt.append(sum * 24)
+    command_term_cnt.pop()
     command_term_cnts.append(command_term_cnt)
     commands.append(tmp_command)
-    return unique_name, commands, command_term_cnts
+    return unique_name, commands, command_term_cnts, tmp_commands
