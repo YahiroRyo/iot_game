@@ -4,7 +4,7 @@ from pygame import Surface
 class Context:
     _storage: dict = {}
     screen: Surface = None
-    map = None
+    layer = None
     current_block = -1
 
     def __init__(self):

@@ -23,11 +23,13 @@ class Palette(KeyEvent, Canvas):
 
     def draw(self):
         pygame.draw.rect(self.context.screen, self.color, (
-                self.pos["x"],
-                self.pos["y"],
-                self.size["width"],
-                self.size["height"]
+                self.x,
+                self.y,
+                self.width,
+                self.height
             )
         )
         for block in BLOCKS:
             block.draw(self.context.screen)
+            if block.img == None:
+                pygame.draw.rect(self.context.screen, (0, 0, 0), (block.x, block.y, 32, 32))
