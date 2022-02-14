@@ -18,7 +18,11 @@ if __name__ == "__main__":
         with open(f"maps/{map_ary}.json", "r", encoding="utf-8") as f:
             json_data = json.load(f)
             scenes.set_scene(scene.Scene(
-                Layer(map.Map(json_data["map"]), None, None),
+                Layer(
+                    map.Map(json_data["map_main"]),
+                    map.Map(json_data["map_everything"])    if "map_everything" in json_data else None,
+                    map.Map(json_data["map_npcs"])          if "map_npcs" in json_data else None
+                ),
                 json_data["name"],
                 json_data["conf"]
             ))
