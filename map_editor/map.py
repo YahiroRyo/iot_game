@@ -24,6 +24,9 @@ class Map(KeyEvent):
             with open(f"../maps/{config.MAP_NAME}.json", "r", encoding="utf-8") as f:
                 data = json.load(f)
                 self.blocks = data["map"]
+                config.MAP_HEIGHT = len(self.blocks)
+                config.MAP_WIDTH = len(self.blocks[0])
+                config.MAP_CONF = data["conf"]
                 for (idx_y, block_h) in enumerate(self.blocks):
                     for (idx_x, block_idx) in enumerate(block_h):
                         self.blocks[idx_y][idx_x] = get_block_index_from_id(block_idx)
@@ -62,8 +65,8 @@ class Map(KeyEvent):
     def mouse_down_right(self, context: Context):
         (x, y) = pygame.mouse.get_pos()
         self.is_scroll = True
-        self.prev_x = self.x + x
-        self.prev_y = self.y + y
+        self.prev_x = self.x - x
+        self.prev_y = self.y - y
 
     def mouse_up_right(self, context: Context):
         self.is_scroll = False
@@ -85,8 +88,8 @@ class Map(KeyEvent):
                 pass
             
         if self.is_scroll:
-            self.x = self.prev_x - x
-            self.y = self.prev_y - y
+            self.x = self.prev_x + x
+            self.y = self.prev_y + y
     
     def draw(self):
         for (idx_y, block_h) in enumerate(self.blocks):
