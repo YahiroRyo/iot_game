@@ -1,6 +1,7 @@
 from block import Block
 
 BLOCKS = [
+    Block("透明", "None", 0),
     Block("水", "water", 1),
     Block("壁", "wall", 2),
     Block("石", "rock", 3),
@@ -23,3 +24,4 @@ def get_block_index_from_id(id: int):
     for (idx, block) in enumerate(BLOCKS):
         if block.id == id:
             return idx
+    return -1
