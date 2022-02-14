@@ -38,7 +38,7 @@ class BattleScene:
         self.message = Message("", True)
         self.command_win = CommandWindow(Command.BATTLE_SELECT, scene.SW - 25, 48, 12.5, scene.SH / 6)
         self.battle_status_windows = [BattleStatusWindow() for _ in players]
-        self.monster_imgs = [mapimgdata.load_img(f"imgs/monsters/{monster.img}", -1) for monster in monsters]
+        self.monster_imgs = [mapimgdata.load_img(f"imgs/monsters/{monster.img}", -1, False) for monster in monsters]
         self.font = pygame.font.Font("fonts/PixelMplus10-Regular.ttf", 24)
         self.scenes=scenes
         self.screen = screen

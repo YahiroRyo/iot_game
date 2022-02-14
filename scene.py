@@ -15,6 +15,7 @@ from context import Context
 import command_window
 import random
 import os
+import config
 from message import Message
 from monsterdata import monster_data
 
@@ -110,7 +111,8 @@ class Scene:
                         msg.draw_until_press_key(screen)
                     elif data["index"] == 6: # 閉じる
                         self.main_menu_win = None
-                        pass
+                    elif data["index"] == 7: # マップ一覧 遷移
+                        self.main_menu_win.set_commands(Command.NONE, "map_select", [map for map in config.MAPS])
                 elif data["unique"] == "status":# ステータス
                     self.main_menu_win.set_commands(Command.MAIN_MENU)
                     self.player_statuses_win = [BattleStatusWindow() for _ in players]
@@ -126,11 +128,22 @@ class Scene:
                 elif data["unique"] == "status_panel":# ステータス振り分け
                     if data["index"] == 8:
                         self.main_menu_win = None
-                        pass
                     else:
                         self.status_up(players[self.currentplayer], data["index"])
-                        pass
-                    pass
+                elif data["unique"] == "map_select":
+                    for map in config.DEBUG_MAPS:
+                        if config.MAPS[data["index"]] == map["name"]:
+                            scenes.current_scene = data["index"]
+                            player.x = map["to"][0]
+                            player.y = map["to"][1]
+                            scenes.scenes[data["index"]].layer.set_pos(
+                                (SW - (map["to"][0] * 2)) / 2,
+                                (SH - (map["to"][1] * 2)) / 2
+                            )
+                            for _ in pygame.key.get_pressed():
+                                pass
+                            self.main_menu_win = None
+                            return
             return
         player.event(scenes.scenes[scenes.current_scene].layer)
 
@@ -214,13 +227,17 @@ class Scenes:
                     ]
                 ]
         else:
-            player = Player(mapimgdata.load_img("imgs/character/sensi_f.png", -1), "戦士", 1000, 50, 10, 10, 10, 10, 10, 0, 1000 ,1000, 0, [0], [0 for _ in range(7)], 1000, 50, 32, 32) 
+            player = Player(mapimgdata.load_img("imgs/character/sensi_f.png", -1), "戦士", 1000, 50, 10, 10, 10, 10, 10, 0, 1000 ,1000, 0, [0], [0 for _ in range(7)], 1000, 50, 260, 416) 
             players: list = [
                 player,
                 Player(mapimgdata.load_img("imgs/character/mahoutsukai_f.png", -1), "魔法使い", 500, 3, 10, 10, 10, 10, 10, 8, 0, 0, 0, [0], [0 for _ in range(7)], 500, 3),
                 Player(mapimgdata.load_img("imgs/character/souryo_f.png", -1), "僧侶", 500, 3, 10, 10, 10, 10, 10, 0, 15, 0, 0, [0], [0 for _ in range(7)], 500, 3),
                 Player(mapimgdata.load_img("imgs/character/butouka_f.png", -1), "武闘家", 500, 3, 10, 10, 10, 10, 10, 20, 0, 0, 0, [0], [0 for _ in range(7)], 500, 3),
             ]
+            self.scenes[self.current_scene].layer.set_pos(
+                                (SW - (260 * 2)) / 2,
+                                (SH - (416 * 2)) / 2
+                            )
         mapimgdata.loaded_imgs()
         clock = pygame.time.Clock()
 

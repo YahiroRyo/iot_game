@@ -14,15 +14,18 @@ FPS=60
 # マップ系
 #
 # ////////////////////////////////////////////////
-MAP_IS_LOAD=True
-MAP_NAME="モノル_F1"
-MAP_WIDTH=0
-MAP_HEIGHT=0
+MAP_IS_LOAD = True
+MAP_NAME = "テスト"
+MAP_WIDTH = 64
+MAP_HEIGHT = 64
 MAP_MSIZE = 32
 # -1だと0埋めされる
-MAP_BG_ID = 6
+MAP_BG_ID = 1
 MAP_CONF = {
-    105: ["モノル_F1", 0, 0],
+    100: ["モノル_BF1", 32, 64],
+    101: ["モノル_F1", 480, 864],
+    102: ["モノル_F2", 260, 416],
+    103: ["初期の島", 800, 512],
     "monster_info": {
         "kinds": ["goburin", "suraimu"],
         "min": 4,
