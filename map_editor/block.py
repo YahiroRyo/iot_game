@@ -10,16 +10,20 @@ class Block:
     msize = config.MAP_MSIZE
 
     def __init__(self, name: str, img: str, id: int):
-        tmp = pygame.image.load(f"../imgs/{img}.png")
         self.name = name
-        self.img =  pygame.transform.scale(tmp, (self.msize, self.msize)).convert()
+        if img != "None":
+            tmp = pygame.image.load(f"../imgs/{img}.png")
+            self.img =  pygame.transform.scale(tmp, (self.msize, self.msize)).convert()
+        else:
+            self.img = None
         self.id = id
     
     def draw(self, screen: pygame.Surface):
-        screen.blit(
-            self.img,
-            (self.x, self.y)
-        )
+        if self.img != None:
+            screen.blit(
+                self.img,
+                (self.x, self.y)
+            )
     
     def is_hit(self, x, y):
         return  self.x <= x                 and \

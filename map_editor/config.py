@@ -15,7 +15,7 @@ FPS=60
 #
 # ////////////////////////////////////////////////
 MAP_IS_LOAD = True
-MAP_NAME = "テスト"
+MAP_NAME = "テスト2"
 MAP_WIDTH = 64
 MAP_HEIGHT = 64
 MAP_MSIZE = 32

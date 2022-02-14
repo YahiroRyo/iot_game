@@ -1,4 +1,3 @@
-import time
 import pygame
 from pygame.surface import Surface
 from pygame.locals import *
@@ -130,18 +129,12 @@ class Player(Params):
         tmp_y = self.y if y == -1 else y
         return map.map[math.floor(tmp_y / map.msize)][math.floor(tmp_x / map.msize)]
 
-    def proc(self, map: Map, scene, scenes):
+    def proc(self, layer: Layer, scene, scenes):
         keys = self.get_keys()
         for key in keys:
             (x, y, tmp_x, tmp_y) = self.get_positions(key)
-            self_pos = self.get_block(map, self.x + x, self.y + y)
-            will_pos = self.get_block(map, self.x + tmp_x, self.y + tmp_y)
-            if self_pos == 0:
-                # 草
-                pass
-            elif self_pos == 1:
-                # 水
-                pass
+            self_pos = self.get_block(layer.map, self.x + x, self.y + y)
+            will_pos = self.get_block(layer.map, self.x + tmp_x, self.y + tmp_y)
             for k in scene.conf:
                 if k != "monster_info" and (self_pos == int(k) or will_pos == int(k)):
                     for i, v in enumerate(scenes.scenes):
