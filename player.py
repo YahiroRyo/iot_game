@@ -136,11 +136,12 @@ class Player(Params):
     def proc(self, layer: Layer, scene, scenes):
         keys = self.get_keys()
         for key in keys:
-            (x, y, tmp_x, tmp_y) = self.get_positions(key)
-            self_pos = self.get_block(layer.map, self.x + x, self.y + y)
-            will_pos = self.get_block(layer.map, self.x + tmp_x, self.y + tmp_y)
+            r = self.get_block(layer.map, self.x + 30, self.y)
+            r_b = self.get_block(layer.map, self.x + 30, self.y + 30)
+            l = self.get_block(layer.map, self.x, self.y)
+            l_b = self.get_block(layer.map, self.x, self.y + 30)
             for k in scene.conf:
-                if k != "monster_info" and (self_pos == int(k) or will_pos == int(k)):
+                if k != "monster_info" and (r == int(k) or r_b == int(k) or l == int(k) or l_b == int(k)):
                     for i, v in enumerate(scenes.scenes):
                         if v.name == scene.conf[k][0]:
                             scenes.current_scene = i
