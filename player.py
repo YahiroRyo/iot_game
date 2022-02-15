@@ -4,9 +4,9 @@ from pygame.locals import *
 from layer import Layer
 from monster import Params
 from map import Map
+from mapimgdata import load_img
 import scene as iscene
 import math
-
 
 WALLS = [0, 1, 2]
 
@@ -76,15 +76,19 @@ class Player(Params):
         
         if key == K_UP:
             y -= self.speed
+            self.img = load_img("imgs/character/sensi_b.png", -1)
             tmp_x = self.size
         if key == K_DOWN:
             y += self.size + self.speed
+            self.img = load_img("imgs/character/sensi_f.png", -1)
             tmp_x = self.size
         if key == K_LEFT:
             x -= self.speed
+            self.img = load_img("imgs/character/sensi_l.png", -1)
             tmp_y = self.size
         if key == K_RIGHT:
             x += self.size + self.speed
+            self.img = load_img("imgs/character/sensi_r.png", -1)
             tmp_y = self.size
         return (x, y, tmp_x, tmp_y)
 
