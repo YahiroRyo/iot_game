@@ -76,19 +76,15 @@ class Player(Params):
         
         if key == K_UP:
             y -= self.speed
-            self.img = load_img("imgs/character/sensi_b.png", -1)
             tmp_x = self.size
         if key == K_DOWN:
             y += self.size + self.speed
-            self.img = load_img("imgs/character/sensi_f.png", -1)
             tmp_x = self.size
         if key == K_LEFT:
             x -= self.speed
-            self.img = load_img("imgs/character/sensi_l.png", -1)
             tmp_y = self.size
         if key == K_RIGHT:
             x += self.size + self.speed
-            self.img = load_img("imgs/character/sensi_r.png", -1)
             tmp_y = self.size
         return (x, y, tmp_x, tmp_y)
 
@@ -113,18 +109,22 @@ class Player(Params):
         keys = pygame.key.get_pressed()
         if keys[K_UP]:
             if not self.key_is_wall(K_UP, layer.map) and self.y > 0:
+                self.img = load_img("imgs/character/sensi_b.png", -1)
                 self.y -= self.speed
                 layer.set_y(layer.map.y + self.speed)
         if keys[K_DOWN]:
             if not self.key_is_wall(K_DOWN, layer.map) and self.y < layer.map.row * layer.map.msize - self.size:
+                self.img = load_img("imgs/character/sensi_f.png", -1)
                 self.y += self.speed
                 layer.set_y(layer.map.y - self.speed)
         if keys[K_LEFT]:
             if not self.key_is_wall(K_LEFT, layer.map) and self.x > 0:
+                self.img = load_img("imgs/character/sensi_l.png", -1)
                 self.x -= self.speed
                 layer.set_x(layer.map.x + self.speed)
         if keys[K_RIGHT]:
             if not self.key_is_wall(K_RIGHT, layer.map) and self.x < layer.map.col * layer.map.msize - self.size:
+                self.img = load_img("imgs/character/sensi_r.png", -1)
                 self.x += self.speed
                 layer.set_x(layer.map.x - self.speed)
 
