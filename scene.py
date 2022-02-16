@@ -113,7 +113,7 @@ class Scene:
                     elif data["index"] == 6: # 閉じる
                         self.main_menu_win = None
                     elif data["index"] == 7: # マップ一覧 遷移
-                        self.main_menu_win.set_commands(Command.NONE, "map_select", [map for map in config.MAPS])
+                        self.main_menu_win.set_commands(Command.NONE, "map_select", [map["name"] for map in config.DEBUG_MAPS])
                 elif data["unique"] == "status":# ステータス
                     self.main_menu_win.set_commands(Command.MAIN_MENU)
                     self.player_statuses_win = [BattleStatusWindow() for _ in players]
@@ -132,19 +132,17 @@ class Scene:
                     else:
                         self.status_up(players[self.currentplayer], data["index"])
                 elif data["unique"] == "map_select":
-                    for map in config.DEBUG_MAPS:
-                        if config.MAPS[data["index"]] == map["name"]:
-                            scenes.current_scene = data["index"]
-                            player.x = map["to"][0]
-                            player.y = map["to"][1]
-                            scenes.scenes[data["index"]].layer.set_pos(
-                                (SW - (map["to"][0] * 2)) / 2,
-                                (SH - (map["to"][1] * 2)) / 2
-                            )
-                            for _ in pygame.key.get_pressed():
-                                pass
-                            self.main_menu_win = None
-                            return
+                    for (idx, map) in enumerate(config.MAPS):
+                        if map == config.DEBUG_MAPS[data["index"]]["name"]:
+                            scenes.current_scene = idx
+                    player.x = config.DEBUG_MAPS[data["index"]]["to"][0]
+                    player.y = config.DEBUG_MAPS[data["index"]]["to"][1]
+                    scenes.scenes[data["index"]].layer.set_pos(
+                        (SW - (config.DEBUG_MAPS[data["index"]]["to"][0] * 2)) / 2,
+                        (SH - (config.DEBUG_MAPS[data["index"]]["to"][1] * 2)) / 2
+                    )
+                    self.main_menu_win = None
+                    return
             return
         player.event(scenes.scenes[scenes.current_scene].layer)
 
