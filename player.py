@@ -1,13 +1,12 @@
-import time
 import pygame
 from pygame.surface import Surface
 from pygame.locals import *
 from layer import Layer
 from monster import Params
 from map import Map
+from mapimgdata import load_img
 import scene as iscene
 import math
-
 
 WALLS = [0, 1, 2]
 
@@ -23,17 +22,47 @@ class Player(Params):
     size = 30
     speed = 1
 
-    def __init__(self, img: str, name: str, hp: int, mp: int, power:int, m_power:int, defense:int, m_defense:int, agility:int, luck:int) -> None:
-        self.img = img
-        self.name = name
-        self.hp = hp
-        self.mp = mp
-        self.power = power
-        self.m_power = m_power
-        self.defense = defense
-        self.m_defense = m_defense
-        self.agility = agility
-        self.luck = luck
+    def __init__(self, *args):
+        self.img = args[0]
+        self.name = args[1]
+        self.hp = args[2]
+        self.mp = args[3]
+        self.power = args[4]
+        self.m_power = args[5]
+        self.defense = args[6]
+        self.m_defense = args[7]
+        self.agility = args[8]
+        self.luck = args[9]
+        self.lv = args[10]
+        self.exp = args[11]
+        self.money = args[12]
+        self.items = args[13]
+        self.flgs = args[14]
+        self.maxhp= args[15]
+        self.maxmp = args[16]
+        if len(args) >=18:
+            self.x = args[17]
+            self.y = args[18]
+        
+    def to_dict(self):
+        return [
+            self.name,
+            self.hp,
+            self.mp,
+            self.power,
+            self.m_power,
+            self.defense,
+            self.m_defense,
+            self.agility,
+            self.luck,
+            self.lv,
+            self.exp,
+            self.money,
+            self.items,
+            self.flgs,
+            self.maxhp,
+            self.maxmp,
+        ]
 
     # プレイヤーの描画
     def draw(self, map: Map, screen: Surface) -> None:
@@ -80,18 +109,22 @@ class Player(Params):
         keys = pygame.key.get_pressed()
         if keys[K_UP]:
             if not self.key_is_wall(K_UP, layer.map) and self.y > 0:
+                self.img = load_img("imgs/character/sensi_b.png", -1)
                 self.y -= self.speed
                 layer.set_y(layer.map.y + self.speed)
         if keys[K_DOWN]:
             if not self.key_is_wall(K_DOWN, layer.map) and self.y < layer.map.row * layer.map.msize - self.size:
+                self.img = load_img("imgs/character/sensi_f.png", -1)
                 self.y += self.speed
                 layer.set_y(layer.map.y - self.speed)
         if keys[K_LEFT]:
             if not self.key_is_wall(K_LEFT, layer.map) and self.x > 0:
+                self.img = load_img("imgs/character/sensi_l.png", -1)
                 self.x -= self.speed
                 layer.set_x(layer.map.x + self.speed)
         if keys[K_RIGHT]:
             if not self.key_is_wall(K_RIGHT, layer.map) and self.x < layer.map.col * layer.map.msize - self.size:
+                self.img = load_img("imgs/character/sensi_r.png", -1)
                 self.x += self.speed
                 layer.set_x(layer.map.x - self.speed)
 
@@ -100,20 +133,15 @@ class Player(Params):
         tmp_y = self.y if y == -1 else y
         return map.map[math.floor(tmp_y / map.msize)][math.floor(tmp_x / map.msize)]
 
-    def proc(self, map: Map, scene, scenes):
+    def proc(self, layer: Layer, scene, scenes):
         keys = self.get_keys()
         for key in keys:
-            (x, y, tmp_x, tmp_y) = self.get_positions(key)
-            self_pos = self.get_block(map, self.x + x, self.y + y)
-            will_pos = self.get_block(map, self.x + tmp_x, self.y + tmp_y)
-            if self_pos == 0:
-                # 草
-                pass
-            elif self_pos == 1:
-                # 水
-                pass
+            r = self.get_block(layer.map, self.x + 30, self.y)
+            r_b = self.get_block(layer.map, self.x + 30, self.y + 30)
+            l = self.get_block(layer.map, self.x, self.y)
+            l_b = self.get_block(layer.map, self.x, self.y + 30)
             for k in scene.conf:
-                if self_pos == k or will_pos == k:
+                if k != "monster_info" and (r == int(k) or r_b == int(k) or l == int(k) or l_b == int(k)):
                     for i, v in enumerate(scenes.scenes):
                         if v.name == scene.conf[k][0]:
                             scenes.current_scene = i
