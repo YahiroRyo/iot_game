@@ -5,6 +5,7 @@ from context import Context
 from event import KeyEvent
 from block_data import BLOCKS, get_block_index_from_id
 import json
+from pygame_ui.ui_context_menu_checkbox import UIContextMenuCheckbox
 
 class Layer(KeyEvent):
     # マップレイヤー
@@ -25,9 +26,14 @@ class Layer(KeyEvent):
     prev_y = 0
     current_map = 0
 
+    context_uis = []
+
     def __init__(self, context: Context):
         super().__init__(context)
         context.set("BLOCKS", BLOCKS)
+        self.context_uis = [
+            UIContextMenuCheckbox(context, self.add_sea_event, "乗船イベントを追加", "乗船イベントを追加"),
+        ]
         map_keys = [
             "map_main",
             "map_everything",
@@ -56,6 +62,8 @@ class Layer(KeyEvent):
                     if idx == 0: self.map = Map(context, blocks)
                     if idx == 1: self.everything = Map(context, blocks)
                     if idx == 2: self.npcs = Map(context, blocks)
+                for key in data["events"]:
+                    context.events[key] = data["events"][key]
         else:
             bg = -1
             for (idx, block) in enumerate(BLOCKS):
@@ -77,7 +85,16 @@ class Layer(KeyEvent):
         if self.map != None and not self.hidden_map: self.map.draw() 
         if self.everything != None and not self.hidden_everything: self.everything.draw()
         if self.npcs != None and not self.hidden_npcs: self.npcs.draw()
-    
+        if self.context.current_mode == 1 and self.context.current_select_block[0] != -1:
+            pygame.draw.rect(self.context.screen, (255, 0, 0), (
+                    self.context.current_select_block[1] * config.MAP_MSIZE + self.x +  self.context.get("SW") / 3,
+                    self.context.current_select_block[0] * config.MAP_MSIZE + self.y,
+                    config.MAP_MSIZE,
+                    config.MAP_MSIZE
+                ),
+                5
+            )
+            
     def set_pos(self, x: int, y: int):
         if self.map != None:
             self.map.x = x
@@ -109,9 +126,29 @@ class Layer(KeyEvent):
         self.is_scroll = False
 
     def mouse_down_left(self, context: Context):
-        (x, _) = pygame.mouse.get_pos()
-        if context.current_block != -1 and x >= context.get("SW") / 3:
+        if context.get("CONTEXT_MENU").is_active and context.get("CONTEXT_MENU").is_hit(): return
+        (x, y) = pygame.mouse.get_pos()
+        if context.current_block != -1 and context.current_mode == 0 and x >= context.get("SW") / 3:
             self.is_put = True
+        if  context.current_mode == 0 and context.current_select_block[0] != -1:
+            context.current_select_block = (-1, -1)
+            context.get("CONTEXT_MENU").pop()
+        elif context.current_mode == 1:
+            if context.current_select_block[0] == -1:
+                context.get("CONTEXT_MENU").push(self.context_uis)
+            context.current_select_block = [int((y - self.y) / config.MAP_MSIZE), int((x - self.x - self.context.get("SW") / 3) / config.MAP_MSIZE)]
+            key = ""
+            if self.current_map == 0: key = "map_main"
+            if self.current_map == 1: key = "map_everything"
+            if self.current_map == 2: key = "map_npcs"
+            for ui in self.context_uis:
+                ui.switch = False
+                ui.update_color()
+            for event in self.context.events[key]:
+                if event["pos"] == self.context.current_select_block:
+                    if event["name"] == "to_sea":
+                        self.context_uis[0].switch = True
+                        self.context_uis[0].update_color()
 
     def mouse_up_left(self, context: Context):
         self.is_put = False
@@ -122,10 +159,13 @@ class Layer(KeyEvent):
             try:
                 if self.current_map == 0:
                     self.map.blocks[int((y - self.y) / config.MAP_MSIZE )][int((x - self.x - self.context.get("SW") / 3) / config.MAP_MSIZE)] = context.current_block
+                    self.map.update_blocks()
                 if self.current_map == 1:
                     self.everything.blocks[int((y - self.y) / config.MAP_MSIZE )][int((x - self.x - self.context.get("SW") / 3) / config.MAP_MSIZE)] = context.current_block
+                    self.everything.update_blocks()
                 if self.current_map == 2:
                     self.npcs.blocks[int((y - self.y) / config.MAP_MSIZE )][int((x - self.x - self.context.get("SW") / 3) / config.MAP_MSIZE)] = context.current_block
+                    self.npcs.update_blocks()
             except:
                 pass
             
@@ -133,3 +173,21 @@ class Layer(KeyEvent):
             self.x = self.prev_x + x
             self.y = self.prev_y + y
             self.set_pos(self.x, self.y)
+
+    def add_sea_event(self, switch: bool):
+        try:
+            key = ""
+            if self.current_map == 0: key = "map_main"
+            if self.current_map == 1: key = "map_everything"
+            if self.current_map == 2: key = "map_npcs"
+            if switch:
+                self.context.events[key].append({
+                    "name": "to_sea",
+                    "pos": self.context.current_select_block
+                })
+            else:
+                for (idx, event) in enumerate(self.context.events[key]):
+                    if event["pos"] == self.context.current_select_block:
+                        self.context.events[key].pop(idx)
+        except:
+            pass

@@ -1,3 +1,4 @@
+from enum import Enum
 import pygame
 from pygame.surface import Surface
 from pygame.locals import *
@@ -9,6 +10,10 @@ import scene as iscene
 import math
 
 WALLS = [0, 1, 2]
+
+class PLAYER_MODE(Enum):
+    WALK = 0
+    SHIP = 1
 
 # プレイヤー
 class Player(Params):
@@ -22,6 +27,8 @@ class Player(Params):
     size = 30
     speed = 1
 
+    mode = PLAYER_MODE.WALK
+    
     def __init__(self, *args):
         self.img = args[0]
         self.name = args[1]
@@ -103,7 +110,10 @@ class Player(Params):
     
     def key_is_wall(self, key: int, map: Map):
         (x, y, tmp_x, tmp_y) = self.get_positions(key)
-        return self.get_block(map, self.x + x, self.y + y) in WALLS or self.get_block(map, self.x + tmp_x + x, self.y + tmp_y + y) in WALLS
+        if self.mode == PLAYER_MODE.WALK:
+            return self.get_block(map, self.x + x, self.y + y) in WALLS or self.get_block(map, self.x + tmp_x + x, self.y + tmp_y + y) in WALLS
+        else:
+            return False
 
     def event(self, layer: Layer):
         keys = pygame.key.get_pressed()
@@ -140,17 +150,29 @@ class Player(Params):
             r_b = self.get_block(layer.map, self.x + 30, self.y + 30)
             l = self.get_block(layer.map, self.x, self.y)
             l_b = self.get_block(layer.map, self.x, self.y + 30)
+            for events in scene.events.values():
+                if len(events) != 0:
+                    for event in events:
+                        if event["pos"] == [int(self.y / layer.map.msize), int(self.x / layer.map.msize)]:
+                            # 乗船
+                            if event["name"] == "to_sea":
+                                self.mode = PLAYER_MODE.SHIP
+                            
             for k in scene.conf:
-                if k != "monster_info" and (r == int(k) or r_b == int(k) or l == int(k) or l_b == int(k)):
-                    for i, v in enumerate(scenes.scenes):
-                        if v.name == scene.conf[k][0]:
-                            scenes.current_scene = i
-                            self.x = scene.conf[k][1]
-                            self.y = scene.conf[k][2]
-                            scenes.scenes[i].layer.set_pos(
-                                (iscene.SW - (scene.conf[k][1] * 2)) / 2,
-                                (iscene.SH - (scene.conf[k][2] * 2)) / 2
-                            )
-                            for _ in pygame.key.get_pressed():
-                                pass
-                            return
+                # stringをintに変更できないというエラーが発生する
+                try:
+                    if r == int(k) or r_b == int(k) or l == int(k) or l_b == int(k):
+                        for i, v in enumerate(scenes.scenes):
+                            if v.name == scene.conf[k][0]:
+                                scenes.current_scene = i
+                                self.x = scene.conf[k][1]
+                                self.y = scene.conf[k][2]
+                                scenes.scenes[i].layer.set_pos(
+                                    (iscene.SW - (scene.conf[k][1] * 2)) / 2,
+                                    (iscene.SH - (scene.conf[k][2] * 2)) / 2
+                                )
+                                for _ in pygame.key.get_pressed():
+                                    pass
+                                return
+                except:
+                    pass

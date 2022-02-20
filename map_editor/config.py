@@ -18,7 +18,7 @@ FPS=60
 #
 # ////////////////////////////////////////////////
 MAP_IS_LOAD = True
-MAP_NAME = "塔_1_F3"
+MAP_NAME = "テスト2"
 MAP_WIDTH = 17
 MAP_HEIGHT = 17
 MAP_MSIZE = 32

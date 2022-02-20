@@ -31,7 +31,7 @@ class UIRadioButton(KeyEvent, Canvas):
         else:
             self.color = color.BLUE
     def draw(self):
-        pygame.draw.rect(self.context.screen, self.color, (self.x, self.y, self.width, self.height))
+        pygame.draw.circle(self.context.screen, self.color, (self.x + self.width / 2, self.y + self.width / 2), self.width / 2)
         self.context.screen.blit(
             self.text,
             (self.x + self.width + 10, self.y)

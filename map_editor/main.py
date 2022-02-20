@@ -60,6 +60,7 @@ def event():
                     save_data = dict({
                         "name": config.MAP_NAME,
                         "conf": config.MAP_CONF,
+                        "events": context.events
                     }, **maps)
                     with open(f"../maps/{config.MAP_NAME}.json", "w", encoding="utf-8") as f:
                         json.dump(save_data, f, ensure_ascii=False, indent=2)
