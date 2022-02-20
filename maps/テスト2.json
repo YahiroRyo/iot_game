@@ -30,6 +30,26 @@
       "max": 8
     }
   },
+  "events": {
+    "map_main": [
+      {
+        "name": "to_sea",
+        "pos": [
+          11,
+          7
+        ]
+      },
+      {
+        "name": "to_sea",
+        "pos": [
+          10,
+          11
+        ]
+      }
+    ],
+    "map_everything": [],
+    "map_npcs": []
+  },
   "map_main": [
     [
       2,
@@ -765,7 +785,7 @@
       1,
       1,
       1,
-      1,
+      26,
       1,
       1,
       1,

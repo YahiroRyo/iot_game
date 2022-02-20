@@ -24,6 +24,7 @@ if __name__ == "__main__":
                     map.Map(json_data["map_npcs"])          if "map_npcs" in json_data else None
                 ),
                 json_data["name"],
-                json_data["conf"]
+                json_data["conf"],
+                json_data["events"] if "events" in json_data else {}
             ))
     scenes.start()

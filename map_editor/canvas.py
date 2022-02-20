@@ -14,6 +14,10 @@ class Canvas:
         self.height = size[1]
         self.color = color
     
+    def set_pos(self, x: int, y: int):
+        self.x = x    
+        self.y = y    
+    
     def is_hit(self) -> bool:
         (x, y) = pygame.mouse.get_pos()
         return  self.x <= x                 and \

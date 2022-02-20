@@ -29,15 +29,17 @@ class Scene:
     map: Layer
     name: str = ""
     conf: dict = {}
+    events: dict = {}
     is_battle = False
     main_menu_win = None
     player_statuses_win = []
     currentplayer = 0
 
-    def __init__(self, layer: Layer, name: str, conf: dict = {}) -> None:
+    def __init__(self, layer: Layer, name: str, conf: dict = {}, events: dict = {}) -> None:
         self.layer = layer
         self.name = name
         self.conf = conf
+        self.events = events
     
     def event(self, scenes, players: list, player: Player, screen: Surface, clock: pygame.time.Clock):
         for event in pygame.event.get():

@@ -6,6 +6,14 @@ class Context:
     screen: Surface = None
     layer = None
     current_block = -1
+    current_mode = 0
+
+    current_select_block = [-1, -1]
+    events = {
+        "map_main": [],
+        "map_everything": [],
+        "map_npcs": [],
+    }
 
     def __init__(self):
         self.set("SW", config.SW)
