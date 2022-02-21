@@ -12,7 +12,7 @@ class Block:
     def __init__(self, name: str, img: str, id: int):
         self.name = name
         if img != "None":
-            tmp = pygame.image.load(f"../imgs/{img}.png")
+            tmp = pygame.image.load(f"../imgs/{img}")
             self.img =  pygame.transform.scale(tmp, (self.msize, self.msize)).convert()
         else:
             self.img = None
