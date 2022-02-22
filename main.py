@@ -3,7 +3,6 @@ import os
 subprocess.run(f"cd {os.getcwd()} && pip install -r requirements.txt", shell=True)
 
 import scene
-import mapdata
 import config
 import json
 import map

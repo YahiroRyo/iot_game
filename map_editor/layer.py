@@ -6,6 +6,9 @@ from event import KeyEvent
 from block_data import BLOCKS, get_block_index_from_id
 import json
 from pygame_ui.ui_context_menu_checkbox import UIContextMenuCheckbox
+from pygame_ui.ui_input import UIInput
+from pygame_ui.ui_window import UIWindow
+from ui import UI
 
 class Layer(KeyEvent):
     # マップレイヤー
@@ -33,6 +36,7 @@ class Layer(KeyEvent):
         context.set("BLOCKS", BLOCKS)
         self.context_uis = [
             UIContextMenuCheckbox(context, self.add_sea_event, "乗船イベントを追加", "乗船イベントを追加"),
+            UIContextMenuCheckbox(context, self.add_move_to_other_map_event, "他のマップへ遷移", "他のマップへ遷移"),
         ]
         map_keys = [
             "map_main",
@@ -46,7 +50,9 @@ class Layer(KeyEvent):
                 config.MAP_WIDTH = len(data["map_main"][0])
                 config.MAP_CONF = data["conf"]
                 for (idx, key) in enumerate(map_keys):
-                    blocks = data[key]
+                    blocks = []
+                    if key in data:
+                        blocks = data[key]
                     # マップエディタとの互換性がなかった場合
                     # ※ map_mainのkey必須
                     if len(blocks) == 0:
@@ -62,13 +68,15 @@ class Layer(KeyEvent):
                     if idx == 0: self.map = Map(context, blocks)
                     if idx == 1: self.everything = Map(context, blocks)
                     if idx == 2: self.npcs = Map(context, blocks)
-                for key in data["events"]:
-                    context.events[key] = data["events"][key]
+                if "events" in data:
+                    for key in data["events"]:
+                        context.events[key] = data["events"][key]
         else:
             bg = -1
             for (idx, block) in enumerate(BLOCKS):
                 if block.id == config.MAP_BG_ID:
                     bg = idx
+                    break
             for (idx, _) in enumerate(map_keys):
                 blocks = []
                 for _ in range(config.MAP_WIDTH):
@@ -127,6 +135,7 @@ class Layer(KeyEvent):
 
     def mouse_down_left(self, context: Context):
         if context.get("CONTEXT_MENU").is_active and context.get("CONTEXT_MENU").is_hit(): return
+        if context.get("UI").is_active_input_window: return
         (x, y) = pygame.mouse.get_pos()
         if context.current_block != -1 and context.current_mode == 0 and x >= context.get("SW") / 3:
             self.is_put = True
@@ -145,10 +154,12 @@ class Layer(KeyEvent):
                 ui.switch = False
                 ui.update_color()
             for event in self.context.events[key]:
-                if event["pos"] == self.context.current_select_block:
-                    if event["name"] == "to_sea":
-                        self.context_uis[0].switch = True
-                        self.context_uis[0].update_color()
+                if "pos" in event and event["pos"] == self.context.get_current_select_block() and event["name"] == "to_sea":
+                    self.context_uis[0].switch = True
+                    self.context_uis[0].update_color()
+                if "from_pos" in event and event["from_pos"] == self.context.get_current_select_block() and event["name"] == "to_other_map":
+                    self.context_uis[1].switch = True
+                    self.context_uis[1].update_color()
 
     def mouse_up_left(self, context: Context):
         self.is_put = False
@@ -187,7 +198,51 @@ class Layer(KeyEvent):
                 })
             else:
                 for (idx, event) in enumerate(self.context.events[key]):
-                    if event["pos"] == self.context.current_select_block:
+                    if event["name"] == "to_sea" and event["pos"] == self.context.current_select_block:
                         self.context.events[key].pop(idx)
         except:
             pass
+
+    def add_move_to_other_map_event(self, switch: bool):
+        if switch:
+            input_window: UIWindow = self.context.get("INPUT_WINDOW")
+            input_window.init([
+                UIInput(
+                    self.context,
+                    (input_window.x + input_window.width / 2 - 200, input_window.y + input_window.height / 2 - 50),
+                    400,
+                    "マップ名"
+                ),
+                UIInput(
+                    self.context,
+                    (input_window.x + input_window.width / 2 - 200, input_window.y + input_window.height / 2 + 20),
+                    400,
+                    "遷移先座標 x y空白区切り"
+                )
+            ], "遷移先のマップ名を入力")
+            ui: UI = self.context.get("UI")
+            ui.is_active_input_window = True
+            ui.submit_callback = self.submit_add_move_to_other_map_event
+            ui.close_callback = lambda: None
+        else:
+            key = self.context.get_current_map(self.current_map)
+            for (idx, event) in enumerate(self.context.events[key]):
+                print(event["from_pos"])
+                if event["name"] == "to_other_map" and event["from_pos"] == self.context.get_current_select_block():
+                    self.context.events[key].pop(idx)
+
+    
+    def submit_add_move_to_other_map_event(self, uis: list):
+        # 遷移先のマップ名
+        other_map_name = uis[0].text
+        # 遷移先の位置
+        pos = uis[1].text.split(" ")
+        x = int(pos[0])
+        y = int(pos[1])
+
+        self.context.events[self.context.get_current_map(self.current_map)].append({
+            "name": "to_other_map",
+            "other_map_name": other_map_name,
+            "from_pos": self.context.get_current_select_block(),
+            "pos": [x, y]
+        })

@@ -159,11 +159,30 @@ class Player(Params):
             for events in scene.events.values():
                 if len(events) != 0:
                     for event in events:
-                        if event["pos"] == [int(self.y / layer.map.msize), int(self.x / layer.map.msize)]:
+                        if "pos" in event and event["pos"] == [int(self.x / layer.map.msize), int(self.y / layer.map.msize)]:
                             # 乗船
                             if event["name"] == "to_sea":
                                 self.mode = PLAYER_MODE.SHIP
-                            
+                                return  
+                        # 遷移システム作成
+                        if "from_pos" in event and (
+                            event["from_pos"] == [int((self.x + 30) / layer.map.msize), int((self.y) / layer.map.msize)] or
+                            event["from_pos"] == [int((self.x + 30) / layer.map.msize), int((self.y + 30) / layer.map.msize)] or
+                            event["from_pos"] == [int((self.x) / layer.map.msize), int((self.y) / layer.map.msize)] or
+                            event["from_pos"] == [int((self.x) / layer.map.msize), int((self.y + 30) / layer.map.msize)] 
+                        ):
+                            if event["name"] == "to_other_map":
+                                for i, v in enumerate(scenes.scenes):
+                                    if v.name == event["other_map_name"]:
+                                        scenes.current_scene = i
+                                        self.x = event["pos"][0]
+                                        self.y = event["pos"][1]
+                                        scenes.scenes[i].layer.set_pos(
+                                            (iscene.SW - (event["pos"][0] * 2)) / 2,
+                                            (iscene.SH - (event["pos"][1] * 2)) / 2
+                                        )
+                                        return
+                                
             for k in scene.conf:
                 # stringをintに変更できないというエラーが発生する
                 try:
@@ -177,8 +196,6 @@ class Player(Params):
                                     (iscene.SW - (scene.conf[k][1] * 2)) / 2,
                                     (iscene.SH - (scene.conf[k][2] * 2)) / 2
                                 )
-                                for _ in pygame.key.get_pressed():
-                                    pass
                                 return
                 except:
                     pass

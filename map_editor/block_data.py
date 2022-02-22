@@ -6,13 +6,12 @@ FILTER = [
     "monsters",
     "titleicon.png",
 ]
-BLOCKS = []
 
 files = os.listdir("../imgs")
 for filter in FILTER:
     files.remove(filter)
     
-BLOCKS.append(Block("透明", "None", 0))
+BLOCKS = [Block("透明", "None", 0)]
 for file in files:
     names = file.split("_")
     BLOCKS.append(Block("", file, int(names[0])))
