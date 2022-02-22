@@ -17,17 +17,16 @@ FPS=60
 # マップ系
 #
 # ////////////////////////////////////////////////
-MAP_IS_LOAD = True
-MAP_NAME = "北の島"
-MAP_WIDTH = 32
-MAP_HEIGHT = 32
+MAP_IS_LOAD = False
+MAP_NAME = "神殿_01_F3"
+MAP_WIDTH = 9
+MAP_HEIGHT = 9
 MAP_MSIZE = 32
 # -1だと0埋めされる
-MAP_BG_ID = 1
+MAP_BG_ID = 2
 MAP_CONF = {
-    100: ["港の島", 160, 96],
-    101: ["洞窟_BF1_北側", 0, 32],
-    "monster_info": {
+    105: ["神殿_01_F2", 480, 384],
+        "monster_info": {
         "kinds": ["goburin", "suraimu"],
         "min": 4,
         "max": 8,
