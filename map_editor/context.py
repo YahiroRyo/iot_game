@@ -31,3 +31,15 @@ class Context:
         
     def get(self, key: str):
         return self._storage[key]
+    
+    def get_current_map(self, current_map: int):
+        key = ""
+        if current_map == 0: key = "map_main"
+        if current_map == 1: key = "map_everything"
+        if current_map == 2: key = "map_npcs"
+        return key
+
+    def get_current_select_block(self):
+        x = self.current_select_block[1]
+        y = self.current_select_block[0]
+        return [x, y]

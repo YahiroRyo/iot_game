@@ -56,6 +56,9 @@ class UIContextMenu(KeyEvent, Canvas):
 
     def pop(self):
         stack = self.stack.pop(0)
+        tmp_uis = []
         for idx in stack:
-            self.uis.pop(idx)
+            tmp_uis.append(self.uis[idx])
+        for ui in tmp_uis:
+            self.uis.remove(ui)
         self.set_canvas((0, 0), (24 * 10 + 20, sum([ui.height for ui in self.uis]) + 20), color.WHITE)

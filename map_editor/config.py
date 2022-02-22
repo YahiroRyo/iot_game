@@ -18,7 +18,7 @@ FPS=60
 #
 # ////////////////////////////////////////////////
 MAP_IS_LOAD = True
-MAP_NAME = "洞窟_BF2_南側"
+MAP_NAME = "テスト"
 MAP_WIDTH = 12
 MAP_HEIGHT = 12
 MAP_MSIZE = 32
