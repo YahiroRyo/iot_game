@@ -18,14 +18,15 @@ FPS=60
 #
 # ////////////////////////////////////////////////
 MAP_IS_LOAD = True
-MAP_NAME = "テスト2"
-MAP_WIDTH = 17
-MAP_HEIGHT = 17
+MAP_NAME = "洞窟_BF2_南側"
+MAP_WIDTH = 12
+MAP_HEIGHT = 12
 MAP_MSIZE = 32
 # -1だと0埋めされる
-MAP_BG_ID = 2
+MAP_BG_ID = 3
 MAP_CONF = {
-    105: ["塔_1_F2", 32, 128],
+    104: ["北の島", 160, 96],
+    105: ["洞窟_BF2_北側", 160, 96],
     "monster_info": {
         "kinds": ["goburin", "suraimu"],
         "min": 4,
