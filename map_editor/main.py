@@ -1,3 +1,7 @@
+import subprocess
+import os
+subprocess.run(f"cd {os.getcwd()} && pip install -r require.txt", shell=True)
+
 import pygame
 import config
 import json
@@ -18,6 +22,9 @@ from pygame.locals import *
 from ui import UI
 
 ui = UI(context)
+
+clock = pygame.time.Clock()
+palette = Palette(context)
 
 def draw():
     pygame.Surface.fill(screen, (0, 0, 0))
@@ -67,9 +74,6 @@ def event():
         layer.event(e)
         palette.event(e)
         ui.event(e)
-
-clock = pygame.time.Clock()
-palette = Palette(context)
 
 while True:
     draw()
