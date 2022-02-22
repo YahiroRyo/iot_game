@@ -141,7 +141,13 @@ class Player(Params):
     def get_block(self, map: Map, x: int = -1, y: int = -1):
         tmp_x = self.x if x == -1 else x
         tmp_y = self.y if y == -1 else y
-        return map.map[math.floor(tmp_y / map.msize)][math.floor(tmp_x / map.msize)]
+        block = 0
+        # マップ外を見ようとするとエラーがでる index out of range
+        try:
+            block = map.map[math.floor(tmp_y / map.msize)][math.floor(tmp_x / map.msize)]
+        except:
+            pass
+        return block
 
     def proc(self, layer: Layer, scene, scenes):
         keys = self.get_keys()
