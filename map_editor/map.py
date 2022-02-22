@@ -32,8 +32,9 @@ class Map(KeyEvent):
     def update_blocks_pos(self):
         for (idx_y, block_h) in enumerate(self.tmp_blocks):
             for (idx_x, block) in enumerate(block_h):
-                block.x =  idx_x * config.MAP_MSIZE + self.x + self.context.get("SW") / 3
-                block.y = idx_y * config.MAP_MSIZE + self.y
+                if block.img != None:
+                    block.x =  idx_x * config.MAP_MSIZE + self.x + self.context.get("SW") / 3
+                    block.y = idx_y * config.MAP_MSIZE + self.y
 
     def update_blocks(self):
         self.tmp_blocks = []
@@ -48,3 +49,4 @@ class Map(KeyEvent):
                 else:
                     tmp_blocks_w.append(BLOCKS[0])
             self.tmp_blocks.append(tmp_blocks_w)
+        
