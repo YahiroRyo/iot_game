@@ -18,14 +18,14 @@ FPS=60
 #
 # ////////////////////////////////////////////////
 MAP_IS_LOAD = False
-MAP_NAME = "神殿_01_F3"
-MAP_WIDTH = 9
-MAP_HEIGHT = 9
+MAP_NAME = "ジルジノ"
+MAP_WIDTH = 32
+MAP_HEIGHT = 32
 MAP_MSIZE = 32
 # -1だと0埋めされる
-MAP_BG_ID = 2
+MAP_BG_ID = 4
 MAP_CONF = {
-    105: ["神殿_01_F2", 480, 384],
+    4: ["港の島", 800, 320],
         "monster_info": {
         "kinds": ["goburin", "suraimu"],
         "min": 4,
