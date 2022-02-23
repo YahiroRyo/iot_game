@@ -47,6 +47,46 @@ KEYS = [
         "text": "9",
     },
     {
+        "key": K_KP0,
+        "text": "0",
+    },
+    {
+        "key": K_KP1,
+        "text": "1",
+    },
+    {
+        "key": K_KP2,
+        "text": "2",
+    },
+    {
+        "key": K_KP3,
+        "text": "3",
+    },
+    {
+        "key": K_KP4,
+        "text": "4",
+    },
+    {
+        "key": K_KP5,
+        "text": "5",
+    },
+    {
+        "key": K_KP6,
+        "text": "6",
+    },
+    {
+        "key": K_KP7,
+        "text": "7",
+    },
+    {
+        "key": K_KP8,
+        "text": "8",
+    },
+    {
+        "key": K_KP9,
+        "text": "9",
+    },
+    {
         "key": K_SPACE,
         "text": " ",
     },
