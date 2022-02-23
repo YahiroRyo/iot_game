@@ -6,6 +6,7 @@ from event import KeyEvent
 from block_data import BLOCKS, get_block_index_from_id
 import json
 from pygame_ui.ui_context_menu_checkbox import UIContextMenuCheckbox
+from pygame_ui.ui_context_menu_text import UIContextMenuText
 from pygame_ui.ui_input import UIInput
 from pygame_ui.ui_window import UIWindow
 from ui import UI
@@ -30,11 +31,14 @@ class Layer(KeyEvent):
     current_map = 0
 
     context_uis = []
+    context_uis_pos = None
 
     def __init__(self, context: Context):
         super().__init__(context)
         context.set("BLOCKS", BLOCKS)
+        self.context_uis_pos = UIContextMenuText(context, "")
         self.context_uis = [
+            self.context_uis_pos,
             UIContextMenuCheckbox(context, self.add_sea_event, "乗船イベントを追加", "乗船イベントを追加"),
             UIContextMenuCheckbox(context, self.add_move_to_other_map_event, "他のマップへ遷移", "他のマップへ遷移"),
         ]
@@ -144,6 +148,7 @@ class Layer(KeyEvent):
             context.get("CONTEXT_MENU").pop()
         elif context.current_mode == 1:
             if context.current_select_block[0] == -1:
+                self.context_uis_pos.text = f"{int((x - self.x) / config.MAP_MSIZE) * config.MAP_MSIZE} {int((y - self.y) / config.MAP_MSIZE) * config.MAP_MSIZE}"
                 context.get("CONTEXT_MENU").push(self.context_uis)
             context.current_select_block = [int((y - self.y) / config.MAP_MSIZE), int((x - self.x - self.context.get("SW") / 3) / config.MAP_MSIZE)]
             key = ""
@@ -151,8 +156,15 @@ class Layer(KeyEvent):
             if self.current_map == 1: key = "map_everything"
             if self.current_map == 2: key = "map_npcs"
             for ui in self.context_uis:
-                ui.switch = False
-                ui.update_color()
+                try:
+                    ui.switch = False
+                    ui.update_color()
+                except:
+                    pass
+            text_x = int((x - self.x - self.context.get("SW") / 3) / config.MAP_MSIZE) * config.MAP_MSIZE
+            text_y = int((y - self.y) / config.MAP_MSIZE) * config.MAP_MSIZE
+            self.context_uis_pos.text = f"{text_x} {text_y}"
+                    
             for event in self.context.events[key]:
                 if "pos" in event and event["pos"] == self.context.get_current_select_block() and event["name"] == "to_sea":
                     self.context_uis[0].switch = True
