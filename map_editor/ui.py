@@ -75,7 +75,7 @@ class UI:
         self.radio_button_list.buttons[0].switch = True
         self.radio_button_list.buttons[0].update_color()
         self.radio_button_list_title = UITitle(context, "操作するマップ", (10, context.get("SH") - 380), (0, 0, 0))
-
+        
         self.context_menu = UIContextMenu(context, [
             UIContextRadioButtonList(self.context, [
                 "設置モード",
