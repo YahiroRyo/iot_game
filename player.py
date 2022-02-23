@@ -10,6 +10,7 @@ import scene as iscene
 import math
 
 WALLS = [0, 1, 2]
+SHIP_WALLS = [i for i in range(2, 111)]
 
 class PLAYER_MODE(Enum):
     WALK = 0
@@ -113,28 +114,33 @@ class Player(Params):
         if self.mode == PLAYER_MODE.WALK:
             return self.get_block(map, self.x + x, self.y + y) in WALLS or self.get_block(map, self.x + tmp_x + x, self.y + tmp_y + y) in WALLS
         else:
-            return False
+            return self.get_block(map, self.x + x, self.y + y) in SHIP_WALLS or self.get_block(map, self.x + tmp_x + x, self.y + tmp_y + y) in SHIP_WALLS
 
     def event(self, layer: Layer):
         keys = pygame.key.get_pressed()
+        img_mode = ""
+        if self.mode == PLAYER_MODE.WALK:
+            img_mode = "sensi"
+        if self.mode == PLAYER_MODE.SHIP:
+            img_mode = "ship"
         if keys[K_UP]:
             if not self.key_is_wall(K_UP, layer.map) and self.y > 0:
-                self.img = load_img("imgs/character/sensi_b.png", -1)
+                self.img = load_img(f"imgs/character/{img_mode}_b.png", -1)
                 self.y -= self.speed
                 layer.set_y(layer.map.y + self.speed)
         if keys[K_DOWN]:
             if not self.key_is_wall(K_DOWN, layer.map) and self.y < layer.map.row * layer.map.msize - self.size:
-                self.img = load_img("imgs/character/sensi_f.png", -1)
+                self.img = load_img(f"imgs/character/{img_mode}_f.png", -1)
                 self.y += self.speed
                 layer.set_y(layer.map.y - self.speed)
         if keys[K_LEFT]:
             if not self.key_is_wall(K_LEFT, layer.map) and self.x > 0:
-                self.img = load_img("imgs/character/sensi_l.png", -1)
+                self.img = load_img(f"imgs/character/{img_mode}_l.png", -1)
                 self.x -= self.speed
                 layer.set_x(layer.map.x + self.speed)
         if keys[K_RIGHT]:
             if not self.key_is_wall(K_RIGHT, layer.map) and self.x < layer.map.col * layer.map.msize - self.size:
-                self.img = load_img("imgs/character/sensi_r.png", -1)
+                self.img = load_img(f"imgs/character/{img_mode}_r.png", -1)
                 self.x += self.speed
                 layer.set_x(layer.map.x - self.speed)
 
