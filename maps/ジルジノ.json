@@ -21,7 +21,15 @@
     }
   },
   "events": {
-    "map_main": [],
+    "map_main": [
+      {
+        "name": "to_sea",
+        "pos": [
+          30,
+          27
+        ]
+      }
+    ],
     "map_everything": [],
     "map_npcs": []
   },
