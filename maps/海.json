@@ -23,6 +23,20 @@
           864,
           928
         ]
+      },
+      {
+        "name": "to_land",
+        "pos": [
+          11,
+          8
+        ]
+      },
+      {
+        "name": "to_sea",
+        "pos": [
+          11,
+          9
+        ]
       }
     ],
     "map_everything": [],
