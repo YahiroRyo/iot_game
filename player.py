@@ -170,6 +170,9 @@ class Player(Params):
                             if event["name"] == "to_sea":
                                 self.mode = PLAYER_MODE.SHIP
                                 return  
+                            if event["name"] == "to_land":
+                                self.mode = PLAYER_MODE.WALK
+                                return  
                         # 遷移システム作成
                         if "from_pos" in event and (
                             event["from_pos"] == [int((self.x + 30) / layer.map.msize), int((self.y) / layer.map.msize)] or
