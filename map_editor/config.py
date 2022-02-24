@@ -1,6 +1,3 @@
-from re import T
-
-
 SW = 1280
 SH = 720
 
@@ -17,8 +14,8 @@ FPS=60
 # マップ系
 #
 # ////////////////////////////////////////////////
-MAP_IS_LOAD = False
-MAP_NAME = "火山の島"
+MAP_IS_LOAD = True
+MAP_NAME = "ジルジノ"
 MAP_WIDTH = 48
 MAP_HEIGHT = 48
 MAP_MSIZE = 32
