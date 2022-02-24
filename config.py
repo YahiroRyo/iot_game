@@ -1,9 +1,12 @@
 import os
 
-MAPS = []
+INIT_MAP = "モノル_F2"
+
+MAPS = [INIT_MAP]
 files = os.listdir("maps")
 for file in files:
-    MAPS.append(file.replace('.json', ''))
+    if INIT_MAP != file:
+        MAPS.append(file.replace('.json', ''))
 
 DEBUG_MAPS = [
     {
