@@ -17,10 +17,10 @@ FPS=60
 # マップ系
 #
 # ////////////////////////////////////////////////
-MAP_IS_LOAD = True
-MAP_NAME = "海"
-MAP_WIDTH = 64
-MAP_HEIGHT = 96
+MAP_IS_LOAD = False
+MAP_NAME = "火山の島"
+MAP_WIDTH = 48
+MAP_HEIGHT = 48
 MAP_MSIZE = 32
 # -1だと0埋めされる
 MAP_BG_ID = 1
