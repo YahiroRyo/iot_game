@@ -10,7 +10,7 @@ import scene as iscene
 import math
 
 WALLS = [0, 1, 2, 14]
-SHIP_WALLS = [i for i in range(2, 111)]
+SHIP_WALLS = [i for i in range(2, 106)]
 
 class PLAYER_MODE(Enum):
     WALK = 0
