@@ -9,7 +9,7 @@ from mapimgdata import load_img
 import scene as iscene
 import math
 
-WALLS = [0, 1, 2]
+WALLS = [0, 1, 2, 14]
 SHIP_WALLS = [i for i in range(2, 111)]
 
 class PLAYER_MODE(Enum):
