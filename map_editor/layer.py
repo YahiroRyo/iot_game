@@ -40,6 +40,7 @@ class Layer(KeyEvent):
         self.context_uis = [
             self.context_uis_pos,
             UIContextMenuCheckbox(context, self.add_sea_event, "乗船イベントを追加", "乗船イベントを追加"),
+            UIContextMenuCheckbox(context, self.add_land_event, "降船イベントを追加", "降船イベントを追加"),
             UIContextMenuCheckbox(context, self.add_move_to_other_map_event, "他のマップへ遷移", "他のマップへ遷移"),
         ]
         map_keys = [
@@ -167,11 +168,14 @@ class Layer(KeyEvent):
                     
             for event in self.context.events[key]:
                 if "pos" in event and event["pos"] == self.context.get_current_select_block() and event["name"] == "to_sea":
-                    self.context_uis[0].switch = True
-                    self.context_uis[0].update_color()
-                if "from_pos" in event and event["from_pos"] == self.context.get_current_select_block() and event["name"] == "to_other_map":
                     self.context_uis[1].switch = True
                     self.context_uis[1].update_color()
+                if "pos" in event and event["pos"] == self.context.get_current_select_block() and event["name"] == "to_land":
+                    self.context_uis[2].switch = True
+                    self.context_uis[2].update_color()
+                if "from_pos" in event and event["from_pos"] == self.context.get_current_select_block() and event["name"] == "to_other_map":
+                    self.context_uis[3].switch = True
+                    self.context_uis[3].update_color()
 
     def mouse_up_left(self, context: Context):
         self.is_put = False
@@ -199,18 +203,29 @@ class Layer(KeyEvent):
 
     def add_sea_event(self, switch: bool):
         try:
-            key = ""
-            if self.current_map == 0: key = "map_main"
-            if self.current_map == 1: key = "map_everything"
-            if self.current_map == 2: key = "map_npcs"
+            key = self.context.get_current_map(self.current_map)
             if switch:
                 self.context.events[key].append({
                     "name": "to_sea",
-                    "pos": self.context.current_select_block
+                    "pos": self.context.get_current_select_block()
                 })
             else:
                 for (idx, event) in enumerate(self.context.events[key]):
                     if event["name"] == "to_sea" and event["pos"] == self.context.current_select_block:
+                        self.context.events[key].pop(idx)
+        except:
+            pass
+    def add_land_event(self, switch: bool):
+        try:
+            key = self.context.get_current_map(self.current_map)
+            if switch:
+                self.context.events[key].append({
+                    "name": "to_land",
+                    "pos": self.context.get_current_select_block()
+                })
+            else:
+                for (idx, event) in enumerate(self.context.events[key]):
+                    if event["name"] == "to_land" and event["pos"] == self.context.current_select_block:
                         self.context.events[key].pop(idx)
         except:
             pass
