@@ -9,6 +9,10 @@ from mapimgdata import load_img
 import scene as iscene
 import math
 from items.itemdata import items
+import random
+from monster import Monster
+from monsterdata import monster_data
+from battle_scene import BattleScene
 
 WALLS = [0, 1, 2, 14, 200, 201]
 SHIP_WALLS = [i for i in range(2, 106)]
@@ -118,7 +122,7 @@ class Player(Params):
         else:
             return self.get_block(map, self.x + x, self.y + y) in SHIP_WALLS or self.get_block(map, self.x + tmp_x + x, self.y + tmp_y + y) in SHIP_WALLS
 
-    def event(self, layer: Layer):
+    def event(self, layer: Layer, conf: dict, scenes, players, screen):
         keys = pygame.key.get_pressed()
         img_mode = ""
         if self.mode == PLAYER_MODE.WALK:
@@ -131,24 +135,28 @@ class Player(Params):
                 self.y -= self.speed
                 self.allow = K_UP
                 layer.set_y(layer.map.y + self.speed)
+                #self.encounter(conf, scenes , players, screen)  エンカウント部分をコメントアウト中
         if keys[K_DOWN]:
             if not self.key_is_wall(K_DOWN, layer.map) and self.y < layer.map.row * layer.map.msize - self.size:
                 self.img = load_img(f"imgs/character/{img_mode}_f.png", -1)
                 self.y += self.speed
                 self.allow = K_DOWN
                 layer.set_y(layer.map.y - self.speed)
+                #self.encounter(conf, scenes , players, screen)        
         if keys[K_LEFT]:
             if not self.key_is_wall(K_LEFT, layer.map) and self.x > 0:
                 self.img = load_img(f"imgs/character/{img_mode}_l.png", -1)
                 self.x -= self.speed
                 self.allow = K_LEFT
                 layer.set_x(layer.map.x + self.speed)
+                #self.encounter(conf, scenes , players, screen)        
         if keys[K_RIGHT]:
             if not self.key_is_wall(K_RIGHT, layer.map) and self.x < layer.map.col * layer.map.msize - self.size:
                 self.img = load_img(f"imgs/character/{img_mode}_r.png", -1)
                 self.x += self.speed
                 self.allow = K_RIGHT
                 layer.set_x(layer.map.x - self.speed)
+                #self.encounter(conf, scenes , players, screen)        
 
     def get_block(self, map: Map, x: int = -1, y: int = -1):
         tmp_x = self.x if x == -1 else x
@@ -238,3 +246,17 @@ class Player(Params):
                             return
             except:
                 pass
+    
+    def encounter(self, conf: dict, scenes, players, screen):
+        enc=random.randint(1,512)
+        if enc==1:
+            if conf["monster_info"]["min"] != 0 and conf["monster_info"]["max"] != 0:
+                monsters_num=random.randint(conf["monster_info"]["min"],conf["monster_info"]["max"])
+                monsters=[]
+                for _ in range(monsters_num):
+                    monster_num=random.randint(0,len(conf["monster_info"]["kinds"])-1)
+                    monsters.append(Monster(monster_data[conf["monster_info"]["kinds"][monster_num]]))
+                scene = BattleScene(players, monsters, scenes.current_scene, scenes, screen)
+                scenes.scenes.append(scene)
+                scenes.current_scene = len(scenes.scenes) - 1
+                return
