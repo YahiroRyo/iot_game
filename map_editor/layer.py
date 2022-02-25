@@ -211,7 +211,7 @@ class Layer(KeyEvent):
                 })
             else:
                 for (idx, event) in enumerate(self.context.events[key]):
-                    if event["name"] == "to_sea" and event["pos"] == self.context.current_select_block:
+                    if event["name"] == "to_sea" and event["pos"] == self.context.get_current_select_block():
                         self.context.events[key].pop(idx)
         except:
             pass
@@ -225,7 +225,7 @@ class Layer(KeyEvent):
                 })
             else:
                 for (idx, event) in enumerate(self.context.events[key]):
-                    if event["name"] == "to_land" and event["pos"] == self.context.current_select_block:
+                    if event["name"] == "to_land" and event["pos"] == self.context.get_current_select_block():
                         self.context.events[key].pop(idx)
         except:
             pass
@@ -254,7 +254,6 @@ class Layer(KeyEvent):
         else:
             key = self.context.get_current_map(self.current_map)
             for (idx, event) in enumerate(self.context.events[key]):
-                print(event["from_pos"])
                 if event["name"] == "to_other_map" and event["from_pos"] == self.context.get_current_select_block():
                     self.context.events[key].pop(idx)
 
