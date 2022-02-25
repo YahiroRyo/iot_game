@@ -201,7 +201,7 @@ class Scenes:
                 y = json_data["pos"]["y"]
                 player_infos = json_data["players"][0]
                 player = Player(
-                    mapimgdata.load_img("imgs/man.png", -1),
+                    mapimgdata.load_img("imgs/character/sensi_f.png", -1),
                     *[player_info for player_info in player_infos],
                     x,
                     y
