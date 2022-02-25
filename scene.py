@@ -209,7 +209,7 @@ class Scenes:
                 players = [
                     player,
                     *[Player(
-                        mapimgdata.load_img("imgs/man.png", -1),
+                        mapimgdata.load_img("imgs/character/sensi_f.png", -1),
                         *[p for p in json_data["players"][idx]]) for idx in range(1, len(json_data["players"]))
                     ]
                 ]
