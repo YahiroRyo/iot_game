@@ -1,15 +1,12 @@
-MAPS = [
-    "モノル_F2",
-    "モノル_F1",
-    "モノル_BF1",
-    "初期の島",
-    "南の島",
-    "塔_1_F1",
-    "塔_1_F2",
-    "塔_1_F3",
-    "テスト",
-    "テスト2",
-]
+import os
+
+INIT_MAP = "モノル_F2"
+
+MAPS = [INIT_MAP]
+files = os.listdir("maps")
+for file in files:
+    if INIT_MAP != file:
+        MAPS.append(file.replace('.json', ''))
 
 DEBUG_MAPS = [
     {
@@ -27,6 +24,14 @@ DEBUG_MAPS = [
     {
         "name": "初期の島",
         "to": (800, 512),
+    },
+    {
+        "name": "北の島",
+        "to": (800, 960),
+    },
+    {
+        "name": "港の島",
+        "to": (192, 192),
     },
     {
         "name": "テスト",

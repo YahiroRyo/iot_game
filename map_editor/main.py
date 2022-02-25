@@ -1,3 +1,7 @@
+import subprocess
+import os
+subprocess.run(f"cd {os.getcwd()} && pip install -r require.txt", shell=True)
+
 import pygame
 import config
 import json
@@ -18,6 +22,9 @@ from pygame.locals import *
 from ui import UI
 
 ui = UI(context)
+
+clock = pygame.time.Clock()
+palette = Palette(context)
 
 def draw():
     pygame.Surface.fill(screen, (0, 0, 0))
@@ -60,15 +67,13 @@ def event():
                     save_data = dict({
                         "name": config.MAP_NAME,
                         "conf": config.MAP_CONF,
+                        "events": context.events
                     }, **maps)
                     with open(f"../maps/{config.MAP_NAME}.json", "w", encoding="utf-8") as f:
                         json.dump(save_data, f, ensure_ascii=False, indent=2)
         layer.event(e)
         palette.event(e)
         ui.event(e)
-
-clock = pygame.time.Clock()
-palette = Palette(context)
 
 while True:
     draw()

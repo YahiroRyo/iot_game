@@ -6,9 +6,7 @@ from command import Command
 from player import Player
 import sys
 import mapimgdata
-from monster import Monster
 from battle_window import BattleStatusWindow
-from battle_scene import BattleScene
 from layer import Layer
 from items.itemdata import items
 from context import Context
@@ -17,7 +15,6 @@ import random
 import os
 import config
 from message import Message
-from monsterdata import monster_data
 
 # 画面サイズ WIDTH
 SW = 1280 if len(sys.argv) == 1 else int(sys.argv[1])
@@ -29,15 +26,17 @@ class Scene:
     map: Layer
     name: str = ""
     conf: dict = {}
+    events: dict = {}
     is_battle = False
     main_menu_win = None
     player_statuses_win = []
     currentplayer = 0
 
-    def __init__(self, layer: Layer, name: str, conf: dict = {}) -> None:
+    def __init__(self, layer: Layer, name: str, conf: dict = {}, events: dict = {}) -> None:
         self.layer = layer
         self.name = name
         self.conf = conf
+        self.events = events
     
     def event(self, scenes, players: list, player: Player, screen: Surface, clock: pygame.time.Clock):
         for event in pygame.event.get():
@@ -53,17 +52,6 @@ class Scene:
                     MARGIN = 50
                     self.main_menu_win = command_window.CommandWindow(Command.MAIN_MENU)
                     self.player_statuses_win = [BattleStatusWindow() for _ in players]
-                if event.key == K_b:
-                    if self.conf["monster_info"]["min"] != 0 and self.conf["monster_info"]["max"] != 0:
-                        monsters_num=random.randint(self.conf["monster_info"]["min"],self.conf["monster_info"]["max"])
-                        monsters=[]
-                        for _ in range(monsters_num):
-                            monster_num=random.randint(0,len(self.conf["monster_info"]["kinds"])-1)
-                            monsters.append(Monster(monster_data[self.conf["monster_info"]["kinds"][monster_num]]))
-                        scene = BattleScene(players, monsters, scenes.current_scene, scenes, screen)
-                        scenes.scenes.append(scene)
-                        scenes.current_scene = len(scenes.scenes) - 1
-                        return
 
         player.proc(scenes.scenes[scenes.current_scene].layer, scenes.scenes[scenes.current_scene], scenes)
         is_operate = True
@@ -113,7 +101,7 @@ class Scene:
                     elif data["index"] == 6: # 閉じる
                         self.main_menu_win = None
                     elif data["index"] == 7: # マップ一覧 遷移
-                        self.main_menu_win.set_commands(Command.NONE, "map_select", [map for map in config.MAPS])
+                        self.main_menu_win.set_commands(Command.NONE, "map_select", [map["name"] for map in config.DEBUG_MAPS])
                 elif data["unique"] == "status":# ステータス
                     self.main_menu_win.set_commands(Command.MAIN_MENU)
                     self.player_statuses_win = [BattleStatusWindow() for _ in players]
@@ -132,21 +120,19 @@ class Scene:
                     else:
                         self.status_up(players[self.currentplayer], data["index"])
                 elif data["unique"] == "map_select":
-                    for map in config.DEBUG_MAPS:
-                        if config.MAPS[data["index"]] == map["name"]:
-                            scenes.current_scene = data["index"]
-                            player.x = map["to"][0]
-                            player.y = map["to"][1]
-                            scenes.scenes[data["index"]].layer.set_pos(
-                                (SW - (map["to"][0] * 2)) / 2,
-                                (SH - (map["to"][1] * 2)) / 2
-                            )
-                            for _ in pygame.key.get_pressed():
-                                pass
-                            self.main_menu_win = None
-                            return
+                    for (idx, map) in enumerate(config.MAPS):
+                        if map == config.DEBUG_MAPS[data["index"]]["name"]:
+                            scenes.current_scene = idx
+                    player.x = config.DEBUG_MAPS[data["index"]]["to"][0]
+                    player.y = config.DEBUG_MAPS[data["index"]]["to"][1]
+                    scenes.scenes[data["index"]].layer.set_pos(
+                        (SW - (config.DEBUG_MAPS[data["index"]]["to"][0] * 2)) / 2,
+                        (SH - (config.DEBUG_MAPS[data["index"]]["to"][1] * 2)) / 2
+                    )
+                    self.main_menu_win = None
+                    return
             return
-        player.event(scenes.scenes[scenes.current_scene].layer)
+        player.event(scenes.scenes[scenes.current_scene].layer, self.conf, scenes, players, screen)
 
     def draw(self, scenes, players: list, player: Player, screen: Surface):
         pygame.Surface.fill(screen, (0, 0, 0))
