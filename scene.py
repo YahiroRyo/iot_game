@@ -66,7 +66,6 @@ class Scene:
                         scenes.scenes.append(scene)
                         scenes.current_scene = len(scenes.scenes) - 1
                         return
-
         player.proc(scenes.scenes[scenes.current_scene].layer, scenes.scenes[scenes.current_scene], scenes)
         is_operate = True
         clock.tick(scenes.FPS)

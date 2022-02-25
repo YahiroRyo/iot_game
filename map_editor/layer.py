@@ -42,6 +42,7 @@ class Layer(KeyEvent):
             UIContextMenuCheckbox(context, self.add_sea_event, "乗船イベントを追加", "乗船イベントを追加"),
             UIContextMenuCheckbox(context, self.add_land_event, "降船イベントを追加", "降船イベントを追加"),
             UIContextMenuCheckbox(context, self.add_move_to_other_map_event, "他のマップへ遷移", "他のマップへ遷移"),
+            UIContextMenuCheckbox(context, self.add_chest_event, "宝箱追加", "宝箱追加"),
         ]
         map_keys = [
             "map_main",
@@ -176,7 +177,9 @@ class Layer(KeyEvent):
                 if "from_pos" in event and event["from_pos"] == self.context.get_current_select_block() and event["name"] == "to_other_map":
                     self.context_uis[3].switch = True
                     self.context_uis[3].update_color()
-
+                if "pos" in event and event["pos"] == self.context.get_current_select_block() and event["name"] == "chest":
+                    self.context_uis[4].switch = True
+                    self.context_uis[4].update_color()
     def mouse_up_left(self, context: Context):
         self.is_put = False
     
@@ -256,7 +259,29 @@ class Layer(KeyEvent):
             for (idx, event) in enumerate(self.context.events[key]):
                 if event["name"] == "to_other_map" and event["from_pos"] == self.context.get_current_select_block():
                     self.context.events[key].pop(idx)
+    
+    def add_chest_event(self, switch: bool):
+        if switch:
+            input_window: UIWindow = self.context.get("INPUT_WINDOW")
+            input_window.init([
+                UIInput(
+                    self.context,
+                    (input_window.x + input_window.width / 2 - 200, input_window.y + input_window.height / 2 - 50),
+                    400,
+                    "アイテムID"
+                ),
+            ], "宝箱を追加")
+            ui: UI = self.context.get("UI")
+            ui.is_active_input_window = True
+            ui.submit_callback = self.submit_add_chest_event
+            ui.close_callback = lambda: None
+        else:
+            key = self.context.get_current_map(self.current_map)
+            for (idx, event) in enumerate(self.context.events[key]):
+                if event["name"] == "chest" and event["pos"] == self.context.get_current_select_block():
+                    self.context.events[key].pop(idx)
 
+            
     
     def submit_add_move_to_other_map_event(self, uis: list):
         # 遷移先のマップ名
@@ -271,4 +296,12 @@ class Layer(KeyEvent):
             "other_map_name": other_map_name,
             "from_pos": self.context.get_current_select_block(),
             "pos": [x, y]
+        })
+    
+    def submit_add_chest_event(self, uis: list):
+        item_id = uis[0].text
+        self.context.events[self.context.get_current_map(self.current_map)].append({
+            "name": "chest",
+            "pos": self.context.get_current_select_block(),
+            "item_id": item_id
         })
