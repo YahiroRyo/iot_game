@@ -15,6 +15,9 @@ import random
 import os
 import config
 from message import Message
+from rain import *
+
+rain = []
 
 # 画面サイズ WIDTH
 SW = 1280 if len(sys.argv) == 1 else int(sys.argv[1])
@@ -167,7 +170,11 @@ class Scene:
                         player_status_win.draw_status(screen, players[self.currentplayer], self.currentplayer * SW / 4)
                     else:
                         player_status_win.draw(screen, idx * SW / 4, players[idx].name, players[idx].hp, players[idx].mp, players[idx].maxhp, players[idx].maxmp)
-    
+        if len(rain) < config.RAIN_LEN:
+            rain.append(Rain(screen))
+            
+        drawRain(rain)
+
     def status_up(self, currentplayer, currentstatus):
         if currentplayer.exp >= 10:
             if currentstatus == 0:
