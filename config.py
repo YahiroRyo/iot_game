@@ -42,3 +42,5 @@ DEBUG_MAPS = [
         "to": (120, 120),
     },
 ]
+
+RAIN_LEN = 500
