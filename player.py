@@ -174,7 +174,7 @@ class Player(Params):
         r_b = self.get_block(layer.map, self.x + 30, self.y + 30)
         l = self.get_block(layer.map, self.x, self.y)
         l_b = self.get_block(layer.map, self.x, self.y + 30)
-        for events in scene.events.values():
+        for key, events in scene.events.items():
             if len(events) != 0:
                 for event in events:
                     if "pos" in event and event["pos"] == [int(self.x / layer.map.msize), int(self.y / layer.map.msize)]:
@@ -202,14 +202,37 @@ class Player(Params):
                         elif self.allow == K_UP:
                             is_exist =  event["pos"] == [int((self.x + 15) / layer.map.msize), int((self.y - 32) / layer.map.msize)]
                             
-                        if is_exist:
+                        if is_exist and (
+                            len(scenes.ended_event) == 0 or True in [
+                                    ended_e["name"] != event["name"] and
+                                    ended_e["pos"] != event["pos"] and
+                                    ended_e["name"] != scenes.scenes[scenes.current_scene].name and
+                                    ended_e["map_layer"] != key
+                                    for ended_e in scenes.ended_event
+                                ]
+                            ):
                             press_keys = pygame.key.get_pressed()
                             if press_keys[K_RETURN]:
                                 item_idx = 0
                                 for (idx, item) in enumerate(items):
                                     if item.id == event["item_id"]:
                                         item_idx = idx
+                                        break
                                 self.items.append(item_idx)
+                                scenes.ended_event.append({
+                                    "map_layer": key,
+                                    "map_name": scenes.scenes[scenes.current_scene].name,
+                                    "name": event["name"],
+                                    "pos": event["pos"],
+                                })
+                                map = None
+                                if key == "map_main":
+                                   map = scenes.scenes[scenes.current_scene].layer.map 
+                                elif key == "map_everything":
+                                   map = scenes.scenes[scenes.current_scene].layer.everything
+                                elif key == "map_npcs":
+                                   map = scenes.scenes[scenes.current_scene].layer.npcs
+                                map.map[event["pos"][1]][event["pos"][0]] = 201
                             return
                     # 遷移システム作成
                     if "from_pos" in event and (

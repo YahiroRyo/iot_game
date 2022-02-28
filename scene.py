@@ -23,11 +23,12 @@ SH = 720 if len(sys.argv) == 1 else int(sys.argv[2])
 SCR_RECT = Rect(0, 0, SW, SH)  # 画面サイズ
 
 class Scene:
-    map: Layer
+    layer: Layer = None
     name: str = ""
     conf: dict = {}
     events: dict = {}
     is_battle = False
+    is_inited = False
     main_menu_win = None
     player_statuses_win = []
     currentplayer = 0
@@ -52,6 +53,23 @@ class Scene:
                     MARGIN = 50
                     self.main_menu_win = command_window.CommandWindow(Command.MAIN_MENU)
                     self.player_statuses_win = [BattleStatusWindow() for _ in players]
+
+        if not self.is_inited:
+            self.is_inited = True
+            for ended_e in scenes.ended_event:
+                if  (
+                    ended_e["name"] == "chest" and
+                    ended_e["map_name"] == self.name
+                ):
+                    map = None
+                    if ended_e["map_layer"] == "map_main":
+                       map = self.layer.map 
+                    elif ended_e["map_layer"] == "map_everything":
+                       map = self.layer.everything
+                    elif ended_e["map_layer"] == "map_npcs":
+                       map = self.layer.npcs
+                    map.map[ended_e["pos"][1]][ended_e["pos"][0]] = 201
+
 
         player.proc(scenes.scenes[scenes.current_scene].layer, scenes.scenes[scenes.current_scene], scenes)
         is_operate = True
@@ -92,7 +110,8 @@ class Scene:
                                 "x": player.x,
                                 "y": player.y,
                             }, 
-                            "players": [player.to_dict() for player in players]
+                            "players": [player.to_dict() for player in players],
+                            "ended_event": scenes.ended_event
                         }
                         with open("save_data.json", mode="wt", encoding="utf-8") as f:
                             json.dump(save_data, f, ensure_ascii=False, indent=2)
@@ -132,12 +151,12 @@ class Scene:
                     self.main_menu_win = None
                     return
             return
-        player.event(scenes.scenes[scenes.current_scene].layer, self.conf, scenes, players, screen)
+        player.event(self.layer, self.conf, scenes, players, screen)
 
     def draw(self, scenes, players: list, player: Player, screen: Surface):
         pygame.Surface.fill(screen, (0, 0, 0))
-        scenes.scenes[scenes.current_scene].layer.draw(screen)
-        player.draw(scenes.scenes[scenes.current_scene].layer.map, screen)
+        self.layer.draw(screen)
+        player.draw(self.layer.map, screen)
         if self.main_menu_win != None:
             self.main_menu_win.draw(screen)
             if len(self.player_statuses_win) != 0:
@@ -175,6 +194,7 @@ class Scenes:
     current_scene = 0
     _win_title: str = ""
     titleicon=""
+    ended_event = []
     FPS = 120
 
     def __init__(self, window_title: str = "GAME", titleicon:str = None) -> None:
@@ -197,6 +217,7 @@ class Scenes:
                 json_data = json.load(f)
                 self.current_scene = json_data["map"]["current_scene"]
                 self.scenes[self.current_scene].layer.set_pos(json_data["map"]["x"], json_data["map"]["y"])
+                self.ended_event = json_data["ended_event"]
                 x = json_data["pos"]["x"]
                 y = json_data["pos"]["y"]
                 player_infos = json_data["players"][0]
