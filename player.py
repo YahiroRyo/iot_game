@@ -135,7 +135,7 @@ class Player(Params):
                 self.y -= self.speed
                 self.allow = K_UP
                 layer.set_y(layer.map.y + self.speed)
-                #self.encounter(conf, scenes , players, screen)  エンカウント部分をコメントアウト中
+                self.encounter(conf, scenes , players, screen)#エンカウント部分をコメントアウト中
         if keys[K_DOWN]:
             if not self.key_is_wall(K_DOWN, layer.map) and self.y < layer.map.row * layer.map.msize - self.size:
                 self.img = load_img(f"imgs/character/{img_mode}_f.png", -1)
@@ -271,7 +271,7 @@ class Player(Params):
                 pass
     
     def encounter(self, conf: dict, scenes, players, screen):
-        enc=random.randint(1,512)
+        enc=random.randint(1,2)
         if enc==1:
             if conf["monster_info"]["min"] != 0 and conf["monster_info"]["max"] != 0:
                 monsters_num=random.randint(conf["monster_info"]["min"],conf["monster_info"]["max"])
