@@ -173,7 +173,7 @@ class Scene:
         if len(rain) < config.RAIN_LEN:
             rain.append(Rain(screen))
             
-        drawRain(rain)
+        # drawRain(rain)
 
     def status_up(self, currentplayer, currentstatus):
         if currentplayer.exp >= 10:
