@@ -39,6 +39,10 @@ class BattleScene:
         self.command_win = CommandWindow(Command.BATTLE_SELECT, scene.SW - 25, 48, 12.5, scene.SH / 6)
         self.battle_status_windows = [BattleStatusWindow() for _ in players]
         self.monster_imgs = [mapimgdata.load_img(f"imgs/monsters/{monster.img}", -1, False) for monster in monsters]
+        for idx, img in enumerate(self.monster_imgs):
+            w = 120
+            h = img.get_height() * (w / img.get_width())
+            self.monster_imgs[idx] = pygame.transform.scale(img, (w, h))
         self.font = pygame.font.Font("fonts/PixelMplus10-Regular.ttf", 24)
         self.scenes=scenes
         self.screen = screen
@@ -186,7 +190,7 @@ class BattleScene:
             )
             screen.blit(
                 text,
-                (x + idx * 140, scene.SH / 3 + 140)
+                (x + idx * 140, (scene.SH / 3 + 140 + (26 if idx % 2 == 1 else 0)))
             )
 
     def attack(self, _from, _to, attack_lv:int = 1):
