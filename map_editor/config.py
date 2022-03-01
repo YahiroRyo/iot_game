@@ -23,8 +23,8 @@ MAP_MSIZE = 32
 MAP_BG_ID = 1
 MAP_CONF = {
         "monster_info": {
-        "kinds": ["goburin", "suraimu"],
-        "min": 4,
-        "max": 8,
+        "kinds": [],
+        "min": 0,
+        "max": 0,
     }
 }
