@@ -2,8 +2,7 @@
   "name": "海",
   "conf": {
     "monster_info": {
-      "kinds": [
-      ],
+      "kinds": [],
       "min": 0,
       "max": 0
     }
@@ -23,17 +22,31 @@
         ]
       },
       {
-        "name": "to_land",
+        "name": "to_sea",
         "pos": [
           11,
-          8
+          9
+        ]
+      },
+      {
+        "name": "to_sea",
+        "pos": [
+          10,
+          9
+        ]
+      },
+      {
+        "name": "to_sea",
+        "pos": [
+          12,
+          9
         ]
       },
       {
         "name": "to_sea",
         "pos": [
           11,
-          9
+          8
         ]
       }
     ],
