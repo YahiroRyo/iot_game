@@ -2,7 +2,10 @@
   "name": "海",
   "conf": {
     "monster_info": {
-      "kinds": ["gyozin","sutoraikusha-ku"],
+      "kinds": [
+        "gyozin",
+        "sutoraikusha-ku"
+      ],
       "min": 2,
       "max": 6
     }
@@ -47,6 +50,39 @@
         "pos": [
           11,
           8
+        ]
+      },
+      {
+        "name": "to_sea",
+        "pos": [
+          51,
+          31
+        ]
+      },
+      {
+        "name": "to_sea",
+        "pos": [
+          51,
+          30
+        ]
+      },
+      {
+        "name": "to_sea",
+        "pos": [
+          51,
+          32
+        ]
+      },
+      {
+        "name": "to_other_map",
+        "other_map_name": "アテトラ",
+        "from_pos": [
+          52,
+          31
+        ],
+        "pos": [
+          96,
+          992
         ]
       }
     ],

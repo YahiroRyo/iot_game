@@ -15,12 +15,12 @@ FPS=60
 #
 # ////////////////////////////////////////////////
 MAP_IS_LOAD = True
-MAP_NAME = "海"
+MAP_NAME = "アテトラ"
 MAP_WIDTH = 48
 MAP_HEIGHT = 48
 MAP_MSIZE = 32
 # -1だと0埋めされる
-MAP_BG_ID = 1
+MAP_BG_ID = 4
 MAP_CONF = {
         "monster_info": {
         "kinds": [],
