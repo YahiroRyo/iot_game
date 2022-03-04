@@ -2,9 +2,9 @@
   "name": "海",
   "conf": {
     "monster_info": {
-      "kinds": [],
-      "min": 0,
-      "max": 0
+      "kinds": ["gyozin","sutoraikusha-ku"],
+      "min": 2,
+      "max": 6
     }
   },
   "events": {
