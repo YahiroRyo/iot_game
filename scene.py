@@ -242,12 +242,12 @@ class Scenes:
                     ]
                 ]
         else:
-            player = Player(mapimgdata.load_img("imgs/character/sensi_f.png", -1), "戦士", 1000, 50, 10, 10, 10, 10, 10, 0, 1000 ,1000, 0, [0], [0 for _ in range(7)], 1000, 50, 260, 416) 
+            player = Player(mapimgdata.load_img("imgs/character/sensi_f.png", -1), "戦士", 50, 20, 13, 5, 4, 3, 10, 8, 0 ,0, 0, [0], [0 for _ in range(7)], 50, 20, 260, 416) 
             players: list = [
                 player,
-                Player(mapimgdata.load_img("imgs/character/mahoutsukai_f.png", -1), "魔法使い", 500, 3, 10, 10, 10, 10, 10, 8, 0, 0, 0, [0], [0 for _ in range(7)], 500, 3),
-                Player(mapimgdata.load_img("imgs/character/souryo_f.png", -1), "僧侶", 500, 3, 10, 10, 10, 10, 10, 0, 15, 0, 0, [0], [0 for _ in range(7)], 500, 3),
-                Player(mapimgdata.load_img("imgs/character/butouka_f.png", -1), "武闘家", 500, 3, 10, 10, 10, 10, 10, 20, 0, 0, 0, [0], [0 for _ in range(7)], 500, 3),
+                Player(mapimgdata.load_img("imgs/character/mahoutsukai_f.png", -1), "魔法使い", 35, 30, 5, 15, 5, 15, 10, 8, 0, 0, 0, [0], [0 for _ in range(7)], 35, 30),
+                Player(mapimgdata.load_img("imgs/character/souryo_f.png", -1), "僧侶", 50, 25, 9, 9, 13, 13, 10, 8, 0, 0, 0, [0], [0 for _ in range(7)], 50, 25),
+                Player(mapimgdata.load_img("imgs/character/butouka_f.png", -1), "武闘家", 45, 2, 16, 2, 7, 6, 16, 8, 0, 0, 0, [0], [0 for _ in range(7)], 45, 2),
             ]
             self.scenes[self.current_scene].layer.set_pos(
                                 (SW - (260 * 2)) / 2,

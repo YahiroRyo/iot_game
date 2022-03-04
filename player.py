@@ -135,28 +135,28 @@ class Player(Params):
                 self.y -= self.speed
                 self.allow = K_UP
                 layer.set_y(layer.map.y + self.speed)
-                self.encounter(conf, scenes , players, screen)#エンカウント部分をコメントアウト中
+                self.encounter(conf, scenes , players, screen)      #エンカウント部分
         if keys[K_DOWN]:
             if not self.key_is_wall(K_DOWN, layer.map) and self.y < layer.map.row * layer.map.msize - self.size:
                 self.img = load_img(f"imgs/character/{img_mode}_f.png", -1)
                 self.y += self.speed
                 self.allow = K_DOWN
                 layer.set_y(layer.map.y - self.speed)
-                self.encounter(conf, scenes , players, screen)        
+                self.encounter(conf, scenes , players, screen)      #エンカウント部分  
         if keys[K_LEFT]:
             if not self.key_is_wall(K_LEFT, layer.map) and self.x > 0:
                 self.img = load_img(f"imgs/character/{img_mode}_l.png", -1)
                 self.x -= self.speed
                 self.allow = K_LEFT
                 layer.set_x(layer.map.x + self.speed)
-                self.encounter(conf, scenes , players, screen)        
+                self.encounter(conf, scenes , players, screen)      #エンカウント部分
         if keys[K_RIGHT]:
             if not self.key_is_wall(K_RIGHT, layer.map) and self.x < layer.map.col * layer.map.msize - self.size:
                 self.img = load_img(f"imgs/character/{img_mode}_r.png", -1)
                 self.x += self.speed
                 self.allow = K_RIGHT
                 layer.set_x(layer.map.x - self.speed)
-                self.encounter(conf, scenes , players, screen)        
+                self.encounter(conf, scenes , players, screen)      #エンカウント部分
 
     def get_block(self, map: Map, x: int = -1, y: int = -1):
         tmp_x = self.x if x == -1 else x
