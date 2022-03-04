@@ -142,21 +142,21 @@ class Player(Params):
                 self.y += self.speed
                 self.allow = K_DOWN
                 layer.set_y(layer.map.y - self.speed)
-                #self.encounter(conf, scenes , players, screen)        
+                self.encounter(conf, scenes , players, screen)        
         if keys[K_LEFT]:
             if not self.key_is_wall(K_LEFT, layer.map) and self.x > 0:
                 self.img = load_img(f"imgs/character/{img_mode}_l.png", -1)
                 self.x -= self.speed
                 self.allow = K_LEFT
                 layer.set_x(layer.map.x + self.speed)
-                #self.encounter(conf, scenes , players, screen)        
+                self.encounter(conf, scenes , players, screen)        
         if keys[K_RIGHT]:
             if not self.key_is_wall(K_RIGHT, layer.map) and self.x < layer.map.col * layer.map.msize - self.size:
                 self.img = load_img(f"imgs/character/{img_mode}_r.png", -1)
                 self.x += self.speed
                 self.allow = K_RIGHT
                 layer.set_x(layer.map.x - self.speed)
-                #self.encounter(conf, scenes , players, screen)        
+                self.encounter(conf, scenes , players, screen)        
 
     def get_block(self, map: Map, x: int = -1, y: int = -1):
         tmp_x = self.x if x == -1 else x
@@ -271,7 +271,7 @@ class Player(Params):
                 pass
     
     def encounter(self, conf: dict, scenes, players, screen):
-        enc=random.randint(1,2)
+        enc=random.randint(1,800)
         if enc==1:
             if conf["monster_info"]["min"] != 0 and conf["monster_info"]["max"] != 0:
                 monsters_num=random.randint(conf["monster_info"]["min"],conf["monster_info"]["max"])
