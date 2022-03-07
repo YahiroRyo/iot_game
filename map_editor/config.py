@@ -14,13 +14,13 @@ FPS=60
 # マップ系
 #
 # ////////////////////////////////////////////////
-MAP_IS_LOAD = True
-MAP_NAME = "アテトラ"
-MAP_WIDTH = 48
-MAP_HEIGHT = 48
+MAP_IS_LOAD = False
+MAP_NAME = "ヘキサガ"
+MAP_WIDTH = 32
+MAP_HEIGHT = 32
 MAP_MSIZE = 32
 # -1だと0埋めされる
-MAP_BG_ID = 4
+MAP_BG_ID = 1
 MAP_CONF = {
         "monster_info": {
         "kinds": [],
