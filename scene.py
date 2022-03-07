@@ -16,6 +16,7 @@ import os
 import config
 from message import Message
 from rain import *
+import bgm
 
 rain = []
 
@@ -56,6 +57,8 @@ class Scene:
                     MARGIN = 50
                     self.main_menu_win = command_window.CommandWindow(Command.MAIN_MENU)
                     self.player_statuses_win = [BattleStatusWindow() for _ in players]
+                if event.key == K_n:
+                    bgm.bgmplay("村")
 
         if not self.is_inited:
             self.is_inited = True
