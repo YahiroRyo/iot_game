@@ -13,6 +13,9 @@
 
 #          img          名前       hp   mp 攻 魔 防 ﾏ防 早 会 行動回数 経験値
 monster_data = {
-    "suraimu": ["suraimu.png", "スライム", 20, 0, 3, 0, 1, 1, 5, 0, 1, 1],
-    "goburin": ["goburin.png", "ゴブリン", 30, 0, 5, 0, 2, 1, 2, 1, 1, 2],
+    "sunahebi": ["sunahebi.png", "スナヘビ", 20, 0, 3, 0, 1, 1, 5, 0, 1, 1],
+    "ookami": ["ookami.png", "オオカミ", 30, 0, 5, 0, 2, 1, 2, 1, 1, 2],
+    "gigadoragon": ["gigadoragon.png", "ギガドラゴン", 30, 0, 5, 0, 2, 1, 2, 1, 1, 2],
+    "gyozin": ["gyozin.png", "魚人", 80, 0, 4, 0, 20, 20, 20, 1, 1, 4],
+    "sutoraikusha-ku": ["sutoraikusha-ku.png", "ストライクシャーク", 65, 0, 5, 0, 15, 10, 100, 1, 1, 5],
 }

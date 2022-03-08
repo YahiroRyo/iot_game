@@ -15,6 +15,10 @@ import random
 import os
 import config
 from message import Message
+from rain import *
+import bgm
+
+rain = []
 
 # 画面サイズ WIDTH
 SW = 1280 if len(sys.argv) == 1 else int(sys.argv[1])
@@ -23,11 +27,12 @@ SH = 720 if len(sys.argv) == 1 else int(sys.argv[2])
 SCR_RECT = Rect(0, 0, SW, SH)  # 画面サイズ
 
 class Scene:
-    map: Layer
+    layer: Layer = None
     name: str = ""
     conf: dict = {}
     events: dict = {}
     is_battle = False
+    is_inited = False
     main_menu_win = None
     player_statuses_win = []
     currentplayer = 0
@@ -52,6 +57,25 @@ class Scene:
                     MARGIN = 50
                     self.main_menu_win = command_window.CommandWindow(Command.MAIN_MENU)
                     self.player_statuses_win = [BattleStatusWindow() for _ in players]
+                if event.key == K_n:
+                    bgm.bgmplay("村")
+
+        if not self.is_inited:
+            self.is_inited = True
+            for ended_e in scenes.ended_event:
+                if  (
+                    ended_e["name"] == "chest" and
+                    ended_e["map_name"] == self.name
+                ):
+                    map = None
+                    if ended_e["map_layer"] == "map_main":
+                       map = self.layer.map 
+                    elif ended_e["map_layer"] == "map_everything":
+                       map = self.layer.everything
+                    elif ended_e["map_layer"] == "map_npcs":
+                       map = self.layer.npcs
+                    map.map[ended_e["pos"][1]][ended_e["pos"][0]] = 201
+
 
         player.proc(scenes.scenes[scenes.current_scene].layer, scenes.scenes[scenes.current_scene], scenes)
         is_operate = True
@@ -92,7 +116,8 @@ class Scene:
                                 "x": player.x,
                                 "y": player.y,
                             }, 
-                            "players": [player.to_dict() for player in players]
+                            "players": [player.to_dict() for player in players],
+                            "ended_event": scenes.ended_event
                         }
                         with open("save_data.json", mode="wt", encoding="utf-8") as f:
                             json.dump(save_data, f, ensure_ascii=False, indent=2)
@@ -132,12 +157,12 @@ class Scene:
                     self.main_menu_win = None
                     return
             return
-        player.event(scenes.scenes[scenes.current_scene].layer, self.conf, scenes, players, screen)
+        player.event(self.layer, self.conf, scenes, players, screen)
 
     def draw(self, scenes, players: list, player: Player, screen: Surface):
         pygame.Surface.fill(screen, (0, 0, 0))
-        scenes.scenes[scenes.current_scene].layer.draw(screen)
-        player.draw(scenes.scenes[scenes.current_scene].layer.map, screen)
+        self.layer.draw(screen)
+        player.draw(self.layer.map, screen)
         if self.main_menu_win != None:
             self.main_menu_win.draw(screen)
             if len(self.player_statuses_win) != 0:
@@ -148,7 +173,11 @@ class Scene:
                         player_status_win.draw_status(screen, players[self.currentplayer], self.currentplayer * SW / 4)
                     else:
                         player_status_win.draw(screen, idx * SW / 4, players[idx].name, players[idx].hp, players[idx].mp, players[idx].maxhp, players[idx].maxmp)
-    
+        if len(rain) < config.RAIN_LEN:
+            rain.append(Rain(screen))
+            
+        # drawRain(rain)
+
     def status_up(self, currentplayer, currentstatus):
         if currentplayer.exp >= 10:
             if currentstatus == 0:
@@ -175,6 +204,7 @@ class Scenes:
     current_scene = 0
     _win_title: str = ""
     titleicon=""
+    ended_event = []
     FPS = 120
 
     def __init__(self, window_title: str = "GAME", titleicon:str = None) -> None:
@@ -197,6 +227,7 @@ class Scenes:
                 json_data = json.load(f)
                 self.current_scene = json_data["map"]["current_scene"]
                 self.scenes[self.current_scene].layer.set_pos(json_data["map"]["x"], json_data["map"]["y"])
+                self.ended_event = json_data["ended_event"]
                 x = json_data["pos"]["x"]
                 y = json_data["pos"]["y"]
                 player_infos = json_data["players"][0]
@@ -214,12 +245,12 @@ class Scenes:
                     ]
                 ]
         else:
-            player = Player(mapimgdata.load_img("imgs/character/sensi_f.png", -1), "戦士", 1000, 50, 10, 10, 10, 10, 10, 0, 1000 ,1000, 0, [0], [0 for _ in range(7)], 1000, 50, 260, 416) 
+            player = Player(mapimgdata.load_img("imgs/character/sensi_f.png", -1), "戦士", 50, 20, 13, 5, 4, 3, 10, 8, 0 ,0, 0, [0], [0 for _ in range(7)], 50, 20, 260, 416) 
             players: list = [
                 player,
-                Player(mapimgdata.load_img("imgs/character/mahoutsukai_f.png", -1), "魔法使い", 500, 3, 10, 10, 10, 10, 10, 8, 0, 0, 0, [0], [0 for _ in range(7)], 500, 3),
-                Player(mapimgdata.load_img("imgs/character/souryo_f.png", -1), "僧侶", 500, 3, 10, 10, 10, 10, 10, 0, 15, 0, 0, [0], [0 for _ in range(7)], 500, 3),
-                Player(mapimgdata.load_img("imgs/character/butouka_f.png", -1), "武闘家", 500, 3, 10, 10, 10, 10, 10, 20, 0, 0, 0, [0], [0 for _ in range(7)], 500, 3),
+                Player(mapimgdata.load_img("imgs/character/mahoutsukai_f.png", -1), "魔法使い", 35, 30, 5, 15, 5, 15, 10, 8, 0, 0, 0, [0], [0 for _ in range(7)], 35, 30),
+                Player(mapimgdata.load_img("imgs/character/souryo_f.png", -1), "僧侶", 50, 25, 9, 9, 13, 13, 10, 8, 0, 0, 0, [0], [0 for _ in range(7)], 50, 25),
+                Player(mapimgdata.load_img("imgs/character/butouka_f.png", -1), "武闘家", 45, 2, 16, 2, 7, 6, 16, 8, 0, 0, 0, [0], [0 for _ in range(7)], 45, 2),
             ]
             self.scenes[self.current_scene].layer.set_pos(
                                 (SW - (260 * 2)) / 2,

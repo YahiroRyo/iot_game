@@ -135,28 +135,28 @@ class Player(Params):
                 self.y -= self.speed
                 self.allow = K_UP
                 layer.set_y(layer.map.y + self.speed)
-                #self.encounter(conf, scenes , players, screen)  エンカウント部分をコメントアウト中
+                self.encounter(conf, scenes , players, screen)      #エンカウント部分
         if keys[K_DOWN]:
             if not self.key_is_wall(K_DOWN, layer.map) and self.y < layer.map.row * layer.map.msize - self.size:
                 self.img = load_img(f"imgs/character/{img_mode}_f.png", -1)
                 self.y += self.speed
                 self.allow = K_DOWN
                 layer.set_y(layer.map.y - self.speed)
-                #self.encounter(conf, scenes , players, screen)        
+                self.encounter(conf, scenes , players, screen)      #エンカウント部分  
         if keys[K_LEFT]:
             if not self.key_is_wall(K_LEFT, layer.map) and self.x > 0:
                 self.img = load_img(f"imgs/character/{img_mode}_l.png", -1)
                 self.x -= self.speed
                 self.allow = K_LEFT
                 layer.set_x(layer.map.x + self.speed)
-                #self.encounter(conf, scenes , players, screen)        
+                self.encounter(conf, scenes , players, screen)      #エンカウント部分
         if keys[K_RIGHT]:
             if not self.key_is_wall(K_RIGHT, layer.map) and self.x < layer.map.col * layer.map.msize - self.size:
                 self.img = load_img(f"imgs/character/{img_mode}_r.png", -1)
                 self.x += self.speed
                 self.allow = K_RIGHT
                 layer.set_x(layer.map.x - self.speed)
-                #self.encounter(conf, scenes , players, screen)        
+                self.encounter(conf, scenes , players, screen)      #エンカウント部分
 
     def get_block(self, map: Map, x: int = -1, y: int = -1):
         tmp_x = self.x if x == -1 else x
@@ -174,7 +174,7 @@ class Player(Params):
         r_b = self.get_block(layer.map, self.x + 30, self.y + 30)
         l = self.get_block(layer.map, self.x, self.y)
         l_b = self.get_block(layer.map, self.x, self.y + 30)
-        for events in scene.events.values():
+        for key, events in scene.events.items():
             if len(events) != 0:
                 for event in events:
                     if "pos" in event and event["pos"] == [int(self.x / layer.map.msize), int(self.y / layer.map.msize)]:
@@ -202,14 +202,37 @@ class Player(Params):
                         elif self.allow == K_UP:
                             is_exist =  event["pos"] == [int((self.x + 15) / layer.map.msize), int((self.y - 32) / layer.map.msize)]
                             
-                        if is_exist:
+                        if is_exist and (
+                            len(scenes.ended_event) == 0 or True in [
+                                    ended_e["name"] != event["name"] and
+                                    ended_e["pos"] != event["pos"] and
+                                    ended_e["name"] != scenes.scenes[scenes.current_scene].name and
+                                    ended_e["map_layer"] != key
+                                    for ended_e in scenes.ended_event
+                                ]
+                            ):
                             press_keys = pygame.key.get_pressed()
                             if press_keys[K_RETURN]:
                                 item_idx = 0
                                 for (idx, item) in enumerate(items):
                                     if item.id == event["item_id"]:
                                         item_idx = idx
+                                        break
                                 self.items.append(item_idx)
+                                scenes.ended_event.append({
+                                    "map_layer": key,
+                                    "map_name": scenes.scenes[scenes.current_scene].name,
+                                    "name": event["name"],
+                                    "pos": event["pos"],
+                                })
+                                map = None
+                                if key == "map_main":
+                                   map = scenes.scenes[scenes.current_scene].layer.map 
+                                elif key == "map_everything":
+                                   map = scenes.scenes[scenes.current_scene].layer.everything
+                                elif key == "map_npcs":
+                                   map = scenes.scenes[scenes.current_scene].layer.npcs
+                                map.map[event["pos"][1]][event["pos"][0]] = 201
                             return
                     # 遷移システム作成
                     if "from_pos" in event and (
@@ -248,7 +271,7 @@ class Player(Params):
                 pass
     
     def encounter(self, conf: dict, scenes, players, screen):
-        enc=random.randint(1,512)
+        enc=random.randint(1,800)
         if enc==1:
             if conf["monster_info"]["min"] != 0 and conf["monster_info"]["max"] != 0:
                 monsters_num=random.randint(conf["monster_info"]["min"],conf["monster_info"]["max"])

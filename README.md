@@ -71,3 +71,9 @@ MAP_IS_LOADがFalseの場合に初期でマップ全体に置かれるブロッ�
 - トライデント暁美  
 
 ### 防具
+
+### プレイヤーステータス  
+Player(mapimgdata.load_img("imgs/character/sensi_f.png", -1), "戦士", 50, 20, 13, 5, 4, 3, 10, 8, 0 ,0, 0, [0], [0 for _ in range(7)], 50, 20, 260, 416)  
+Player(mapimgdata.load_img("imgs/character/mahoutsukai_f.png", -1), "魔法使い", 35, 30, 5, 15, 5, 15, 10, 8, 0, 0, 0, [0], [0 for _ in range(7)], 35, 30),  
+Player(mapimgdata.load_img("imgs/character/souryo_f.png", -1), "僧侶", 50, 25, 9, 9, 13, 13, 10, 8, 0, 0, 0, [0], [0 for _ in range(7)], 50, 25),  
+Player(mapimgdata.load_img("imgs/character/butouka_f.png", -1), "武闘家", 45, 2, 16, 2, 7, 6, 16, 8, 0, 0, 0, [0], [0 for _ in range(7)], 45, 2),  

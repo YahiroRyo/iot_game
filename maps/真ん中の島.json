@@ -3,11 +3,9 @@
   "conf": {
     "monster_info": {
       "kinds": [
-        "goburin",
-        "suraimu"
       ],
-      "min": 4,
-      "max": 8
+      "min": 0,
+      "max": 0
     }
   },
   "events": {
